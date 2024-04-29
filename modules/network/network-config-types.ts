@@ -5,14 +5,12 @@ import type { UserStakedBalanceService } from '../user/user-types';
 import type { TokenPriceHandler } from '../token/token-types';
 import type { BaseProvider } from '@ethersproject/providers';
 import type { GqlChain } from '../../schema';
-import type { ContentService } from '../content/content-types';
 import type { YbAprConfig } from './apr-config-types';
 import type { BalancerSubgraphService } from '../subgraphs/balancer-subgraph/balancer-subgraph.service';
 import { SftmxSubgraphService } from '../sources/subgraphs/sftmx-subgraph/sftmx.service';
 
 export interface NetworkConfig {
     data: NetworkData;
-    contentService: ContentService;
     poolStakingServices: PoolStakingService[];
     poolAprServices: PoolAprService[];
     userStakedBalanceServices: UserStakedBalanceService[];

@@ -8,7 +8,6 @@ import { GaugeAprService } from '../pool/lib/apr-data-sources/ve-bal-gauge-apr.s
 import { GaugeStakingService } from '../pool/lib/staking/gauge-staking.service';
 import { UserSyncGaugeBalanceService } from '../user/lib/user-sync-gauge-balance.service';
 import { every } from '../../worker/intervals';
-import { SanityContentService } from '../content/sanity-content.service';
 import { gaugeSubgraphService } from '../subgraphs/gauge-subgraph/gauge-subgraph.service';
 import { YbTokensAprService } from '../pool/lib/apr-data-sources/yb-tokens-apr.service';
 import { env } from '../../app/env';
@@ -19,7 +18,6 @@ const optimismNetworkData: NetworkData = config.OPTIMISM;
 
 export const optimismNetworkConfig: NetworkConfig = {
     data: optimismNetworkData,
-    contentService: new SanityContentService(),
     provider: new ethers.providers.JsonRpcProvider({ url: optimismNetworkData.rpcUrl, timeout: 60000 }),
     poolAprServices: [
         new YbTokensAprService(optimismNetworkData.ybAprConfig, optimismNetworkData.chain.prismaId),

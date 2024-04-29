@@ -12,7 +12,6 @@ import { reliquarySubgraphService } from '../subgraphs/reliquary-subgraph/reliqu
 import { UserSyncMasterchefFarmBalanceService } from '../user/lib/user-sync-masterchef-farm-balance.service';
 import { UserSyncReliquaryFarmBalanceService } from '../user/lib/user-sync-reliquary-farm-balance.service';
 import { every } from '../../worker/intervals';
-import { SanityContentService } from '../content/sanity-content.service';
 import { env } from '../../app/env';
 import { YbTokensAprService } from '../pool/lib/apr-data-sources/yb-tokens-apr.service';
 import { BeetswarsGaugeVotingAprService } from '../pool/lib/apr-data-sources/fantom/beetswars-gauge-voting-apr';
@@ -23,7 +22,6 @@ const fantomNetworkData: NetworkData = config.FANTOM;
 
 export const fantomNetworkConfig: NetworkConfig = {
     data: fantomNetworkData,
-    contentService: new SanityContentService(),
     provider: new ethers.providers.JsonRpcProvider({ url: fantomNetworkData.rpcUrl, timeout: 60000 }),
     poolAprServices: [
         new YbTokensAprService(fantomNetworkData.ybAprConfig, fantomNetworkData.chain.prismaId),
