@@ -44,6 +44,8 @@ import { subgraphLoadAll } from '../subgraph-util';
 import { Cache, CacheClass } from 'memory-cache';
 import { fiveMinutesInMs, twentyFourHoursInMs } from '../../common/time';
 import { BalancerUserPoolShare } from './balancer-subgraph-types';
+import { Prisma } from '@prisma/client';
+import { chainIdToChain } from '../../network/chain-id-to-chain';
 
 const ALL_POOLS_CACHE_KEY = `balance-subgraph_all-pools`;
 const PORTFOLIO_POOLS_CACHE_KEY = `balance-subgraph_portfolio-pools`;
@@ -195,7 +197,7 @@ export class BalancerSubgraphService {
     public async getAllPoolSharesWithBalance(
         poolIds: string[],
         excludedAddresses: string[],
-    ): Promise<BalancerUserPoolShare[]> {
+    ): Promise<Prisma.PrismaUserWalletBalanceCreateManyInput[]> {
         const allPoolShares: BalancerPoolShareFragment[] = [];
         let hasMore = true;
         let id = `0`;
@@ -228,11 +230,13 @@ export class BalancerSubgraphService {
 
         return allPoolShares.map((shares) => ({
             ...shares,
+            poolId: shares.poolId.id.toLowerCase(),
+            chain: chainIdToChain[this.chainId],
             //ensure the user balance isn't negative, unsure how the subgraph ever allows this to happen
             balance: parseFloat(shares.balance) < 0 ? '0' : shares.balance,
-            poolId: shares.poolId.id,
-            poolAddress: shares.id.split('-')[0],
-            userAddress: shares.id.split('-')[1],
+            balanceNum: Math.max(0, parseFloat(shares.balance)),
+            tokenAddress: shares.id.toLowerCase().split('-')[0],
+            userAddress: shares.id.toLowerCase().split('-')[1],
         }));
     }
 
