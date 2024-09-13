@@ -14,18 +14,18 @@ import { sepoliaNetworkConfig } from './sepolia';
 import { modeNetworkConfig } from './mode';
 
 export const AllNetworkConfigs: { [chainId: string]: NetworkConfig } = {
-    '250': fantomNetworkConfig,
-    '10': optimismNetworkConfig,
-    '1': mainnetNetworkConfig,
-    '42161': arbitrumNetworkConfig,
-    '137': polygonNetworkConfig,
-    '100': gnosisNetworkConfig,
-    '1101': zkevmNetworkConfig,
-    '43114': avalancheNetworkConfig,
-    '8453': baseNetworkConfig,
+    // '250': fantomNetworkConfig,
+    // '10': optimismNetworkConfig,
+    // '1': mainnetNetworkConfig,
+    // '42161': arbitrumNetworkConfig,
+    // '137': polygonNetworkConfig,
+    // '100': gnosisNetworkConfig,
+    // '1101': zkevmNetworkConfig,
+    // '43114': avalancheNetworkConfig,
+    // '8453': baseNetworkConfig,
     '11155111': sepoliaNetworkConfig,
-    '252': fraxtalNetworkConfig,
-    '34443': modeNetworkConfig,
+    // '252': fraxtalNetworkConfig,
+    // '34443': modeNetworkConfig,
 };
 
 export const AllNetworkConfigsKeyedOnChain: { [chain in Chain]: NetworkConfig } = {
@@ -43,7 +43,13 @@ export const AllNetworkConfigsKeyedOnChain: { [chain in Chain]: NetworkConfig } 
     MODE: modeNetworkConfig,
 };
 
-export const BalancerChainIds = ['1', '137', '42161', '100', '1101', '43114', '8453', '11155111', '252', '34443'];
+export const BalancerChainIds = [
+    // '1', '137', '42161', '100', '1101', '43114', '8453',
+
+    '11155111',
+
+    // '252', '34443'
+];
 export const BeethovenChainIds = ['250', '10'];
 
 export const chainToIdMap = Object.values(AllNetworkConfigs).reduce((acc, config) => {

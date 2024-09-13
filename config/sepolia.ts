@@ -14,8 +14,8 @@ export default <NetworkData>{
         startDate: '2023-05-03',
         cowAmm: 'https://api.studio.thegraph.com/proxy/75376/balancer-cow-amm-sepolia/version/latest',
         balancer: 'https://api.studio.thegraph.com/query/24660/balancer-sepolia-v2/version/latest',
-        balancerV3: 'https://api.studio.thegraph.com/query/31386/balancer-v3-sepolia-6th/version/latest',
-        balancerPoolsV3: 'https://api.studio.thegraph.com/query/31386/balancer-pools-v3-sepolia-6th/version/latest',
+        balancerV3: 'https://api.studio.thegraph.com/query/51820/tide-vault/0.0.1',
+        balancerPoolsV3: 'https://api.studio.thegraph.com/query/51820/tide-pools/0.0.1',
         beetsBar: 'https://',
         blocks: 'https://api.studio.thegraph.com/query/48427/bleu-sepolia-blocks/version/latest',
         gauge: `https://api.studio.thegraph.com/query/24660/balancer-gauges-sepolia/version/latest`,
@@ -41,7 +41,7 @@ export default <NetworkData>{
     rpcMaxBlockRange: 700,
     protocolToken: 'bal',
     bal: {
-        address: '0xb19382073c7A0aDdbb56Ac6AF1808Fa49e377B75',
+        address: '0x137A72F2Bb85Bfeb921e7CFa907847a562d2d152',
     },
     // veBal: {
     //     address: '0xc128a9954e6c874ea3d62ce62b468ba073093f25',
@@ -55,8 +55,8 @@ export default <NetworkData>{
             balancerQueriesAddress: '0xe39b5e3b6d74016b2f6a9673d7d7493b6df549d5',
         },
         v3: {
-            vaultAddress: '0x92b5c1cb2999c45804a60d6529d77deef00fb839',
-            routerAddress: '0xa12da7dfd0792a10a5b05b575545bd685798ce35',
+            vaultAddress: '0x3958583A272Fc26dFb87B62917a3cC2C13b010f5',
+            routerAddress: '0xf41baB917790eB98097Ac8Cc822Fa0519e41e149',
             defaultSwapFeePercentage: '0.5',
             defaultYieldFeePercentage: '0.5',
         },

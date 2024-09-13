@@ -257,9 +257,9 @@ export class PoolGqlLoaderService {
             hook:
                 (pool.hook &&
                     pool.hook.dynamicData && {
-                        ...pool.hook,
-                        dynamicData: pool.hook.dynamicData as HookData,
-                    }) ||
+                    ...pool.hook,
+                    dynamicData: pool.hook.dynamicData as HookData,
+                }) ||
                 undefined,
             incentivized: pool.categories.some((category) => category === 'INCENTIVIZED'),
             vaultVersion: pool.protocolVersion,
@@ -420,29 +420,29 @@ export class PoolGqlLoaderService {
 
         const userArgs: Prisma.PrismaPoolWhereInput = userAddress
             ? {
-                  OR: [
-                      {
-                          userWalletBalances: {
-                              some: {
-                                  userAddress: {
-                                      equals: userAddress.toLowerCase(),
-                                  },
-                                  balanceNum: { gt: 0 },
-                              },
-                          },
-                      },
-                      {
-                          userStakedBalances: {
-                              some: {
-                                  userAddress: {
-                                      equals: userAddress.toLowerCase(),
-                                  },
-                                  balanceNum: { gt: 0 },
-                              },
-                          },
-                      },
-                  ],
-              }
+                OR: [
+                    {
+                        userWalletBalances: {
+                            some: {
+                                userAddress: {
+                                    equals: userAddress.toLowerCase(),
+                                },
+                                balanceNum: { gt: 0 },
+                            },
+                        },
+                    },
+                    {
+                        userStakedBalances: {
+                            some: {
+                                userAddress: {
+                                    equals: userAddress.toLowerCase(),
+                                },
+                                balanceNum: { gt: 0 },
+                            },
+                        },
+                    },
+                ],
+            }
             : {};
 
         const filterArgs: Prisma.PrismaPoolWhereInput = {
@@ -489,21 +489,21 @@ export class PoolGqlLoaderService {
             filters: {
                 ...(where?.filterNotIn
                     ? {
-                          every: {
-                              filterId: {
-                                  notIn: where.filterNotIn,
-                              },
-                          },
-                      }
+                        every: {
+                            filterId: {
+                                notIn: where.filterNotIn,
+                            },
+                        },
+                    }
                     : {}),
                 ...(where?.filterIn
                     ? {
-                          some: {
-                              filterId: {
-                                  in: where.filterIn,
-                              },
-                          },
-                      }
+                        some: {
+                            filterId: {
+                                in: where.filterIn,
+                            },
+                        },
+                    }
                     : {}),
             },
         };
@@ -641,9 +641,9 @@ export class PoolGqlLoaderService {
             hook:
                 (pool.hook &&
                     pool.hook.dynamicData && {
-                        ...pool.hook,
-                        dynamicData: pool.hook.dynamicData as HookData,
-                    }) ||
+                    ...pool.hook,
+                    dynamicData: pool.hook.dynamicData as HookData,
+                }) ||
                 undefined,
         };
 
@@ -781,9 +781,10 @@ export class PoolGqlLoaderService {
             weight: poolToken?.dynamicData?.weight,
             hasNestedPool: hasNestedPool,
             nestedPool: nestedPool ? this.mapNestedPool(nestedPool, poolToken.dynamicData?.balance || '0') : undefined,
-            isAllowed: poolToken.token.types.some(
-                (type) => type.type === 'WHITE_LISTED' || type.type === 'PHANTOM_BPT' || type.type === 'BPT',
-            ),
+            // isAllowed: poolToken.token.types.some(
+            //     (type) => type.type === 'WHITE_LISTED' || type.type === 'PHANTOM_BPT' || type.type === 'BPT',
+            // ),
+            isAllowed: true,
             isErc4626: poolToken.token.types.some((type) => type.type === 'ERC4626'),
         };
     }
@@ -1094,27 +1095,27 @@ export class PoolGqlLoaderService {
                 apr:
                     typeof aprRangeMin !== 'undefined' && typeof aprRangeMax !== 'undefined'
                         ? {
-                              __typename: 'GqlPoolAprRange',
-                              min: aprRangeMin,
-                              max: aprRangeMax,
-                          }
+                            __typename: 'GqlPoolAprRange',
+                            min: aprRangeMin,
+                            max: aprRangeMax,
+                        }
                         : { __typename: 'GqlPoolAprTotal', total: aprTotal },
                 swapApr: swapAprTotal,
                 nativeRewardApr:
                     typeof nativeAprRangeMin !== 'undefined' && typeof nativeAprRangeMax !== 'undefined'
                         ? {
-                              __typename: 'GqlPoolAprRange',
-                              min: nativeAprRangeMin,
-                              max: nativeAprRangeMax,
-                          }
+                            __typename: 'GqlPoolAprRange',
+                            min: nativeAprRangeMin,
+                            max: nativeAprRangeMax,
+                        }
                         : { __typename: 'GqlPoolAprTotal', total: nativeRewardAprTotal },
                 thirdPartyApr:
                     typeof thirdPartyAprRangeMin !== 'undefined' && typeof thirdPartyAprRangeMax !== 'undefined'
                         ? {
-                              __typename: 'GqlPoolAprRange',
-                              min: thirdPartyAprRangeMin,
-                              max: thirdPartyAprRangeMax,
-                          }
+                            __typename: 'GqlPoolAprRange',
+                            min: thirdPartyAprRangeMin,
+                            max: thirdPartyAprRangeMax,
+                        }
                         : { __typename: 'GqlPoolAprTotal', total: thirdPartyAprTotal },
                 items: [
                     ...aprItemsWithNoGroup.flatMap((item): GqlBalancePoolAprItem[] => {
@@ -1300,18 +1301,18 @@ export class PoolGqlLoaderService {
                 tokenOptions:
                     isWrappedNativeAsset && supportsNativeAsset
                         ? [
-                              this.mapPoolTokenToGql(poolToken),
-                              this.mapPoolTokenToGql({
-                                  ...poolToken,
-                                  token: {
-                                      ...poolToken.token,
-                                      symbol: networkContext.data.eth.symbol,
-                                      address: networkContext.data.eth.address,
-                                      name: networkContext.data.eth.name,
-                                  },
-                                  id: `${pool.id}-${networkContext.data.eth.address}`,
-                              }),
-                          ]
+                            this.mapPoolTokenToGql(poolToken),
+                            this.mapPoolTokenToGql({
+                                ...poolToken,
+                                token: {
+                                    ...poolToken.token,
+                                    symbol: networkContext.data.eth.symbol,
+                                    address: networkContext.data.eth.address,
+                                    name: networkContext.data.eth.name,
+                                },
+                                id: `${pool.id}-${networkContext.data.eth.address}`,
+                            }),
+                        ]
                         : [this.mapPoolTokenToGql(poolToken)],
             });
         }

@@ -5,6 +5,7 @@ import { ContentService, FeaturedPool, HomeScreenFeaturedPoolGroup, HomeScreenNe
 import { chainIdToChain } from '../network/chain-id-to-chain';
 import { chainToIdMap } from '../network/network-config';
 import { Chain, Prisma } from '@prisma/client';
+import tokenList from '../../modules/tokenlist/balancer.tokenlist.json'
 
 const POOLS_METADATA_URL = 'https://raw.githubusercontent.com/balancer/metadata/main/pools/featured.json';
 
@@ -58,9 +59,13 @@ interface RateProviderReview {
 }
 
 export class GithubContentService implements ContentService {
+    private tokenList: WhitelistedTokenList;
+    constructor() {
+        this.tokenList = tokenList as WhitelistedTokenList;
+    }
     async syncTokenContentData(chains: Chain[]): Promise<void> {
-        const { data: githubAllTokenList } = await axios.get<WhitelistedTokenList>(TOKEN_LIST_URL);
-
+        // const { data: githubAllTokenList } = await axios.get<WhitelistedTokenList>(TOKEN_LIST_URL);
+        const githubAllTokenList = this.tokenList
         for (const chain of chains) {
             const filteredTokenList = githubAllTokenList.tokens.filter((token) => {
                 if (`${token.chainId}` !== chainToIdMap[chain]) {
@@ -192,7 +197,7 @@ export class GithubContentService implements ContentService {
         await prisma.prismaTokenType.createMany({ skipDuplicates: true, data: types });
     }
 
-    async syncPoolContentData(chain: Chain): Promise<void> {}
+    async syncPoolContentData(chain: Chain): Promise<void> { }
 
     async getFeaturedPoolGroups(chains: Chain[]): Promise<HomeScreenFeaturedPoolGroup[]> {
         return [];
