@@ -12,7 +12,7 @@ import { networkContext } from '../../network/network-context.service';
 import { subgraphToPrismaCreate, subgraphToPrismaUpdate } from '../subgraph-mapper';
 
 export class PoolCreatorService {
-    constructor(private readonly userService: UserService) {}
+    constructor(private readonly userService: UserService) { }
 
     private get balancerSubgraphService() {
         return networkContext.services.balancerSubgraphService;
@@ -24,35 +24,40 @@ export class PoolCreatorService {
 
     public async syncAllPoolsFromSubgraph(blockNumber: number): Promise<string[]> {
         const existingPools = await prisma.prismaPool.findMany({ where: { chain: this.chain } });
+        console.log(this.chain, networkContext.chainId)
+
         const subgraphPools = await this.balancerSubgraphService
             .getAllPools({}, false)
             .then((pools) => _.orderBy(pools, ['createTime'], 'asc'));
 
+        console.log(subgraphPools.length, existingPools.length)
         // any pool can be nested
         const allNestedTypePools = [
             ...existingPools.map((pool) => ({ id: pool.id, address: pool.address })),
             ...subgraphPools.map((pool) => ({ id: pool.id, address: pool.address })),
         ];
 
-        const poolIds: string[] = [];
+        return ['ssss']
 
-        let counter = 1;
-        for (const subgraphPool of subgraphPools) {
-            console.log(`Syncing pool ${counter} of ${subgraphPools.length}`);
-            console.log(`Pool ID: ${subgraphPool.id}`);
-            counter = counter + 1;
-            const existsInDb = !!existingPools.find((pool) => pool.id === subgraphPool.id);
+        // const poolIds: string[] = [];
 
-            if (!existsInDb) {
-                await this.createPoolRecord(subgraphPool, blockNumber, allNestedTypePools);
+        // let counter = 1;
+        // for (const subgraphPool of subgraphPools) {
+        //     console.log(`Syncing pool ${counter} of ${subgraphPools.length}`);
+        //     console.log(`Pool ID: ${subgraphPool.id}`);
+        //     counter = counter + 1;
+        //     const existsInDb = !!existingPools.find((pool) => pool.id === subgraphPool.id);
 
-                poolIds.push(subgraphPool.id);
-            } else {
-                await this.updatePoolRecord(subgraphPool, blockNumber, allNestedTypePools);
-            }
-        }
+        //     if (!existsInDb) {
+        //         await this.createPoolRecord(subgraphPool, blockNumber, allNestedTypePools);
 
-        return poolIds;
+        //         poolIds.push(subgraphPool.id);
+        //     } else {
+        //         await this.updatePoolRecord(subgraphPool, blockNumber, allNestedTypePools);
+        //     }
+        // }
+
+        // return poolIds;
     }
 
     public async syncNewPoolsFromSubgraph(blockNumber: number): Promise<string[]> {

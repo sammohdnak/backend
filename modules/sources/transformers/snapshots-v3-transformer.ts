@@ -51,6 +51,9 @@ export const snapshotsV3Transformer = (
         totalSurpluses: defaultZeros,
     };
 
+
+
+
     const tvl = values.amounts.reduce((acc, amount, index) => {
         const address = poolTokens[index];
         if (!prices[address]) {

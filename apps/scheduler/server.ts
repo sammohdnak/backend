@@ -4,12 +4,14 @@ import { sleep } from '../../modules/common/promise';
 import { scheduleJobs } from './job-queue';
 import { createAlerts } from './create-alerts';
 // import { createMonitors } from './create-monitors';
+const SEPOLIA_ID = '11155111';
+let chainIds = [SEPOLIA_ID]
 
-let chainIds = Object.values(config).map((c) => String(c.chain.id));
+// Object.values(config).map((c) => String(c.chain.id));
 
 export async function startSchedulerServer() {
     try {
-        const SEPOLIA_ID = '11155111';
+
 
         if (env.DEPLOYMENT_ENV === 'main') {
             // use all chains, remove sepolia

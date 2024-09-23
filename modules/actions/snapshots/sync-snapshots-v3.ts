@@ -27,6 +27,8 @@ export async function syncSnapshotsV3(
     });
     const storedTimestamp = storedSnapshot?.timestamp || 0;
 
+    console.log('storedSnapshot : ', storedSnapshot)
+
     // In case there are no snapshots stored in the DB, sync from the subgraph's earliest snapshot
     let subgraphTimestamp = 0;
     if (!storedTimestamp) {
@@ -43,7 +45,11 @@ export async function syncSnapshotsV3(
     // because we want to sync the next day from what we have in the DB
     const timestamp = (storedTimestamp && storedTimestamp + 86400) || subgraphTimestamp;
 
-    return syncSnapshotsForADayV3(vaultSubgraphClient, chain, timestamp);
+
+
+    return syncSnapshotsForADayV3(vaultSubgraphClient, chain,
+        timestamp
+    );
 }
 
 /**
@@ -74,7 +80,9 @@ export async function syncSnapshotsForADayV3(
     });
 
     // Get snapshots for the next day
+
     const nextSnapshots = await vaultSubgraphClient.getSnapshotsForTimestamp(next);
+
 
     // Get all pool IDs we are interested in
     const dbPools = await prisma.prismaPool.findMany({
@@ -124,6 +132,8 @@ export async function syncSnapshotsForADayV3(
             previousSnapshot,
             snapshot,
         );
+
+
 
         await prisma.prismaPoolSnapshot.upsert({
             where: {

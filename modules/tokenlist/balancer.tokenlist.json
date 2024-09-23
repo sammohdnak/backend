@@ -15873,6 +15873,19 @@
                 "coingeckoId": "weth"
             }
         },
+
+        {
+            "chainId": 11155111,
+            "address": "0x137A72F2Bb85Bfeb921e7CFa907847a562d2d152",
+            "name": "Bal",
+            "symbol": "Bal",
+            "decimals": 18,
+            "logoURI": "https://assets.coingecko.com/coins/images/11723/large/aSUSD.png?1593082612",
+            "extensions": {
+                "coingeckoId": "usd-coin"
+            }
+        },
+
         {
             "chainId": 11155111,
             "address": "0xB77EB1A70A96fDAAeB31DB1b42F2b8b5846b2613",

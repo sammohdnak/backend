@@ -15,6 +15,6 @@ export const poolShareToUserBalance = (
         userAddress,
         tokenAddress: poolId,
         balance: poolShare.balance,
-        balanceNum: parseFloat(formatEther(BigInt(poolShare.balance))),
+        balanceNum: parseFloat(formatEther(BigInt(Number(poolShare.balance).toFixed(0)))),
     };
 };

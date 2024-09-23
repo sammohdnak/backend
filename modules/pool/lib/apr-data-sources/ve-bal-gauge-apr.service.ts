@@ -17,7 +17,7 @@ import { networkContext } from '../../../network/network-context.service';
 export class GaugeAprService implements PoolAprService {
     private readonly MAX_VEBAL_BOOST = 2.5;
 
-    constructor(private readonly tokenService: TokenService, private readonly primaryTokens: string[]) {}
+    constructor(private readonly tokenService: TokenService, private readonly primaryTokens: string[]) { }
 
     public getAprServiceName(): string {
         return 'GaugeAprService';
@@ -60,6 +60,7 @@ export class GaugeAprService implements PoolAprService {
             const rewards = await Promise.allSettled(
                 gauge.rewards.map(async ({ id, tokenAddress, rewardPerSecond, isVeBalemissions }) => {
                     const price = this.tokenService.getPriceForToken(tokenPrices, tokenAddress, networkContext.chain);
+
                     if (!price) {
                         return Promise.reject(`Price not found for ${tokenAddress}`);
                     }
@@ -90,6 +91,7 @@ export class GaugeAprService implements PoolAprService {
             const gaugeTvl = totalShares > 0 ? parseFloat(gauge.totalSupply) * bptPrice : 0;
             const workingSupply = parseFloat(gauge.workingSupply);
             const workingSupplyTvl = workingSupply === 0 ? 0 : ((workingSupply + 0.4) / 0.4) * bptPrice;
+
 
             const aprItems = rewards
                 .map((reward) => {
@@ -149,6 +151,7 @@ export class GaugeAprService implements PoolAprService {
             const items = aprItems.filter((item) => !item.id.includes('apr-range'));
             const ranges = aprItems.filter((item) => item.id.includes('apr-range'));
 
+
             itemOperations.push(
                 ...items.map((item) =>
                     prisma.prismaPoolAprItem.upsert({
@@ -171,6 +174,10 @@ export class GaugeAprService implements PoolAprService {
                     }),
                 ),
             );
+
+            console.log('ranges', ranges)
+            console.log('items', items)
+
         }
 
         await prismaBulkExecuteOperations(itemOperations);

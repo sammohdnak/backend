@@ -11,14 +11,15 @@ export default <NetworkData>{
         gqlId: 'SEPOLIA',
     },
     subgraphs: {
-        startDate: '2023-05-03',
+        startDate: '2024-08-31',
         cowAmm: 'https://api.studio.thegraph.com/proxy/75376/balancer-cow-amm-sepolia/version/latest',
         balancer: 'https://api.studio.thegraph.com/query/24660/balancer-sepolia-v2/version/latest',
-        balancerV3: 'https://api.studio.thegraph.com/query/51820/tide-vault/0.0.1',
-        balancerPoolsV3: 'https://api.studio.thegraph.com/query/51820/tide-pools/0.0.1',
+        balancerV3: 'https://api.studio.thegraph.com/query/51820/tide-vault/version/latest',
+        balancerPoolsV3: 'https://api.studio.thegraph.com/query/51820/tide-pools/version/latest',
         beetsBar: 'https://',
         blocks: 'https://api.studio.thegraph.com/query/48427/bleu-sepolia-blocks/version/latest',
-        gauge: `https://api.studio.thegraph.com/query/24660/balancer-gauges-sepolia/version/latest`,
+        // gauge: `https://api.studio.thegraph.com/query/24660/balancer-gauges-sepolia/version/latest`,
+        gauge: `https://api.studio.thegraph.com/query/51820/tide-gauges/version/latest`
     },
     eth: {
         address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',

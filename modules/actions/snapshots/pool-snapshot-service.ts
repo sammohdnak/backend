@@ -19,7 +19,7 @@ export class PoolSnapshotService {
         private balancerSubgraphService: V2SubgraphClient,
         private chain: Chain,
         private prices?: Record<string, number>,
-    ) {}
+    ) { }
 
     public async getSnapshotsForPool(poolId: string, chain: Chain, range: GqlPoolSnapshotDataRange) {
         const timestamp = this.getTimestampForRange(range);

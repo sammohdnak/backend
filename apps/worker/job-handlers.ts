@@ -25,6 +25,8 @@ import {
     ContentController,
     EventController,
     PoolController,
+    UserBalancesController,
+    PoolMutationController,
 } from '../../modules/controllers';
 
 const runningJobs: Set<string> = new Set();
@@ -223,6 +225,15 @@ const setupJobHandlers = async (name: string, chainId: string, res: any, next: N
                 next,
             );
             break;
+        case 'fill-missing-snapshots-v3':
+            await runIfNotAlreadyRunning(
+                name,
+                chainId,
+                () => SnapshotsController().fillMissingSnapshotsV3(chainId),
+                res,
+                next,
+            );
+            break;
         case 'update-lifetime-values-for-all-pools':
             await runIfNotAlreadyRunning(name, chainId, () => poolService.updateLifetimeValuesForAllPools(), res, next);
             break;
@@ -322,6 +333,21 @@ const setupJobHandlers = async (name: string, chainId: string, res: any, next: N
         case 'sync-join-exits-v3':
             await runIfNotAlreadyRunning(name, chainId, () => EventController().syncJoinExitsV3(chainId), res, next);
             break;
+
+
+        //V3 New Jobs i copied from inside
+        case 'reload-pools-v3':
+            await runIfNotAlreadyRunning(name, chainId, () => PoolController().reloadPoolsV3(chainIdToChain[chainId]), res, next);
+            break;
+
+        case 'sync-user-balances-v3':
+            await runIfNotAlreadyRunning(name, chainId, () => UserBalancesController().syncUserBalancesFromV3Subgraph(chainId), res, next);
+            break;
+        case 'load-onchain-data-v3':
+            await runIfNotAlreadyRunning(name, chainId, () => PoolMutationController().loadOnchainDataForAllPools(chainId), res, next);
+            break;
+
+
         case 'update-liquidity-24h-ago':
             await runIfNotAlreadyRunning(
                 name,

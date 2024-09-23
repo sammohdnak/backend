@@ -12,7 +12,7 @@ export class PoolUsdDataService {
     constructor(
         private readonly tokenService: TokenService,
         private readonly blockSubgraphService: BlocksSubgraphService,
-    ) {}
+    ) { }
 
     private get balancerSubgraphService() {
         return networkContext.services.balancerSubgraphService;
@@ -56,7 +56,7 @@ export class PoolUsdDataService {
                     token.address === pool.address
                         ? 0
                         : parseFloat(token.dynamicData?.balance || '0') *
-                          this.tokenService.getPriceForToken(tokenPrices, token.address, this.chain),
+                        this.tokenService.getPriceForToken(tokenPrices, token.address, this.chain),
             }));
             const totalLiquidity = _.sumBy(balanceUSDs, (item) => item.balanceUSD);
 
@@ -144,7 +144,7 @@ export class PoolUsdDataService {
                     token.address === pool.address
                         ? 0
                         : parseFloat(token.balance || '0') *
-                          this.tokenService.getPriceForToken(tokenPrices24hAgo, token.address, this.chain),
+                        this.tokenService.getPriceForToken(tokenPrices24hAgo, token.address, this.chain),
             }));
             const totalLiquidity = Math.max(
                 _.sumBy(balanceUSDs, (item) => item.balanceUSD),
@@ -170,7 +170,7 @@ export class PoolUsdDataService {
         const yesterday = moment().subtract(1, 'day').unix();
         const twoDaysAgo = moment().subtract(2, 'day').unix();
         const pools = await prisma.prismaPool.findMany({
-            where: poolIds ? { id: { in: poolIds }, chain: this.chain } : { chain: this.chain, protocolVersion: 2 },
+            where: poolIds ? { id: { in: poolIds }, chain: this.chain } : { chain: this.chain, protocolVersion: 3 },
             include: {
                 swaps: { where: { timestamp: { gte: twoDaysAgo } } },
                 dynamicData: true,
@@ -205,6 +205,8 @@ export class PoolUsdDataService {
                 );
             }
         }
+
+
 
         await prismaBulkExecuteOperations(operations);
     }
