@@ -30,6 +30,8 @@ const syncVaultData = async (
 
     const poolsWithUSD = await poolUpsertsUsd(dbUpdates, chain, allTokens);
 
+
+
     // Update pools data to the database
     for (const { poolDynamicData, poolTokenDynamicData } of poolsWithUSD) {
         try {
@@ -74,7 +76,7 @@ const syncVaultData = async (
  * @param blockNumber
  */
 export const syncPools = async (
-    pools: {id: string, type: PrismaPoolType}[],
+    pools: { id: string, type: PrismaPoolType }[],
     client: ViemClient,
     vaultAddress: string,
     chain = 'SEPOLIA' as Chain,
@@ -83,8 +85,8 @@ export const syncPools = async (
     const vaultClient = getVaultClient(client, vaultAddress);
     const poolsClient = getPoolsClient(client);
 
-    await syncVaultData(vaultClient, chain, pools.map(({id}) => id), blockNumber);
+    await syncVaultData(vaultClient, chain, pools.map(({ id }) => id), blockNumber);
     await syncDynamicTypeDataForPools(poolsClient, pools, blockNumber);
 
-    return pools.map(({id}) => id);
+    return pools.map(({ id }) => id);
 };

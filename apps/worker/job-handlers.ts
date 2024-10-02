@@ -343,9 +343,14 @@ const setupJobHandlers = async (name: string, chainId: string, res: any, next: N
         case 'sync-user-balances-v3':
             await runIfNotAlreadyRunning(name, chainId, () => UserBalancesController().syncUserBalancesFromV3Subgraph(chainId), res, next);
             break;
+        case 'load-swap-fees-volumes-v3':
+            await runIfNotAlreadyRunning(name, chainId, () => PoolMutationController().loadSwapsFeesVolumeForAllPools(chainId), res, next);
+            break;
+
         case 'load-onchain-data-v3':
             await runIfNotAlreadyRunning(name, chainId, () => PoolMutationController().loadOnchainDataForAllPools(chainId), res, next);
             break;
+
 
 
         case 'update-liquidity-24h-ago':

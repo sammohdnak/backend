@@ -50,10 +50,24 @@ export const sepoliaNetworkConfig: NetworkConfig = {
             interval: every(1, 'minutes'),
         },
 
+        // {
+        //     name: 'sync-swaps-v3',
+        //     interval: every(1, 'minutes'),
+        // },
         {
-            name: 'sync-swaps-v3',
-            interval: every(1, 'minutes'),
+            name: 'sync-vebal-balances',
+            interval: (env.DEPLOYMENT_ENV as DeploymentEnv) === 'canary' ? every(9, 'minutes') : every(3, 'minutes'),
         },
+        {
+            name: 'sync-vebal-totalSupply',
+            interval: (env.DEPLOYMENT_ENV as DeploymentEnv) === 'canary' ? every(10, 'minutes') : every(5, 'minutes'),
+        },
+        {
+            name: 'sync-vebal-voting-gauges',
+            interval: (env.DEPLOYMENT_ENV as DeploymentEnv) === 'canary' ? every(20, 'minutes') : every(5, 'minutes'),
+        },
+
+        // No Need of sync-swaps-v3 because the below is already taking care of that.
         {
             name: 'update-swaps-volume-and-fees-v3',
             interval: every(20, 'minutes'),
@@ -66,10 +80,7 @@ export const sepoliaNetworkConfig: NetworkConfig = {
             name: 'update-fee-volume-yield-all-pools',
             interval: every(20, 'minutes'),
         },
-        {
-            name: 'update-liquidity-24h-ago',
-            interval: every(20, 'minutes'),
-        },
+
         {
             name: 'update-liquidity-for-inactive-pools',
             interval: every(20, 'minutes'),
@@ -77,6 +88,23 @@ export const sepoliaNetworkConfig: NetworkConfig = {
 
         {
             name: 'update-liquidity-for-active-pools',
+            interval: every(20, 'minutes'),
+        },
+        {
+            name: 'load-swap-fees-volumes-v3',
+            interval: every(20, 'minutes'),
+        },
+        {
+            name: 'load-onchain-data-v3',
+            interval: every(20, 'minutes'),
+        },
+
+
+
+
+
+        {
+            name: 'user-sync-staked-balances',
             interval: every(20, 'minutes'),
         },
 

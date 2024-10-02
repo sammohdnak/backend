@@ -48,18 +48,28 @@ export default <NetworkData>{
     //     address: '0xc128a9954e6c874ea3d62ce62b468ba073093f25',
     //     delegationProxy: '0x81cfae226343b24ba12ec6521db2c79e7aeeb310',
     // },
+
+    veBal: {
+        address: '0x64F68917E7240c2502f37081a1817977900EF2c5',
+        bptAddress: '0x96EBFFff4D85c381376BfADe6cD2607aB4D36982',
+        delegationProxy: '0x4f284d56093EEbd001bfdcC00fb33B557Af714C0',
+    },
+    gaugeControllerAddress: '0x19D65a73D229c80208f41022fFE35D2C73f96790',
+    gaugeControllerHelperAddress: '0x8e5698dc4897dc12243c8642e77b4f21349db97c',
     balancer: {
         v2: {
             vaultAddress: '0xba12222222228d8ba445958a75a0704d566bf2c8',
             defaultSwapFeePercentage: '0.5',
             defaultYieldFeePercentage: '0.5',
             balancerQueriesAddress: '0xe39b5e3b6d74016b2f6a9673d7d7493b6df549d5',
+            tokenAdmin: '0x0903709ADAc725292e49AF217e5aacDF8bA2B9fF'
         },
         v3: {
             vaultAddress: '0x3958583A272Fc26dFb87B62917a3cC2C13b010f5',
             routerAddress: '0xf41baB917790eB98097Ac8Cc822Fa0519e41e149',
             defaultSwapFeePercentage: '0.5',
             defaultYieldFeePercentage: '0.5',
+            tokenAdmin: '0x0903709ADAc725292e49AF217e5aacDF8bA2B9fF'
         },
     },
     hooks: {

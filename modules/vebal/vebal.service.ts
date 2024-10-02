@@ -13,6 +13,11 @@ import { GqlVeBalBalance, GqlVeBalUserData } from '../../schema';
 import mainnet from '../../config/mainnet';
 import VeBalABI from './abi/vebal.json';
 import { Chain } from '@prisma/client';
+import { env } from '../../apps/env';
+import sepolia from '../../config/sepolia';
+
+const isMainnetChain = env.IS_MAINNET_CHAIN == 'true'
+
 
 export class VeBalService {
     public async getVeBalUserBalance(chain: Chain, userAddress: string): Promise<AmountHumanReadable> {
@@ -33,7 +38,7 @@ export class VeBalService {
         });
 
         const veBalPrice = await prisma.prismaTokenCurrentPrice.findFirstOrThrow({
-            where: { chain: 'MAINNET', tokenAddress: mainnet.veBal!.bptAddress },
+            where: { chain: isMainnetChain ? 'MAINNET' : 'SEPOLIA', tokenAddress: isMainnetChain ? mainnet.veBal!.bptAddress : sepolia.veBal?.bptAddress! },
         });
 
         return balances.map((balance) => ({
@@ -73,7 +78,7 @@ export class VeBalService {
 
         if (locked !== '0.0') {
             veBalPrice = await prisma.prismaTokenCurrentPrice.findFirstOrThrow({
-                where: { chain: chain, tokenAddress: mainnet.veBal!.bptAddress },
+                where: { chain: chain, tokenAddress: isMainnetChain ? mainnet.veBal!.bptAddress : sepolia.veBal!.bptAddress! },
             });
         }
 
@@ -105,7 +110,7 @@ export class VeBalService {
 
         let operations: any[] = [];
         // for mainnet, we get the vebal balance form the vebal contract
-        if (networkContext.isMainnet) {
+        if (isMainnetChain ? networkContext.isMainnet : networkContext.chain == 'SEPOLIA') {
             const multicall = new Multicaller(networkContext.data.multicall, networkContext.provider, VeBalABI);
 
             let response = {} as {
@@ -201,10 +206,15 @@ export class VeBalService {
 
     public async syncVeBalTotalSupply(): Promise<void> {
         if (networkContext.data.veBal) {
-            const veBalAddress = networkContext.isMainnet
-                ? networkContext.data.veBal.address
-                : networkContext.data.veBal.delegationProxy;
 
+            const veBalAddress =
+                // networkContext.isMainnet
+                // ?
+                networkContext.data.veBal.address
+            // : networkContext.data.veBal.delegationProxy;
+
+
+            console.log('veBalAddress', veBalAddress)
             const veBal = getContractAt(veBalAddress, VeBalABI);
             const totalSupply: BigNumber = await veBal.totalSupply();
 

@@ -80,6 +80,7 @@ export function SnapshotsController(tracer?: any) {
 
             const vaultSubgraphClient = getVaultSubgraphClient(balancerV3);
             const entries = await syncSnapshotsV3(vaultSubgraphClient, chain);
+
             return entries;
         },
         async fillMissingSnapshotsV2(chainId: string) {

@@ -9,14 +9,18 @@ import { GqlVotingPool } from '../../schema';
 import { Chain } from '@prisma/client';
 
 export class VeBalVotingListService {
-    constructor(private votingGauges = new VotingGaugesRepository()) {}
+    constructor(private votingGauges = new VotingGaugesRepository()) { }
 
     /*
         This methods is used by veBalGetVotingList resolver that is consumed by some partners
         We should avoid breaking changes in the involved schema
     */
     public async getVotingListWithHardcodedPools(): Promise<GqlVotingPool[]> {
-        return [...(await this.getVotingList()), ...hardCodedPools];
+        return [...(await this.getVotingList()),
+
+            // ...hardCodedPools
+
+        ];
     }
 
     public async getVotingList(): Promise<GqlVotingPool[]> {
@@ -30,10 +34,15 @@ export class VeBalVotingListService {
         const pools = await this.getPoolsForVotingList(poolIds);
         const poolsById = keyBy(pools, 'id');
 
-        const allGauges = [...validGauges, ...(await getVeVotingGauges())];
+        const allGauges = [...validGauges
+
+            // ...(await getVeVotingGauges())
+
+        ];
 
         // For each voting gauge returns a pool with its gauge info inside
         return allGauges.map((votingGauge) => {
+
             const pool = poolsById[votingGauge.stakingGauge!.staking.poolId];
             // Only L2 networks have childGaugeAddress
             const childGaugeAddress = pool.chain === Chain.MAINNET ? null : votingGauge.stakingGauge?.staking.address;

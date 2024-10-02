@@ -86,8 +86,8 @@ export const syncGaugeStakingForPools = async (
         status: gauge.isKilled
             ? 'KILLED'
             : !gauge.isPreferentialGauge
-            ? 'ACTIVE'
-            : ('PREFERRED' as LiquidityGaugeStatus),
+                ? 'ACTIVE'
+                : ('PREFERRED' as LiquidityGaugeStatus),
         version: gauge.streamer || networkContext.chain == 'MAINNET' ? 1 : (2 as 1 | 2),
         tokens: gauge.tokens || [],
         createTime: gauge.gauge?.addedTimestamp,
@@ -97,8 +97,7 @@ export const syncGaugeStakingForPools = async (
         const preferredGaugesForPool = gaugesForDb.filter((g) => gauge.poolId === g.poolId && g.status === 'PREFERRED');
         if (preferredGaugesForPool.length > 1) {
             console.error(
-                `Pool ${gauge.poolId} on ${
-                    networkContext.chain
+                `Pool ${gauge.poolId} on ${networkContext.chain
                 } has multiple preferred gauges: ${preferredGaugesForPool.map((gauge) => gauge.id)}`,
             );
         }
@@ -127,6 +126,9 @@ export const syncGaugeStakingForPools = async (
         rewardsMulticallerV1,
         rewardsMulticallerV2,
     );
+
+
+
 
     // Prepare DB operations
     const operations: any[] = [];
@@ -207,6 +209,8 @@ export const syncGaugeStakingForPools = async (
             continue;
         }
 
+        console.log({ id, rewardPerSecond, isVeBalemissions })
+
         const dbStakingGaugeRewards = allStakingGaugeRewards.find((rewards) => rewards?.id === id);
 
         if (!dbStakingGaugeRewards || dbStakingGaugeRewards.rewardPerSecond !== rewardPerSecond) {
@@ -250,12 +254,15 @@ const getOnchainRewardTokensData = async (
 > => {
     // Get onchain data for BAL rewards
     const currentWeek = Math.floor(Date.now() / 1000 / 604800);
+    console.log('gauges : ', gauges)
     for (const gauge of gauges) {
+
         balMulticaller.call(`${gauge.id}.totalSupply`, gauge.id, 'totalSupply', [], true);
         if (gauge.version === 2) {
-            balMulticaller.call(`${gauge.id}.rate`, gauge.id, 'inflation_rate', [currentWeek], true);
+            balMulticaller.call(`${gauge.id}.rate`, gauge.id, 'inflation_rate', [], true);
             balMulticaller.call(`${gauge.id}.workingSupply`, gauge.id, 'working_supply', [], true);
-        } else if (networkContext.chain === Chain.MAINNET) {
+            //TODO - Change to MAINNET Later
+        } else if (networkContext.chain === Chain.SEPOLIA) {
             balMulticaller.call(
                 `${gauge.id}.weight`,
                 networkContext.data.gaugeControllerAddress!,
@@ -267,6 +274,7 @@ const getOnchainRewardTokensData = async (
         }
     }
     const balData = (await balMulticaller.execute()) as GaugeBalDistributionData;
+
 
     // Get onchain data for reward tokens
     const decimals: { [address: string]: number } = {};
@@ -308,8 +316,8 @@ const getOnchainRewardTokensData = async (
             const rewardPerSecond = rate
                 ? formatUnits(rate) // L2 V2 case for BAL rewards
                 : weight
-                ? (parseFloat(formatUnits(weight!)) * totalBalRate).toFixed(18) // mainnet case for BAL rewards
-                : '0'; // mainnet case without any votes for this gauge for BAL rewards
+                    ? (parseFloat(formatUnits(weight!)) * totalBalRate).toFixed(18) // mainnet case for BAL rewards
+                    : '0'; // mainnet case without any votes for this gauge for BAL rewards
 
             return {
                 id,

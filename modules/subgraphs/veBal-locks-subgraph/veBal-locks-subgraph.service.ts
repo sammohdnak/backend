@@ -1,11 +1,18 @@
 import { GraphQLClient } from 'graphql-request';
-import config from '../../../config/mainnet';
+import mainnetConfig from '../../../config/mainnet';
+import sepoliaConfig from '../../../config/sepolia';
+
 import _ from 'lodash';
 import { VotingEscrowLock_OrderBy, OrderDirection, getSdk } from './generated/veBal-locks-subgraph-types';
 import moment from 'moment';
+import { env } from '../../../apps/env';
 
+
+const isMainnetChain = env.IS_MAINNET_CHAIN == 'true'
+
+const config = isMainnetChain ? mainnetConfig : sepoliaConfig
 export class VeBalLocksSubgraphService {
-    constructor() {}
+    constructor() { }
 
     async getAllveBalHolders(): Promise<{ user: string; balance: string }[]> {
         const now = moment().unix();

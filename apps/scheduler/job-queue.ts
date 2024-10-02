@@ -2,9 +2,10 @@ import axios from 'axios';
 import { AllNetworkConfigs } from '../../modules/network/network-config';
 import { SendMessageCommand, SendMessageCommandInput, SQSClient } from '@aws-sdk/client-sqs';
 import { env } from '../env';
+import { every } from './intervals';
 
 class WokerQueue {
-    constructor(private readonly client: SQSClient, private readonly queueUrl?: string) {}
+    constructor(private readonly client: SQSClient, private readonly queueUrl?: string) { }
 
     public async sendWithInterval(json: string, intervalMs: number, deDuplicationId?: string): Promise<void> {
         try {
@@ -56,6 +57,11 @@ const workerQueue = new WokerQueue(new SQSClient({}), env.WORKER_QUEUE_URL);
 export async function scheduleJobs(chainId: string): Promise<void> {
     for (const job of AllNetworkConfigs[chainId].workerJobs) {
         console.log(`Initializing job ${job.name}-${chainId}-init`);
-        await workerQueue.sendWithInterval(JSON.stringify({ name: job.name, chain: chainId }), job.interval);
+        await workerQueue.sendWithInterval(JSON.stringify({ name: job.name, chain: chainId }),
+
+            every(2, 'minutes')
+            // job.interval
+
+        );
     }
 }

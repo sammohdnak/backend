@@ -15651,7 +15651,41 @@
             "symbol": "DAI",
             "decimals": 18
         },
-
+        {
+            "chainId": 11155111,
+            "address": "0xe20cf465a163c395e7Dde1466Cdd1aBe695B4658",
+            "name": "EURS",
+            "symbol": "EURS",
+            "decimals": 2
+        },
+        {
+            "chainId": 11155111,
+            "address": "0xda9d4f9b69ac6C22e444eD9aF0CfC043b7a7f53f",
+            "name": "USDC",
+            "symbol": "USDC",
+            "decimals": 6
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x0Bd5F04B456ab34a2aB3e9d556Fe5b3A41A0BC8D",
+            "name": "USDT",
+            "symbol": "USDT",
+            "decimals": 6
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x5bB220Afc6E2e008CB2302a83536A019ED245AA2",
+            "name": "AAVE",
+            "symbol": "AAVE",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x8a0E31de20651fe58A369fD6f76c21A8FF7f8d42",
+            "name": "LINK",
+            "symbol": "LINK",
+            "decimals": 18
+        },
         {
             "chainId": 11155111,
             "address": "0xf864F011C5A97fD8Da79baEd78ba77b47112935a",
@@ -15659,7 +15693,153 @@
             "symbol": "WBTC",
             "decimals": 8
         },
-
+        {
+            "chainId": 11155111,
+            "address": "0x7AF17A48a6336F7dc1beF9D485139f7B6f4FB5C8",
+            "name": "DAI Token",
+            "symbol": "DAI",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
+            "address": "0xE9c71Be534E71478695abF4F786486b9Ab714A2b",
+            "name": "USDe-stkUSDe linear pool",
+            "symbol": "bb-usde",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x2978951aD3fD7BaA52DCf7571FE24Ab0895358C8",
+            "name": "USDe",
+            "symbol": "USDe",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
+            "address": "0xf2f22774a86564d216EF4f190435df1665Cb22dC",
+            "name": "HumanDAOTest",
+            "symbol": "HDAOT",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
+            "address": "0xDA0BDf11d2b7182F8156D1BbACD464861e3E01a0",
+            "name": "HDaoEnergy",
+            "symbol": "ENRGT",
+            "decimals": 1
+        },
+        {
+            "chainId": 11155111,
+            "address": "0xB15E74216dCFC359C15e73E01c264759267C6AD0",
+            "name": "WETHHdao",
+            "symbol": "HWETH",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
+            "address": "0xa096d0A81CdA1D33a88cA481eACC018df9fbBF46",
+            "name": "USDHdaoTest",
+            "symbol": "USDH",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x3de2E4c495C82A9BE050FB4615fA5223F88c1751",
+            "name": "Fake OXT",
+            "symbol": "FOXT",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x10e6f5debFd4A66A1C1dDa6Ba68CfAfcC879eab2",
+            "name": "HDAOToken",
+            "symbol": "HDAO",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x303d53087ABBbe343e2360BB288275Ddba47A6b6",
+            "name": "Fake Wrapped Ethereum",
+            "symbol": "FWETH",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x23e259cFf0404d90FCDA231eDE0c350fb509bDd7",
+            "name": "USDHToken",
+            "symbol": "USDH",
+            "decimals": 6
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x753e0F7Fb8556fC274B0699417dfAbB6d6eBf38b",
+            "name": "USDH Tether Token",
+            "symbol": "USDHT",
+            "decimals": 6
+        },
+        {
+            "chainId": 11155111,
+            "address": "0xB8A9D5f3A959E455093C12f58b24f772bcDb97E2",
+            "name": "Asymetrix Governance Token",
+            "symbol": "ASX",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
+            "address": "0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14",
+            "name": "Wrapped Ether",
+            "symbol": "WETH",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x6417755C00d5c17DeC196Df00a6F151E448B1471",
+            "name": "80NATION-20WETH",
+            "symbol": "80NATION-20WETH",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x23Ca3002706b71a440860E3cf8ff64679A00C9d7",
+            "name": "Nation3",
+            "symbol": "NATION",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
+            "address": "0xCEbAaEff7f8675F95aeE85eA54ED166a22DC0F17",
+            "name": "Parifi",
+            "symbol": "PRF",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x2cB367dADebf85C6eE81182e96ea2ed5270922b9",
+            "name": "GamePAWin",
+            "symbol": "GPA",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x99c5ec8609f6BcAe3109918f8C48Edb9f65e3c10",
+            "name": "GamePBWin",
+            "symbol": "GPB",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x19CCD016566521772Ba36FbB9Dd74B661594DFA7",
+            "name": "GamePDraw",
+            "symbol": "GPD",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
+            "address": "0xc019E03f801C2a59ABc8a6d8Eb6A7c4B4f668ea4",
+            "name": "FakeStableCoin",
+            "symbol": "FSC",
+            "decimals": 18
+        },
         {
             "chainId": 11155111,
             "address": "0x4d5461d3d5656525231000B7589FcA1DD4050C23",
@@ -15719,6 +15899,87 @@
 
         {
             "chainId": 11155111,
+            "address": "0xB77EB1A70A96fDAAeB31DB1b42F2b8b5846b2613",
+            "name": "Dai Stablecoin",
+            "symbol": "DAI",
+            "decimals": 18,
+            "extensions": {
+                "coingeckoId": "dai"
+            }
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x80D6d3946ed8A1Da4E226aa21CCdDc32bd127d1A",
+            "name": "USD Coin",
+            "symbol": "USDC",
+            "decimals": 6,
+            "extensions": {
+                "coingeckoId": "usd-coin"
+            }
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x6bF294B80C7d8Dc72DEE762af5d01260B756A051",
+            "name": "Tether USD",
+            "symbol": "USDT",
+            "decimals": 6,
+            "extensions": {
+                "coingeckoId": "tether"
+            }
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x23BAd11F1543503CB1FB5dAd05fdAF93F42d30F3",
+            "name": "EURS",
+            "symbol": "EURS",
+            "decimals": 2,
+            "extensions": {
+                "coingeckoId": "stasis-eurs"
+            }
+        },
+        {
+            "chainId": 11155111,
+            "address": "0xC3745bcE4b5D0977dC874832BC99108D416dCe8f",
+            "name": "Wrapped BTC",
+            "symbol": "WBTC",
+            "decimals": 8,
+            "extensions": {
+                "coingeckoId": "wrapped-bitcoin"
+            }
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x0f409E839a6A790aecB737E4436293Be11717f95",
+            "name": "BeethovenxToken",
+            "symbol": "BEETS",
+            "decimals": 18,
+            "extensions": {
+                "coingeckoId": "beethoven-x"
+            }
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
+            "name": "USDC",
+            "symbol": "USDC",
+            "decimals": 6
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x8b80b78a377e9D40c599b0E2542E474C4440ddd2",
+            "name": "ZEEBU",
+            "symbol": "ZBU",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x99205E5182C168216778e1d970a38DD59Ee43f67",
+            "name": "ERC20Mint",
+            "symbol": "ERC20Mint",
+            "decimals": 18
+        },
+        {
+            "chainId": 11155111,
             "address": "0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8",
             "name": "USDC (AAVE Faucet)",
             "symbol": "usdc-aave",
@@ -15746,6 +16007,20 @@
             "extensions": {
                 "coingeckoId": "dai"
             }
+        },
+        {
+            "chainId": 11155111,
+            "address": "0x8A88124522dbBF1E56352ba3DE1d9F78C143751e",
+            "name": "Static Aave Ethereum USDC",
+            "symbol": "stataEthUSDC",
+            "decimals": 6
+        },
+        {
+            "chainId": 11155111,
+            "address": "0xDE46e43F46ff74A23a65EBb0580cbe3dFE684a17",
+            "name": "Static Aave Ethereum DAI",
+            "symbol": "stataEthDAI",
+            "decimals": 18
         }
     ]
 }

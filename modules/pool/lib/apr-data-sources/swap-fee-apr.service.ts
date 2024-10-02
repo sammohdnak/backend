@@ -21,6 +21,7 @@ export class SwapFeeAprService implements PoolAprService {
         });
 
         for (const pool of poolsExpanded) {
+
             if (pool.dynamicData) {
                 const apr =
                     pool.dynamicData.totalLiquidity > 0
@@ -43,6 +44,7 @@ export class SwapFeeAprService implements PoolAprService {
                 if (userApr > MAX_DB_INT) {
                     userApr = 0;
                 }
+
 
                 operations.push(
                     prisma.prismaPoolAprItem.upsert({

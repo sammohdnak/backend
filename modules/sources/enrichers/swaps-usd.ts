@@ -24,12 +24,15 @@ export async function swapsUsd(swaps: SwapEvent[], chain: Chain): Promise<SwapEv
         return roundToHour(timestamp);
     });
 
+    // TODO // equals: parseInt(timestamp below might cause the volume to be caluclated only if there is a price at exact timestamp. need to make it to gte or something like that
+
     const dbEntries: SwapEvent[] = [];
     for (const [timestamp, swaps] of Object.entries(groupedSwaps)) {
         const tokenPrices = await prisma.prismaTokenPrice.findMany({
             where: {
                 timestamp: {
-                    equals: parseInt(timestamp),
+                    // equals: parseInt(timestamp),
+                    gte: parseInt(timestamp),
                 },
                 chain,
             },
@@ -54,9 +57,9 @@ export async function swapsUsd(swaps: SwapEvent[], chain: Chain): Promise<SwapEv
                 },
                 surplus: swap.payload.surplus
                     ? {
-                          ...swap.payload.surplus,
-                          valueUSD: String((surplusToken?.price || 0) * parseFloat(swap.payload.surplus.amount)),
-                      }
+                        ...swap.payload.surplus,
+                        valueUSD: String((surplusToken?.price || 0) * parseFloat(swap.payload.surplus.amount)),
+                    }
                     : undefined,
             };
 

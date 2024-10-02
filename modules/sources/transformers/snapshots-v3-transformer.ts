@@ -76,11 +76,18 @@ export const snapshotsV3Transformer = (
             return acc + diff * prices[address];
         }, 0) || 0;
 
+    console.log('snapshot :', snapshot)
+
+    console.log('totalSwapVolumes :', snapshot?.totalSwapVolumes)
+    console.log('dailyVolume :', dailyVolume)
+
+
     const totalVolume = lastVolume + dailyVolume;
 
     const lastFees = previousDaySnapshot?.totalSwapFee || 0;
 
     const dailyFees = dailyVolume * parseFloat(snapshot?.pool.swapFee || '0');
+
 
     const totalFees = lastFees + dailyFees;
 
@@ -94,6 +101,8 @@ export const snapshotsV3Transformer = (
         totalSwapFee: totalFees,
         totalSurplus: 0,
     };
+
+
 
     return {
         ...base,
