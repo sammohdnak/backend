@@ -75,14 +75,7 @@ export class GaugeAprService implements PoolAprService {
                         return Promise.reject('Definition not found');
                     }
 
-                    console.log({ id, tokenAddress, rewardPerSecond, isVeBalemissions })
-                    console.log({
-                        id: id,
-                        address: tokenAddress,
-                        symbol: definition.symbol,
-                        rewardPerYear: parseFloat(rewardPerSecond) * secondsPerYear * price,
-                        isVeBalemissions: isVeBalemissions,
-                    })
+
 
                     return {
                         id: id,

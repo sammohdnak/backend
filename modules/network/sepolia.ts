@@ -56,21 +56,21 @@ export const sepoliaNetworkConfig: NetworkConfig = {
         // },
         {
             name: 'sync-vebal-balances',
-            interval: (env.DEPLOYMENT_ENV as DeploymentEnv) === 'canary' ? every(9, 'minutes') : every(3, 'minutes'),
+            interval: every(3, 'minutes'),
         },
         {
             name: 'sync-vebal-totalSupply',
-            interval: (env.DEPLOYMENT_ENV as DeploymentEnv) === 'canary' ? every(10, 'minutes') : every(5, 'minutes'),
+            interval: every(5, 'minutes'),
         },
         {
             name: 'sync-vebal-voting-gauges',
-            interval: (env.DEPLOYMENT_ENV as DeploymentEnv) === 'canary' ? every(20, 'minutes') : every(5, 'minutes'),
+            interval: every(5, 'minutes'),
         },
 
         // No Need of sync-swaps-v3 because the below is already taking care of that.
         {
             name: 'update-swaps-volume-and-fees-v3',
-            interval: every(20, 'minutes'),
+            interval: every(2, 'minutes'),
         },
         {
             name: 'update-lifetime-values-for-all-pools-v3',
@@ -88,7 +88,7 @@ export const sepoliaNetworkConfig: NetworkConfig = {
 
         {
             name: 'update-liquidity-for-active-pools',
-            interval: every(20, 'minutes'),
+            interval: every(5, 'minutes'),
         },
         {
             name: 'load-swap-fees-volumes-v3',
@@ -96,7 +96,7 @@ export const sepoliaNetworkConfig: NetworkConfig = {
         },
         {
             name: 'load-onchain-data-v3',
-            interval: every(20, 'minutes'),
+            interval: every(5, 'minutes'),
         },
 
 
@@ -105,23 +105,23 @@ export const sepoliaNetworkConfig: NetworkConfig = {
 
         {
             name: 'user-sync-staked-balances',
-            interval: every(20, 'minutes'),
+            interval: every(5, 'minutes'),
         },
 
         {
             name: 'update-pool-apr',
-            interval: every(20, 'minutes'),
+            interval: every(5, 'minutes'),
         },
 
 
         {
             name: 'sync-staking-for-pools',
-            interval: every(20, 'minutes'),
+            interval: every(5, 'minutes'),
         },
 
         {
             name: 'sync-user-balances-v3',
-            interval: every(20, 'minutes'),
+            interval: every(5, 'minutes'),
         },
 
 
@@ -132,7 +132,7 @@ export const sepoliaNetworkConfig: NetworkConfig = {
 
         {
             name: 'sync-snapshots-v3',
-            interval: every(12, 'hours'),
+            interval: every(50, 'minutes'),
         },
         {
             name: 'update-liquidity-24h-ago',

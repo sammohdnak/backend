@@ -21,8 +21,12 @@ export async function swapsUsd(swaps: SwapEvent[], chain: Chain): Promise<SwapEv
             return roundToMidnight(timestamp);
         }
         // Otherwise round to the nearest hour
-        return roundToHour(timestamp);
+        // return roundToHour(timestamp);
+
+        //TODO Check the validity of this. I have rounded this to midnight instead of round to hour, to get the price for sure even if it is not updated.
+        return roundToMidnight(timestamp);
     });
+
 
     // TODO // equals: parseInt(timestamp below might cause the volume to be caluclated only if there is a price at exact timestamp. need to make it to gte or something like that
 
@@ -62,6 +66,8 @@ export async function swapsUsd(swaps: SwapEvent[], chain: Chain): Promise<SwapEv
                     }
                     : undefined,
             };
+
+
 
             const valueUSD =
                 (tokenIn?.price || 0) * parseFloat(swap.payload.tokenIn.amount) ||

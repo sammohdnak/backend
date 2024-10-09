@@ -179,6 +179,8 @@ export class PoolUsdDataService {
         const operations: any[] = [];
 
         for (const pool of pools) {
+            console.log('pool.swaps', pool.swaps)
+            console.log('pool.dynamicData', pool.dynamicData)
             const volume24h = _.sumBy(
                 pool.swaps.filter((swap) => swap.timestamp >= yesterday),
                 (swap) => (swap.tokenIn === pool.address || swap.tokenOut === pool.address ? 0 : swap.valueUSD),
@@ -205,6 +207,8 @@ export class PoolUsdDataService {
                 );
             }
         }
+
+        console.log('operations', operations)
 
 
 

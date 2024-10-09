@@ -209,7 +209,6 @@ export const syncGaugeStakingForPools = async (
             continue;
         }
 
-        console.log({ id, rewardPerSecond, isVeBalemissions })
 
         const dbStakingGaugeRewards = allStakingGaugeRewards.find((rewards) => rewards?.id === id);
 
@@ -254,7 +253,6 @@ const getOnchainRewardTokensData = async (
 > => {
     // Get onchain data for BAL rewards
     const currentWeek = Math.floor(Date.now() / 1000 / 604800);
-    console.log('gauges : ', gauges)
     for (const gauge of gauges) {
 
         balMulticaller.call(`${gauge.id}.totalSupply`, gauge.id, 'totalSupply', [], true);

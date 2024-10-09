@@ -20,6 +20,7 @@ export class SwapFeeAprService implements PoolAprService {
             },
         });
 
+
         for (const pool of poolsExpanded) {
 
             if (pool.dynamicData) {

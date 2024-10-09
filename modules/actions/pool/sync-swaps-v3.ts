@@ -34,6 +34,8 @@ export async function syncSwapsV3(
         },
     });
 
+    console.log('latestEvent', latestEvent)
+
     const where = latestEvent?.blockNumber ? { blockNumber_gte: String(latestEvent.blockNumber) } : {};
 
     // Get events
@@ -50,8 +52,6 @@ export async function syncSwapsV3(
 
     // Enrich with USD values
     const dbEntries = await swapsUsd(dbSwaps, chain);
-
-
 
 
     await prisma.prismaPoolEvent.createMany({

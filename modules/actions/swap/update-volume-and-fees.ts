@@ -30,6 +30,7 @@ export async function updateVolumeAndFees(chain = 'SEPOLIA' as Chain, poolIds?: 
         },
     });
 
+
     const operations: any[] = [];
 
     for (const pool of pools) {
@@ -62,6 +63,8 @@ export async function updateVolumeAndFees(chain = 'SEPOLIA' as Chain, poolIds?: 
             swapEvents.filter((swap) => swap.poolId === pool.id),
             (swap) => parseFloat((swap as SwapEvent).payload.surplus?.valueUSD || '0'),
         );
+
+        console.log('volume24h,fees24h', volume24h, fees24h)
 
         if (
             pool.dynamicData &&
