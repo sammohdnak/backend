@@ -76,10 +76,10 @@ export const snapshotsV3Transformer = (
             return acc + diff * prices[address];
         }, 0) || 0;
 
-    console.log('snapshot :', snapshot)
+    // console.log('snapshot :', snapshot)
 
-    console.log('totalSwapVolumes :', snapshot?.totalSwapVolumes)
-    console.log('dailyVolume :', dailyVolume)
+    // console.log('totalSwapVolumes :', snapshot?.totalSwapVolumes)
+    // console.log('dailyVolume :', dailyVolume)
 
 
     const totalVolume = lastVolume + dailyVolume;

@@ -27,7 +27,7 @@ export async function syncSnapshotsV3(
     });
     const storedTimestamp = storedSnapshot?.timestamp || 0;
 
-    console.log('storedSnapshot : ', storedSnapshot)
+    // console.log('storedSnapshot : ', storedSnapshot)
 
     // In case there are no snapshots stored in the DB, sync from the subgraph's earliest snapshot
     let subgraphTimestamp = 0;
@@ -45,10 +45,10 @@ export async function syncSnapshotsV3(
     // because we want to sync the next day from what we have in the DB
     const timestamp = (storedTimestamp && storedTimestamp + 86400) || subgraphTimestamp;
 
-
+    //TODO Commented the timestamp line here as the syncing was not proper for the charts and volume
 
     return syncSnapshotsForADayV3(vaultSubgraphClient, chain,
-        timestamp
+        // timestamp
     );
 }
 

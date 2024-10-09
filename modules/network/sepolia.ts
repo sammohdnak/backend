@@ -70,7 +70,7 @@ export const sepoliaNetworkConfig: NetworkConfig = {
         // No Need of sync-swaps-v3 because the below is already taking care of that.
         {
             name: 'update-swaps-volume-and-fees-v3',
-            interval: every(2, 'minutes'),
+            interval: every(1, 'minutes'),
         },
         {
             name: 'update-lifetime-values-for-all-pools-v3',
@@ -100,9 +100,6 @@ export const sepoliaNetworkConfig: NetworkConfig = {
         },
 
 
-
-
-
         {
             name: 'user-sync-staked-balances',
             interval: every(5, 'minutes'),
@@ -110,7 +107,7 @@ export const sepoliaNetworkConfig: NetworkConfig = {
 
         {
             name: 'update-pool-apr',
-            interval: every(5, 'minutes'),
+            interval: every(2, 'minutes'),
         },
 
 
