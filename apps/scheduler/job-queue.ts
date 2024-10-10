@@ -59,8 +59,8 @@ export async function scheduleJobs(chainId: string): Promise<void> {
         console.log(`Initializing job ${job.name}-${chainId}-init`);
         await workerQueue.sendWithInterval(JSON.stringify({ name: job.name, chain: chainId }),
 
-            every(2, 'minutes')
-            // job.interval
+            // every(2, 'minutes')
+            job.interval
 
         );
     }

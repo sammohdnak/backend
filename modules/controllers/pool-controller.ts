@@ -40,6 +40,7 @@ export function PoolController() {
                 where: { chain },
             });
             const ids = pools.map((pool) => pool.id);
+
             if (ids.length === 0) ids.push('');
             const client = getV3JoinedSubgraphClient(balancerV3, balancerPoolsV3);
             const newPools = await client.getAllInitializedPools({ id_not_in: ids });
@@ -54,6 +55,9 @@ export function PoolController() {
                 chain,
                 latestBlock,
             );
+
+
+
 
             return added.map(({ id }) => id);
         },

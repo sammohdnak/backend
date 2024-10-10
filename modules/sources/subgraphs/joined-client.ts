@@ -24,6 +24,7 @@ export const getV3JoinedSubgraphClient = (vaultSubgraphUrl: string, poolsSubgrap
     return {
         getAllInitializedPools: async (where?: PoolsQueryVariables['where']) => {
             const vaultPools = await vaultSubgraphClient.getAllInitializedPools(where);
+
             const vaultPoolsMap = vaultPools.reduce((acc, pool) => {
                 acc[pool.id] = pool;
                 return acc;

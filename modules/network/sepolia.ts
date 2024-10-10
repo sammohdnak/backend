@@ -11,8 +11,11 @@ import { YbTokensAprService } from '../pool/lib/apr-data-sources/yb-tokens-apr.s
 import { BalancerSubgraphService } from '../subgraphs/balancer-subgraph/balancer-subgraph.service';
 import config from '../../config';
 import { env } from '../../apps/env';
+import { VeBalProtocolAprService, VeBalVotingAprService } from '../pool/lib/apr-data-sources';
+import { UserSyncVebalLockBalanceService } from '../user/lib/user-sync-vebal-lock-balance.service';
 
 export const sepoliaNetworkData = config.SEPOLIA;
+
 
 export const sepoliaNetworkConfig: NetworkConfig = {
     data: sepoliaNetworkData,
@@ -23,8 +26,14 @@ export const sepoliaNetworkConfig: NetworkConfig = {
         new BoostedPoolAprService(),
         new SwapFeeAprService(),
         new GaugeAprService(tokenService, [sepoliaNetworkData.bal!.address]),
+        // new VeBalProtocolAprService(sepoliaNetworkData.rpcUrl),
+        // new VeBalVotingAprService(),
     ],
-    userStakedBalanceServices: [new UserSyncGaugeBalanceService()],
+    userStakedBalanceServices: [new UserSyncGaugeBalanceService(),
+
+        // new UserSyncVebalLockBalanceService(),
+
+    ],
     services: {
         balancerSubgraphService: new BalancerSubgraphService(
             sepoliaNetworkData.subgraphs.balancer,
@@ -70,7 +79,7 @@ export const sepoliaNetworkConfig: NetworkConfig = {
         // No Need of sync-swaps-v3 because the below is already taking care of that.
         {
             name: 'update-swaps-volume-and-fees-v3',
-            interval: every(1, 'minutes'),
+            interval: every(2, 'minutes'),
         },
         {
             name: 'update-lifetime-values-for-all-pools-v3',
@@ -83,7 +92,7 @@ export const sepoliaNetworkConfig: NetworkConfig = {
 
         {
             name: 'update-liquidity-for-inactive-pools',
-            interval: every(20, 'minutes'),
+            interval: every(1, 'days'),
         },
 
         {
@@ -107,7 +116,7 @@ export const sepoliaNetworkConfig: NetworkConfig = {
 
         {
             name: 'update-pool-apr',
-            interval: every(2, 'minutes'),
+            interval: every(1, 'minutes'),
         },
 
 
