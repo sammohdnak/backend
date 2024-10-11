@@ -9,7 +9,7 @@ import tokenList from '../../modules/tokenlist/balancer.tokenlist.json'
 
 const POOLS_METADATA_URL = 'https://raw.githubusercontent.com/balancer/metadata/main/pools/featured.json';
 
-const TOKEN_LIST_URL = 'https://raw.githubusercontent.com/balancer/tokenlists/main/generated/balancer.tokenlist.json';
+const TOKEN_LIST_URL = 'https://raw.githubusercontent.com/sammohdnak/tide-lists/main/tide.tokenlist.json';
 
 const RATEPROVIDER_REVIEW_URL =
     'https://raw.githubusercontent.com/balancer/code-review/main/rate-providers/registry.json';
@@ -59,13 +59,10 @@ interface RateProviderReview {
 }
 
 export class GithubContentService implements ContentService {
-    private tokenList: WhitelistedTokenList;
     constructor() {
-        this.tokenList = tokenList as WhitelistedTokenList;
     }
     async syncTokenContentData(chains: Chain[]): Promise<void> {
-        // const { data: githubAllTokenList } = await axios.get<WhitelistedTokenList>(TOKEN_LIST_URL);
-        const githubAllTokenList = this.tokenList
+        const { data: githubAllTokenList } = await axios.get<WhitelistedTokenList>(TOKEN_LIST_URL);
         for (const chain of chains) {
             const filteredTokenList = githubAllTokenList.tokens.filter((token) => {
                 if (`${token.chainId}` !== chainToIdMap[chain]) {
