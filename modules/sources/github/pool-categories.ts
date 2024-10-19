@@ -1,4 +1,4 @@
-const CATEGORIES_BASE = 'https://raw.githubusercontent.com/balancer/metadata/main/pools/categories/';
+const CATEGORIES_BASE = 'https://raw.githubusercontent.com/sammohdnak/tide-lists/main/categories/';
 const CATEGORIES_URL = CATEGORIES_BASE + 'index.json';
 
 type CategoryItem = {

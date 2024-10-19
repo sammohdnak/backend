@@ -7,11 +7,14 @@ export const syncCategories = async (): Promise<void> => {
     // Get metadata
     const metadataCategories = await getPoolCategories();
 
+
     // Convert the transformed object to an array of PoolCategories
     const categoriesData = Object.entries(metadataCategories).map(([id, categories]) => ({
         id,
         categories,
     }));
+
+    console.log(categoriesData)
 
     // Check if the pool exists in the DB
     const existingPools = await prisma.prismaPool.findMany({
@@ -46,7 +49,7 @@ export const syncCategories = async (): Promise<void> => {
     }));
 
     // Insert new categories
-    await prisma.$transaction([
+    let data2 = await prisma.$transaction([
         // Update existing categories
         ...data.map(({ where, data }) => prisma.prismaPool.update({ where, data })),
         // Remove categories from pools that are not in the metadata
@@ -63,6 +66,8 @@ export const syncCategories = async (): Promise<void> => {
             },
         }),
     ]);
+
+    console.log(data2)
 
     // Sync incentivized category
     await syncIncentivizedCategory();
