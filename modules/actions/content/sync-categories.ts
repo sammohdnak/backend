@@ -14,7 +14,7 @@ export const syncCategories = async (): Promise<void> => {
         categories,
     }));
 
-    console.log(categoriesData)
+
 
     // Check if the pool exists in the DB
     const existingPools = await prisma.prismaPool.findMany({
@@ -49,7 +49,7 @@ export const syncCategories = async (): Promise<void> => {
     }));
 
     // Insert new categories
-    let data2 = await prisma.$transaction([
+    await prisma.$transaction([
         // Update existing categories
         ...data.map(({ where, data }) => prisma.prismaPool.update({ where, data })),
         // Remove categories from pools that are not in the metadata
@@ -67,7 +67,6 @@ export const syncCategories = async (): Promise<void> => {
         }),
     ]);
 
-    console.log(data2)
 
     // Sync incentivized category
     await syncIncentivizedCategory();
