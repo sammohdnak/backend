@@ -327,8 +327,20 @@ export type GqlPoolAprItemType =
     | 'STAKING_BOOST'
     /** Cow AMM specific APR */
     | 'SURPLUS'
+    /** Surplus APR based on data from the last 7d */
+    | 'SURPLUS_7D'
+    /** Surplus APR based on data from the last 24h */
+    | 'SURPLUS_24H'
+    /** Surplus APR based on data from the last 30d */
+    | 'SURPLUS_30D'
     /** Represents the swap fee APR in a pool. */
     | 'SWAP_FEE'
+    /** Swap fee APR based on data from the last 7d */
+    | 'SWAP_FEE_7D'
+    /** Swap fee APR based on data from the last 24h */
+    | 'SWAP_FEE_24H'
+    /** Swap fee APR based on data from the last 30d */
+    | 'SWAP_FEE_30D'
     /** Reward APR in a pool from veBAL emissions allocated by gauge votes. Emitted in BAL. */
     | 'VEBAL_EMISSIONS'
     /** APR that can be earned thourgh voting, i.e. gauge votes */
@@ -2013,6 +2025,8 @@ export interface GqlVeBalLockSnapshot {
     __typename?: 'GqlVeBalLockSnapshot';
     /** The locked balance at that time. */
     balance: Scalars['AmountHumanReadable'];
+    bias: Scalars['String'];
+    slope: Scalars['String'];
     /** The timestamp of the snapshot, snapshots are taking at lock events. */
     timestamp: Scalars['Int'];
 }
@@ -4704,6 +4718,8 @@ export type GqlVeBalLockSnapshotResolvers<
     ParentType extends ResolversParentTypes['GqlVeBalLockSnapshot'] = ResolversParentTypes['GqlVeBalLockSnapshot'],
 > = ResolversObject<{
     balance?: Resolver<ResolversTypes['AmountHumanReadable'], ParentType, ContextType>;
+    bias?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    slope?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;

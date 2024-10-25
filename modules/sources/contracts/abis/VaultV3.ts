@@ -76,17 +76,17 @@ export default [
         inputs: [
             {
                 internalType: 'contract IERC20',
-                name: 'token',
+                name: 'tokenIn',
                 type: 'address',
             },
             {
                 internalType: 'uint256',
-                name: 'amount',
+                name: 'amountIn',
                 type: 'uint256',
             },
             {
                 internalType: 'uint256',
-                name: 'limit',
+                name: 'maxAmountIn',
                 type: 'uint256',
             },
         ],
@@ -97,17 +97,17 @@ export default [
         inputs: [
             {
                 internalType: 'contract IERC20',
-                name: 'token',
+                name: 'tokenOut',
                 type: 'address',
             },
             {
                 internalType: 'uint256',
-                name: 'amount',
+                name: 'amountOut',
                 type: 'uint256',
             },
             {
                 internalType: 'uint256',
-                name: 'limit',
+                name: 'minAmountOut',
                 type: 'uint256',
             },
         ],
@@ -148,12 +148,12 @@ export default [
         inputs: [
             {
                 internalType: 'uint256',
-                name: 'amount',
+                name: 'amountIn',
                 type: 'uint256',
             },
             {
                 internalType: 'uint256',
-                name: 'limit',
+                name: 'maxAmountIn',
                 type: 'uint256',
             },
         ],
@@ -164,16 +164,59 @@ export default [
         inputs: [
             {
                 internalType: 'uint256',
-                name: 'amount',
+                name: 'amountOut',
                 type: 'uint256',
             },
             {
                 internalType: 'uint256',
-                name: 'limit',
+                name: 'minAmountOut',
                 type: 'uint256',
             },
         ],
         name: 'BptAmountOutBelowMin',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'contract IERC4626',
+                name: 'wrappedToken',
+                type: 'address',
+            },
+        ],
+        name: 'BufferAlreadyInitialized',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'contract IERC4626',
+                name: 'wrappedToken',
+                type: 'address',
+            },
+        ],
+        name: 'BufferNotInitialized',
+        type: 'error',
+    },
+    {
+        inputs: [],
+        name: 'BufferSharesInvalidOwner',
+        type: 'error',
+    },
+    {
+        inputs: [],
+        name: 'BufferSharesInvalidReceiver',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'uint256',
+                name: 'totalSupply',
+                type: 'uint256',
+            },
+        ],
+        name: 'BufferTotalSupplyTooLow',
         type: 'error',
     },
     {
@@ -189,6 +232,11 @@ export default [
     {
         inputs: [],
         name: 'DoesNotSupportAddLiquidityCustom',
+        type: 'error',
+    },
+    {
+        inputs: [],
+        name: 'DoesNotSupportDonation',
         type: 'error',
     },
     {
@@ -298,6 +346,69 @@ export default [
         type: 'error',
     },
     {
+        inputs: [],
+        name: 'FeePrecisionTooHigh',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'contract IERC20',
+                name: 'tokenIn',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256',
+                name: 'amountIn',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'maxAmountIn',
+                type: 'uint256',
+            },
+        ],
+        name: 'HookAdjustedAmountInAboveMax',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'contract IERC20',
+                name: 'tokenOut',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256',
+                name: 'amountOut',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'minAmountOut',
+                type: 'uint256',
+            },
+        ],
+        name: 'HookAdjustedAmountOutBelowMin',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'uint256',
+                name: 'amount',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'limit',
+                type: 'uint256',
+            },
+        ],
+        name: 'HookAdjustedSwapLimit',
+        type: 'error',
+    },
+    {
         inputs: [
             {
                 internalType: 'address',
@@ -345,7 +456,55 @@ export default [
     },
     {
         inputs: [],
+        name: 'InvalidTokenDecimals',
+        type: 'error',
+    },
+    {
+        inputs: [],
         name: 'InvalidTokenType',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'contract IERC4626',
+                name: 'wrappedToken',
+                type: 'address',
+            },
+        ],
+        name: 'InvalidUnderlyingToken',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'uint256',
+                name: 'invariantRatio',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'maxInvariantRatio',
+                type: 'uint256',
+            },
+        ],
+        name: 'InvariantRatioAboveMax',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'uint256',
+                name: 'invariantRatio',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'minInvariantRatio',
+                type: 'uint256',
+            },
+        ],
+        name: 'InvariantRatioBelowMin',
         type: 'error',
     },
     {
@@ -369,6 +528,48 @@ export default [
         type: 'error',
     },
     {
+        inputs: [
+            {
+                internalType: 'contract IERC4626',
+                name: 'wrappedToken',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256',
+                name: 'expectedUnderlyingAmount',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'actualUnderlyingAmount',
+                type: 'uint256',
+            },
+        ],
+        name: 'NotEnoughUnderlying',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'contract IERC4626',
+                name: 'wrappedToken',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256',
+                name: 'expectedWrappedAmount',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'actualWrappedAmount',
+                type: 'uint256',
+            },
+        ],
+        name: 'NotEnoughWrapped',
+        type: 'error',
+    },
+    {
         inputs: [],
         name: 'NotStaticCall',
         type: 'error',
@@ -380,12 +581,12 @@ export default [
     },
     {
         inputs: [],
-        name: 'OperationNotSupported',
+        name: 'PauseBufferPeriodDurationTooLarge',
         type: 'error',
     },
     {
         inputs: [],
-        name: 'PauseBufferPeriodDurationTooLarge',
+        name: 'PercentageAboveMax',
         type: 'error',
     },
     {
@@ -488,6 +689,17 @@ export default [
         type: 'error',
     },
     {
+        inputs: [
+            {
+                internalType: 'uint256',
+                name: 'totalSupply',
+                type: 'uint256',
+            },
+        ],
+        name: 'PoolTotalSupplyTooLow',
+        type: 'error',
+    },
+    {
         inputs: [],
         name: 'ProtocolFeesExceedTotalCollected',
         type: 'error',
@@ -510,6 +722,17 @@ export default [
     {
         inputs: [],
         name: 'RouterNotTrusted',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'int256',
+                name: 'value',
+                type: 'int256',
+            },
+        ],
+        name: 'SafeCastOverflowedIntToUint',
         type: 'error',
     },
     {
@@ -583,7 +806,13 @@ export default [
         type: 'error',
     },
     {
-        inputs: [],
+        inputs: [
+            {
+                internalType: 'contract IERC20',
+                name: 'token',
+                type: 'address',
+            },
+        ],
         name: 'TokenNotRegistered',
         type: 'error',
     },
@@ -609,24 +838,8 @@ export default [
         type: 'error',
     },
     {
-        inputs: [
-            {
-                internalType: 'uint256',
-                name: 'amount',
-                type: 'uint256',
-            },
-            {
-                internalType: 'uint256',
-                name: 'limit',
-                type: 'uint256',
-            },
-        ],
-        name: 'TotalSupplyTooLow',
-        type: 'error',
-    },
-    {
         inputs: [],
-        name: 'UserDataNotSupported',
+        name: 'TradeAmountTooSmall',
         type: 'error',
     },
     {
@@ -662,7 +875,7 @@ export default [
     {
         inputs: [
             {
-                internalType: 'address',
+                internalType: 'contract IERC4626',
                 name: 'wrappedToken',
                 type: 'address',
             },
@@ -678,12 +891,17 @@ export default [
     {
         inputs: [
             {
-                internalType: 'address',
+                internalType: 'contract IERC4626',
                 name: 'wrappedToken',
                 type: 'address',
             },
+            {
+                internalType: 'address',
+                name: 'underlyingToken',
+                type: 'address',
+            },
         ],
-        name: 'WrongUnderlyingAmount',
+        name: 'WrongUnderlyingToken',
         type: 'error',
     },
     {
@@ -697,31 +915,47 @@ export default [
         type: 'error',
     },
     {
-        inputs: [
-            {
-                internalType: 'address',
-                name: 'wrappedToken',
-                type: 'address',
-            },
-        ],
-        name: 'WrongWrappedAmount',
-        type: 'error',
-    },
-    {
-        inputs: [
-            {
-                internalType: 'address',
-                name: 'token',
-                type: 'address',
-            },
-        ],
-        name: 'WrongWrappedTokenAsset',
-        type: 'error',
-    },
-    {
         inputs: [],
         name: 'ZeroDivision',
         type: 'error',
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: 'address',
+                name: 'pool',
+                type: 'address',
+            },
+            {
+                indexed: false,
+                internalType: 'uint256',
+                name: 'aggregateSwapFeePercentage',
+                type: 'uint256',
+            },
+        ],
+        name: 'AggregateSwapFeePercentageChanged',
+        type: 'event',
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: 'address',
+                name: 'pool',
+                type: 'address',
+            },
+            {
+                indexed: false,
+                internalType: 'uint256',
+                name: 'aggregateYieldFeePercentage',
+                type: 'uint256',
+            },
+        ],
+        name: 'AggregateYieldFeePercentageChanged',
+        type: 'event',
     },
     {
         anonymous: false,
@@ -772,6 +1006,106 @@ export default [
         inputs: [
             {
                 indexed: true,
+                internalType: 'contract IERC4626',
+                name: 'wrappedToken',
+                type: 'address',
+            },
+            {
+                indexed: true,
+                internalType: 'address',
+                name: 'from',
+                type: 'address',
+            },
+            {
+                indexed: false,
+                internalType: 'uint256',
+                name: 'burnedShares',
+                type: 'uint256',
+            },
+        ],
+        name: 'BufferSharesBurned',
+        type: 'event',
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: 'contract IERC4626',
+                name: 'wrappedToken',
+                type: 'address',
+            },
+            {
+                indexed: true,
+                internalType: 'address',
+                name: 'to',
+                type: 'address',
+            },
+            {
+                indexed: false,
+                internalType: 'uint256',
+                name: 'issuedShares',
+                type: 'uint256',
+            },
+        ],
+        name: 'BufferSharesMinted',
+        type: 'event',
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: 'contract IERC4626',
+                name: 'wrappedToken',
+                type: 'address',
+            },
+            {
+                indexed: false,
+                internalType: 'uint256',
+                name: 'amountUnderlying',
+                type: 'uint256',
+            },
+            {
+                indexed: false,
+                internalType: 'uint256',
+                name: 'amountWrapped',
+                type: 'uint256',
+            },
+        ],
+        name: 'LiquidityAddedToBuffer',
+        type: 'event',
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: 'contract IERC4626',
+                name: 'wrappedToken',
+                type: 'address',
+            },
+            {
+                indexed: false,
+                internalType: 'uint256',
+                name: 'amountUnderlying',
+                type: 'uint256',
+            },
+            {
+                indexed: false,
+                internalType: 'uint256',
+                name: 'amountWrapped',
+                type: 'uint256',
+            },
+        ],
+        name: 'LiquidityRemovedFromBuffer',
+        type: 'event',
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
                 internalType: 'address',
                 name: 'pool',
                 type: 'address',
@@ -784,9 +1118,21 @@ export default [
             },
             {
                 indexed: false,
+                internalType: 'uint256',
+                name: 'totalSupply',
+                type: 'uint256',
+            },
+            {
+                indexed: false,
                 internalType: 'int256[]',
                 name: 'deltas',
                 type: 'int256[]',
+            },
+            {
+                indexed: false,
+                internalType: 'uint256[]',
+                name: 'swapFeeAmountsRaw',
+                type: 'uint256[]',
             },
         ],
         name: 'PoolBalanceChanged',
@@ -925,6 +1271,11 @@ export default [
                 components: [
                     {
                         internalType: 'bool',
+                        name: 'enableHookAdjustedAmounts',
+                        type: 'bool',
+                    },
+                    {
+                        internalType: 'bool',
                         name: 'shouldCallBeforeInitialize',
                         type: 'bool',
                     },
@@ -996,6 +1347,11 @@ export default [
                         name: 'enableRemoveLiquidityCustom',
                         type: 'bool',
                     },
+                    {
+                        internalType: 'bool',
+                        name: 'enableDonation',
+                        type: 'bool',
+                    },
                 ],
                 indexed: false,
                 internalType: 'struct LiquidityManagement',
@@ -1063,12 +1419,6 @@ export default [
                 internalType: 'uint256',
                 name: 'swapFeeAmount',
                 type: 'uint256',
-            },
-            {
-                indexed: false,
-                internalType: 'contract IERC20',
-                name: 'swapFeeToken',
-                type: 'address',
             },
         ],
         name: 'Swap',
@@ -1165,7 +1515,26 @@ export default [
                 type: 'bool',
             },
         ],
+        name: 'VaultBuffersPausedStateChanged',
+        type: 'event',
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: false,
+                internalType: 'bool',
+                name: 'paused',
+                type: 'bool',
+            },
+        ],
         name: 'VaultPausedStateChanged',
+        type: 'event',
+    },
+    {
+        anonymous: false,
+        inputs: [],
+        name: 'VaultQueriesDisabled',
         type: 'event',
     },
     {
@@ -1293,11 +1662,6 @@ export default [
                         name: 'limitRaw',
                         type: 'uint256',
                     },
-                    {
-                        internalType: 'bytes',
-                        name: 'userData',
-                        type: 'bytes',
-                    },
                 ],
                 internalType: 'struct BufferWrapOrUnwrapParams',
                 name: 'params',
@@ -1362,19 +1726,6 @@ export default [
                 internalType: 'uint256',
                 name: '',
                 type: 'uint256',
-            },
-        ],
-        stateMutability: 'view',
-        type: 'function',
-    },
-    {
-        inputs: [],
-        name: 'getProtocolFeeController',
-        outputs: [
-            {
-                internalType: 'contract IProtocolFeeController',
-                name: '',
-                type: 'address',
             },
         ],
         stateMutability: 'view',
@@ -1497,12 +1848,17 @@ export default [
                 name: 'token',
                 type: 'address',
             },
+            {
+                internalType: 'uint256',
+                name: 'amountHint',
+                type: 'uint256',
+            },
         ],
         name: 'settle',
         outputs: [
             {
                 internalType: 'uint256',
-                name: 'paid',
+                name: 'credit',
                 type: 'uint256',
             },
         ],
@@ -1549,8 +1905,8 @@ export default [
                         type: 'bytes',
                     },
                 ],
-                internalType: 'struct SwapParams',
-                name: 'params',
+                internalType: 'struct VaultSwapParams',
+                name: 'vaultSwapParams',
                 type: 'tuple',
             },
         ],
@@ -1591,7 +1947,7 @@ export default [
                 type: 'bytes',
             },
         ],
-        stateMutability: 'payable',
+        stateMutability: 'nonpayable',
         type: 'function',
     },
     {
@@ -1665,17 +2021,17 @@ export default [
         inputs: [
             {
                 internalType: 'contract IERC20',
-                name: 'token',
+                name: 'tokenIn',
                 type: 'address',
             },
             {
                 internalType: 'uint256',
-                name: 'amount',
+                name: 'amountIn',
                 type: 'uint256',
             },
             {
                 internalType: 'uint256',
-                name: 'limit',
+                name: 'maxAmountIn',
                 type: 'uint256',
             },
         ],
@@ -1686,17 +2042,17 @@ export default [
         inputs: [
             {
                 internalType: 'contract IERC20',
-                name: 'token',
+                name: 'tokenOut',
                 type: 'address',
             },
             {
                 internalType: 'uint256',
-                name: 'amount',
+                name: 'amountOut',
                 type: 'uint256',
             },
             {
                 internalType: 'uint256',
-                name: 'limit',
+                name: 'minAmountOut',
                 type: 'uint256',
             },
         ],
@@ -1737,12 +2093,12 @@ export default [
         inputs: [
             {
                 internalType: 'uint256',
-                name: 'amount',
+                name: 'amountIn',
                 type: 'uint256',
             },
             {
                 internalType: 'uint256',
-                name: 'limit',
+                name: 'maxAmountIn',
                 type: 'uint256',
             },
         ],
@@ -1753,16 +2109,59 @@ export default [
         inputs: [
             {
                 internalType: 'uint256',
-                name: 'amount',
+                name: 'amountOut',
                 type: 'uint256',
             },
             {
                 internalType: 'uint256',
-                name: 'limit',
+                name: 'minAmountOut',
                 type: 'uint256',
             },
         ],
         name: 'BptAmountOutBelowMin',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'contract IERC4626',
+                name: 'wrappedToken',
+                type: 'address',
+            },
+        ],
+        name: 'BufferAlreadyInitialized',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'contract IERC4626',
+                name: 'wrappedToken',
+                type: 'address',
+            },
+        ],
+        name: 'BufferNotInitialized',
+        type: 'error',
+    },
+    {
+        inputs: [],
+        name: 'BufferSharesInvalidOwner',
+        type: 'error',
+    },
+    {
+        inputs: [],
+        name: 'BufferSharesInvalidReceiver',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'uint256',
+                name: 'totalSupply',
+                type: 'uint256',
+            },
+        ],
+        name: 'BufferTotalSupplyTooLow',
         type: 'error',
     },
     {
@@ -1783,6 +2182,11 @@ export default [
     {
         inputs: [],
         name: 'DoesNotSupportAddLiquidityCustom',
+        type: 'error',
+    },
+    {
+        inputs: [],
+        name: 'DoesNotSupportDonation',
         type: 'error',
     },
     {
@@ -1897,6 +2301,69 @@ export default [
         type: 'error',
     },
     {
+        inputs: [],
+        name: 'FeePrecisionTooHigh',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'contract IERC20',
+                name: 'tokenIn',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256',
+                name: 'amountIn',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'maxAmountIn',
+                type: 'uint256',
+            },
+        ],
+        name: 'HookAdjustedAmountInAboveMax',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'contract IERC20',
+                name: 'tokenOut',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256',
+                name: 'amountOut',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'minAmountOut',
+                type: 'uint256',
+            },
+        ],
+        name: 'HookAdjustedAmountOutBelowMin',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'uint256',
+                name: 'amount',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'limit',
+                type: 'uint256',
+            },
+        ],
+        name: 'HookAdjustedSwapLimit',
+        type: 'error',
+    },
+    {
         inputs: [
             {
                 internalType: 'address',
@@ -1933,22 +2400,6 @@ export default [
         type: 'error',
     },
     {
-        inputs: [
-            {
-                internalType: 'uint256',
-                name: 'currentValue',
-                type: 'uint256',
-            },
-            {
-                internalType: 'uint256',
-                name: 'expectedSize',
-                type: 'uint256',
-            },
-        ],
-        name: 'InvalidSize',
-        type: 'error',
-    },
-    {
         inputs: [],
         name: 'InvalidToken',
         type: 'error',
@@ -1960,7 +2411,23 @@ export default [
     },
     {
         inputs: [],
+        name: 'InvalidTokenDecimals',
+        type: 'error',
+    },
+    {
+        inputs: [],
         name: 'InvalidTokenType',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'contract IERC4626',
+                name: 'wrappedToken',
+                type: 'address',
+            },
+        ],
+        name: 'InvalidUnderlyingToken',
         type: 'error',
     },
     {
@@ -1979,6 +2446,48 @@ export default [
         type: 'error',
     },
     {
+        inputs: [
+            {
+                internalType: 'contract IERC4626',
+                name: 'wrappedToken',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256',
+                name: 'expectedUnderlyingAmount',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'actualUnderlyingAmount',
+                type: 'uint256',
+            },
+        ],
+        name: 'NotEnoughUnderlying',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'contract IERC4626',
+                name: 'wrappedToken',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256',
+                name: 'expectedWrappedAmount',
+                type: 'uint256',
+            },
+            {
+                internalType: 'uint256',
+                name: 'actualWrappedAmount',
+                type: 'uint256',
+            },
+        ],
+        name: 'NotEnoughWrapped',
+        type: 'error',
+    },
+    {
         inputs: [],
         name: 'NotStaticCall',
         type: 'error',
@@ -1990,17 +2499,17 @@ export default [
     },
     {
         inputs: [],
-        name: 'OperationNotSupported',
-        type: 'error',
-    },
-    {
-        inputs: [],
         name: 'OutOfBounds',
         type: 'error',
     },
     {
         inputs: [],
         name: 'PauseBufferPeriodDurationTooLarge',
+        type: 'error',
+    },
+    {
+        inputs: [],
+        name: 'PercentageAboveMax',
         type: 'error',
     },
     {
@@ -2103,6 +2612,17 @@ export default [
         type: 'error',
     },
     {
+        inputs: [
+            {
+                internalType: 'uint256',
+                name: 'totalSupply',
+                type: 'uint256',
+            },
+        ],
+        name: 'PoolTotalSupplyTooLow',
+        type: 'error',
+    },
+    {
         inputs: [],
         name: 'ProtocolFeesExceedTotalCollected',
         type: 'error',
@@ -2198,7 +2718,13 @@ export default [
         type: 'error',
     },
     {
-        inputs: [],
+        inputs: [
+            {
+                internalType: 'contract IERC20',
+                name: 'token',
+                type: 'address',
+            },
+        ],
         name: 'TokenNotRegistered',
         type: 'error',
     },
@@ -2229,24 +2755,8 @@ export default [
         type: 'error',
     },
     {
-        inputs: [
-            {
-                internalType: 'uint256',
-                name: 'amount',
-                type: 'uint256',
-            },
-            {
-                internalType: 'uint256',
-                name: 'limit',
-                type: 'uint256',
-            },
-        ],
-        name: 'TotalSupplyTooLow',
-        type: 'error',
-    },
-    {
         inputs: [],
-        name: 'UserDataNotSupported',
+        name: 'TradeAmountTooSmall',
         type: 'error',
     },
     {
@@ -2282,7 +2792,7 @@ export default [
     {
         inputs: [
             {
-                internalType: 'address',
+                internalType: 'contract IERC4626',
                 name: 'wrappedToken',
                 type: 'address',
             },
@@ -2298,12 +2808,17 @@ export default [
     {
         inputs: [
             {
-                internalType: 'address',
+                internalType: 'contract IERC4626',
                 name: 'wrappedToken',
                 type: 'address',
             },
+            {
+                internalType: 'address',
+                name: 'underlyingToken',
+                type: 'address',
+            },
         ],
-        name: 'WrongUnderlyingAmount',
+        name: 'WrongUnderlyingToken',
         type: 'error',
     },
     {
@@ -2317,26 +2832,42 @@ export default [
         type: 'error',
     },
     {
+        anonymous: false,
         inputs: [
             {
+                indexed: true,
                 internalType: 'address',
-                name: 'wrappedToken',
+                name: 'pool',
                 type: 'address',
             },
+            {
+                indexed: false,
+                internalType: 'uint256',
+                name: 'aggregateSwapFeePercentage',
+                type: 'uint256',
+            },
         ],
-        name: 'WrongWrappedAmount',
-        type: 'error',
+        name: 'AggregateSwapFeePercentageChanged',
+        type: 'event',
     },
     {
+        anonymous: false,
         inputs: [
             {
+                indexed: true,
                 internalType: 'address',
-                name: 'token',
+                name: 'pool',
                 type: 'address',
             },
+            {
+                indexed: false,
+                internalType: 'uint256',
+                name: 'aggregateYieldFeePercentage',
+                type: 'uint256',
+            },
         ],
-        name: 'WrongWrappedTokenAsset',
-        type: 'error',
+        name: 'AggregateYieldFeePercentageChanged',
+        type: 'event',
     },
     {
         anonymous: false,
@@ -2387,6 +2918,106 @@ export default [
         inputs: [
             {
                 indexed: true,
+                internalType: 'contract IERC4626',
+                name: 'wrappedToken',
+                type: 'address',
+            },
+            {
+                indexed: true,
+                internalType: 'address',
+                name: 'from',
+                type: 'address',
+            },
+            {
+                indexed: false,
+                internalType: 'uint256',
+                name: 'burnedShares',
+                type: 'uint256',
+            },
+        ],
+        name: 'BufferSharesBurned',
+        type: 'event',
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: 'contract IERC4626',
+                name: 'wrappedToken',
+                type: 'address',
+            },
+            {
+                indexed: true,
+                internalType: 'address',
+                name: 'to',
+                type: 'address',
+            },
+            {
+                indexed: false,
+                internalType: 'uint256',
+                name: 'issuedShares',
+                type: 'uint256',
+            },
+        ],
+        name: 'BufferSharesMinted',
+        type: 'event',
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: 'contract IERC4626',
+                name: 'wrappedToken',
+                type: 'address',
+            },
+            {
+                indexed: false,
+                internalType: 'uint256',
+                name: 'amountUnderlying',
+                type: 'uint256',
+            },
+            {
+                indexed: false,
+                internalType: 'uint256',
+                name: 'amountWrapped',
+                type: 'uint256',
+            },
+        ],
+        name: 'LiquidityAddedToBuffer',
+        type: 'event',
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: 'contract IERC4626',
+                name: 'wrappedToken',
+                type: 'address',
+            },
+            {
+                indexed: false,
+                internalType: 'uint256',
+                name: 'amountUnderlying',
+                type: 'uint256',
+            },
+            {
+                indexed: false,
+                internalType: 'uint256',
+                name: 'amountWrapped',
+                type: 'uint256',
+            },
+        ],
+        name: 'LiquidityRemovedFromBuffer',
+        type: 'event',
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
                 internalType: 'address',
                 name: 'pool',
                 type: 'address',
@@ -2399,9 +3030,21 @@ export default [
             },
             {
                 indexed: false,
+                internalType: 'uint256',
+                name: 'totalSupply',
+                type: 'uint256',
+            },
+            {
+                indexed: false,
                 internalType: 'int256[]',
                 name: 'deltas',
                 type: 'int256[]',
+            },
+            {
+                indexed: false,
+                internalType: 'uint256[]',
+                name: 'swapFeeAmountsRaw',
+                type: 'uint256[]',
             },
         ],
         name: 'PoolBalanceChanged',
@@ -2540,6 +3183,11 @@ export default [
                 components: [
                     {
                         internalType: 'bool',
+                        name: 'enableHookAdjustedAmounts',
+                        type: 'bool',
+                    },
+                    {
+                        internalType: 'bool',
                         name: 'shouldCallBeforeInitialize',
                         type: 'bool',
                     },
@@ -2611,6 +3259,11 @@ export default [
                         name: 'enableRemoveLiquidityCustom',
                         type: 'bool',
                     },
+                    {
+                        internalType: 'bool',
+                        name: 'enableDonation',
+                        type: 'bool',
+                    },
                 ],
                 indexed: false,
                 internalType: 'struct LiquidityManagement',
@@ -2678,12 +3331,6 @@ export default [
                 internalType: 'uint256',
                 name: 'swapFeeAmount',
                 type: 'uint256',
-            },
-            {
-                indexed: false,
-                internalType: 'contract IERC20',
-                name: 'swapFeeToken',
-                type: 'address',
             },
         ],
         name: 'Swap',
@@ -2780,7 +3427,26 @@ export default [
                 type: 'bool',
             },
         ],
+        name: 'VaultBuffersPausedStateChanged',
+        type: 'event',
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: false,
+                internalType: 'bool',
+                name: 'paused',
+                type: 'bool',
+            },
+        ],
         name: 'VaultPausedStateChanged',
+        type: 'event',
+    },
+    {
+        anonymous: false,
+        inputs: [],
+        name: 'VaultQueriesDisabled',
         type: 'event',
     },
     {
@@ -2903,45 +3569,6 @@ export default [
     {
         inputs: [
             {
-                internalType: 'enum SwapKind',
-                name: 'kind',
-                type: 'uint8',
-            },
-            {
-                internalType: 'contract IERC4626',
-                name: 'wrappedToken',
-                type: 'address',
-            },
-            {
-                internalType: 'uint256',
-                name: 'amountGiven',
-                type: 'uint256',
-            },
-        ],
-        name: 'calculateBufferAmounts',
-        outputs: [
-            {
-                internalType: 'uint256',
-                name: 'amountCalculated',
-                type: 'uint256',
-            },
-            {
-                internalType: 'uint256',
-                name: 'amountInUnderlying',
-                type: 'uint256',
-            },
-            {
-                internalType: 'uint256',
-                name: 'amountOutWrapped',
-                type: 'uint256',
-            },
-        ],
-        stateMutability: 'nonpayable',
-        type: 'function',
-    },
-    {
-        inputs: [
-            {
                 internalType: 'address',
                 name: 'pool',
                 type: 'address',
@@ -2984,22 +3611,36 @@ export default [
                         type: 'bytes',
                     },
                 ],
-                internalType: 'struct IBasePool.PoolSwapParams',
+                internalType: 'struct PoolSwapParams',
                 name: 'swapParams',
                 type: 'tuple',
             },
         ],
-        name: 'computeDynamicSwapFee',
+        name: 'computeDynamicSwapFeePercentage',
+        outputs: [
+            {
+                internalType: 'uint256',
+                name: 'dynamicSwapFeePercentage',
+                type: 'uint256',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'address',
+                name: 'pool',
+                type: 'address',
+            },
+        ],
+        name: 'getAddLiquidityCalledFlag',
         outputs: [
             {
                 internalType: 'bool',
-                name: 'success',
+                name: '',
                 type: 'bool',
-            },
-            {
-                internalType: 'uint256',
-                name: 'dynamicSwapFee',
-                type: 'uint256',
             },
         ],
         stateMutability: 'view',
@@ -3105,6 +3746,11 @@ export default [
                 components: [
                     {
                         internalType: 'bool',
+                        name: 'enableHookAdjustedAmounts',
+                        type: 'bool',
+                    },
+                    {
+                        internalType: 'bool',
                         name: 'shouldCallBeforeInitialize',
                         type: 'bool',
                     },
@@ -3204,7 +3850,11 @@ export default [
                                 name: 'enableRemoveLiquidityCustom',
                                 type: 'bool',
                             },
-                            { internalType: 'bool', name: 'enableDonation', type: 'bool' },
+                            {
+                                internalType: 'bool',
+                                name: 'enableDonation',
+                                type: 'bool',
+                            },
                         ],
                         internalType: 'struct LiquidityManagement',
                         name: 'liquidityManagement',
@@ -3226,9 +3876,9 @@ export default [
                         type: 'uint256',
                     },
                     {
-                        internalType: 'uint24',
+                        internalType: 'uint40',
                         name: 'tokenDecimalDiffs',
-                        type: 'uint24',
+                        type: 'uint40',
                     },
                     {
                         internalType: 'uint32',
@@ -3451,7 +4101,7 @@ export default [
             },
             {
                 internalType: 'uint256[]',
-                name: 'lastLiveBalances',
+                name: 'lastBalancesLiveScaled18',
                 type: 'uint256[]',
             },
         ],
@@ -3496,6 +4146,19 @@ export default [
                 internalType: 'contract IERC20[]',
                 name: 'tokens',
                 type: 'address[]',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [],
+        name: 'getProtocolFeeController',
+        outputs: [
+            {
+                internalType: 'contract IProtocolFeeController',
+                name: '',
+                type: 'address',
             },
         ],
         stateMutability: 'view',
@@ -3618,6 +4281,25 @@ export default [
     {
         inputs: [
             {
+                internalType: 'contract IERC4626',
+                name: 'wrappedToken',
+                type: 'address',
+            },
+        ],
+        name: 'isERC4626BufferInitialized',
+        outputs: [
+            {
+                internalType: 'bool',
+                name: '',
+                type: 'bool',
+            },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
                 internalType: 'address',
                 name: 'pool',
                 type: 'address',
@@ -3733,7 +4415,7 @@ export default [
                 type: 'bytes',
             },
         ],
-        stateMutability: 'payable',
+        stateMutability: 'nonpayable',
         type: 'function',
     },
     {
@@ -3746,7 +4428,7 @@ export default [
         ],
         name: 'quoteAndRevert',
         outputs: [],
-        stateMutability: 'payable',
+        stateMutability: 'nonpayable',
         type: 'function',
     },
     {
@@ -3853,6 +4535,11 @@ export default [
                     {
                         internalType: 'bool',
                         name: 'enableRemoveLiquidityCustom',
+                        type: 'bool',
+                    },
+                    {
+                        internalType: 'bool',
+                        name: 'enableDonation',
                         type: 'bool',
                     },
                 ],
