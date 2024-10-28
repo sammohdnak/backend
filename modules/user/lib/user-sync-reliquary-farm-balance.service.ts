@@ -108,20 +108,6 @@ export class UserSyncReliquaryFarmBalanceService implements UserStakedBalanceSer
                 update.amount !== '0.0',
         );
 
-        if (filteredAmountUpdates.length === 0) {
-            await prisma.prismaUserBalanceSyncStatus.update({
-                where: {
-                    type_chain: {
-                        type: 'RELIQUARY',
-                        chain: networkContext.chain,
-                    },
-                },
-                data: { blockNumber: endBlock },
-            });
-
-            return;
-        }
-
         await prismaBulkExecuteOperations(
             [
                 prisma.prismaUser.createMany({
