@@ -37,6 +37,7 @@ import {
     HookData,
     GqlPoolAggregator,
     LiquidityManagement,
+    Hook,
 } from '../../../schema';
 import { isSameAddress } from '@balancer-labs/sdk';
 import _ from 'lodash';
@@ -51,6 +52,7 @@ import { SanityContentService } from '../../content/sanity-content.service';
 import { ElementData, FxData, GyroData, StableData } from '../subgraph-mapper';
 import { ZERO_ADDRESS } from '@balancer/sdk';
 import { tokenService } from '../../token/token.service';
+import { p } from 'msw/lib/glossary-dc3fd077';
 
 const isToken = (text: string) => text.match(/^0x[0-9a-fA-F]{40}$/);
 const isPoolId = (text: string) => isToken(text) || text.match(/^0x[0-9a-fA-F]{64}$/);
@@ -83,12 +85,12 @@ export class PoolGqlLoaderService {
         await this.enrichWithRateproviderData(mappedPool);
 
         // load underlying token info into PoolTokenDetail and GqlPoolTokenDisplay
-        await this.enrichWithUnderlyingTokenData(mappedPool);
+        await this.enrichWithErc4626Data(mappedPool);
 
         return mappedPool;
     }
 
-    private async enrichWithUnderlyingTokenData(mappedPool: GqlPoolUnion | GqlPoolAggregator) {
+    private async enrichWithErc4626Data(mappedPool: GqlPoolUnion | GqlPoolAggregator) {
         for (const token of mappedPool.poolTokens) {
             if (token.isErc4626) {
                 const prismaToken = await prisma.prismaToken.findUnique({
@@ -104,6 +106,21 @@ export class PoolGqlLoaderService {
                         (mappedPool as GqlPoolUnion).displayTokens.push();
                     }
                 }
+
+                const erc4626ReviewData = await prisma.prismaErc4626ReviewData.findUnique({
+                    where: {
+                        chain_erc4626Address: {
+                            chain: mappedPool.chain,
+                            erc4626Address: token.address,
+                        },
+                    },
+                });
+                if (erc4626ReviewData) {
+                    token.erc4626ReviewData = {
+                        ...erc4626ReviewData,
+                        warnings: erc4626ReviewData.warnings?.split(',') || [],
+                    };
+                }
             }
 
             if (token.hasNestedPool) {
@@ -118,6 +135,21 @@ export class PoolGqlLoaderService {
                                 mappedPool.chain,
                             );
                             nestedToken.underlyingToken = tokenDefinition;
+                        }
+
+                        const erc4626ReviewData = await prisma.prismaErc4626ReviewData.findUnique({
+                            where: {
+                                chain_erc4626Address: {
+                                    chain: mappedPool.chain,
+                                    erc4626Address: nestedToken.address,
+                                },
+                            },
+                        });
+                        if (erc4626ReviewData) {
+                            nestedToken.erc4626ReviewData = {
+                                ...erc4626ReviewData,
+                                warnings: erc4626ReviewData.warnings?.split(',') || [],
+                            };
                         }
                     }
                 }
@@ -205,7 +237,7 @@ export class PoolGqlLoaderService {
             await this.enrichWithRateproviderData(mappedPool);
 
             // load underlying token info into PoolTokenDetail and GqlPoolTokenDisplay
-            await this.enrichWithUnderlyingTokenData(mappedPool);
+            await this.enrichWithErc4626Data(mappedPool);
         }
 
         return gqlPools;
@@ -272,13 +304,7 @@ export class PoolGqlLoaderService {
         return {
             ...pool,
             liquidityManagement: (pool.liquidityManagement as LiquidityManagement) || undefined,
-            hook:
-                (pool.hook &&
-                    pool.hook.dynamicData && {
-                        ...pool.hook,
-                        dynamicData: pool.hook.dynamicData as HookData,
-                    }) ||
-                undefined,
+            hook: this.mapHookData(pool),
             incentivized: pool.categories.some((category) => category === 'INCENTIVIZED'),
             vaultVersion: pool.protocolVersion,
             decimals: 18,
@@ -533,9 +559,9 @@ export class PoolGqlLoaderService {
                     : {}),
             },
             ...(where?.hasHook !== undefined && where.hasHook
-                ? { hook: { isNot: null } }
+                ? { hookId: { not: null } }
                 : where?.hasHook !== undefined && !where.hasHook
-                ? { hook: { is: null } }
+                ? { hookId: null }
                 : {}),
         };
 
@@ -591,13 +617,7 @@ export class PoolGqlLoaderService {
             poolTokens: pool.tokens.map((token) => this.mapPoolToken(token, token.nestedPool !== null)),
             vaultVersion: poolWithoutTypeData.protocolVersion,
             liquidityManagement: (pool.liquidityManagement as LiquidityManagement) || undefined,
-            hook:
-                (pool.hook &&
-                    pool.hook.dynamicData && {
-                        ...pool.hook,
-                        dynamicData: pool.hook.dynamicData as HookData,
-                    }) ||
-                undefined,
+            hook: this.mapHookData(pool),
         };
 
         switch (pool.type) {
@@ -660,8 +680,6 @@ export class PoolGqlLoaderService {
     ): GqlPoolUnion {
         const { typeData, ...poolWithoutTypeData } = pool;
 
-        const bpt = pool.tokens.find((token) => token.address === pool.address);
-
         const mappedData = {
             decimals: 18,
             staking: this.getStakingData(pool),
@@ -677,13 +695,7 @@ export class PoolGqlLoaderService {
             vaultVersion: poolWithoutTypeData.protocolVersion,
             categories: pool.categories as GqlPoolFilterCategory[],
             tags: pool.categories,
-            hook:
-                (pool.hook &&
-                    pool.hook.dynamicData && {
-                        ...pool.hook,
-                        dynamicData: pool.hook.dynamicData as HookData,
-                    }) ||
-                undefined,
+            hook: this.mapHookData(pool),
             liquidityManagement: (pool.liquidityManagement as LiquidityManagement) || undefined,
             hasErc4626: pool.allTokens.some((token) => token.token.types.some((type) => type.type === 'ERC4626')),
             hasNestedErc4626: pool.allTokens.some((token) =>
@@ -715,7 +727,6 @@ export class PoolGqlLoaderService {
                     ...poolWithoutTypeData,
                     ...(typeData as StableData),
                     ...mappedData,
-                    bptPriceRate: bpt?.dynamicData?.priceRate || '1.0',
                 };
             case 'ELEMENT':
                 return {
@@ -761,9 +772,7 @@ export class PoolGqlLoaderService {
             const poolToken = pool.tokens.find((poolToken) => poolToken.address === token.token.address);
             const isNested = !poolToken;
             const isPhantomBpt = token.tokenAddress === pool.address;
-            const isMainToken = !token.token.types.some(
-                (type) => type.type === 'PHANTOM_BPT' || type.type === 'BPT' || type.type === 'ERC4626',
-            );
+            const isMainToken = !token.token.types.some((type) => type.type === 'PHANTOM_BPT' || type.type === 'BPT');
             const isErc4626 = token.token.types.some((type) => type.type === 'ERC4626');
 
             return {
@@ -837,7 +846,6 @@ export class PoolGqlLoaderService {
         const totalShares = parseFloat(nestedPool.dynamicData?.totalShares || '0');
         const percentOfSupplyNested = totalShares > 0 ? parseFloat(tokenBalance) / totalShares : 0;
         const totalLiquidity = nestedPool.dynamicData?.totalLiquidity || 0;
-        const bpt = nestedPool.tokens.find((token) => token.address === nestedPool.address);
 
         return {
             ...nestedPool,
@@ -857,7 +865,7 @@ export class PoolGqlLoaderService {
                 ),
             ),
             swapFee: nestedPool.dynamicData?.swapFee || '0',
-            bptPriceRate: bpt?.dynamicData?.priceRate || '1.0',
+            bptPriceRate: (nestedPool.typeData as StableData).bptPriceRate || '1.0',
         };
     }
 
@@ -1415,6 +1423,25 @@ export class PoolGqlLoaderService {
         };
     }
 
+    private mapHookData(pool: PrismaPoolMinimal): Hook | undefined {
+        if (!pool.hook) {
+            return undefined;
+        }
+
+        return {
+            ...pool.hook,
+            dynamicData: pool.hook.dynamicData as HookData,
+            ...(pool.hook.reviewData
+                ? {
+                      reviewData: {
+                          ...pool.hook.reviewData,
+                          warnings: pool.hook.reviewData?.warnings?.split(',') || [],
+                      },
+                  }
+                : { reviewData: undefined }),
+        };
+    }
+
     private mapNestedPoolToGqlPoolComposableStableNested(
         pool: PrismaNestedPoolWithSingleLayerNesting,
         percentOfSupplyNested: number,
@@ -1460,7 +1487,6 @@ export class PoolGqlLoaderService {
                     },
                 },
                 userWalletBalances: false,
-                hook: true,
             };
         }
 
@@ -1487,7 +1513,6 @@ export class PoolGqlLoaderService {
                     balanceNum: { gt: 0 },
                 },
             },
-            hook: true,
         };
     }
 }
