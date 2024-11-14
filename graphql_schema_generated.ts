@@ -165,6 +165,11 @@ export const schema = gql`
         factory: Bytes
 
         """
+        Hook assigned to a pool
+        """
+        hook: Hook
+
+        """
         Unique identifier of the pool.
         """
         id: ID!
@@ -647,9 +652,9 @@ export const schema = gql`
         address: Bytes!
 
         """
-        Returns all pool tokens, including any nested tokens and phantom BPTs on one level.
+        Returns all pool tokens, including any nested tokens and phantom BPTs as a flattened array.
         """
-        allTokens: [GqlPoolTokenExpanded!]!
+        allTokens: [GqlPoolTokenExpanded!]! @deprecated(reason: "Use poolTokens instead")
 
         """
         List of categories assigned by the team based on external factors
@@ -813,14 +818,14 @@ export const schema = gql`
 
     type GqlPoolComposableStable implements GqlPoolBase {
         address: Bytes!
-        allTokens: [GqlPoolTokenExpanded!]!
+        allTokens: [GqlPoolTokenExpanded!]! @deprecated(reason: "Use poolTokens instead")
         amp: BigInt!
         bptPriceRate: BigDecimal!
         categories: [GqlPoolFilterCategory]
         chain: GqlChain!
         createTime: Int!
         decimals: Int!
-        displayTokens: [GqlPoolTokenDisplay!]!
+        displayTokens: [GqlPoolTokenDisplay!]! @deprecated(reason: "Use poolTokens instead")
         dynamicData: GqlPoolDynamicData!
         factory: Bytes
         hasErc4626: Boolean!
@@ -940,13 +945,13 @@ export const schema = gql`
 
     type GqlPoolElement implements GqlPoolBase {
         address: Bytes!
-        allTokens: [GqlPoolTokenExpanded!]!
+        allTokens: [GqlPoolTokenExpanded!]! @deprecated(reason: "Use poolTokens instead")
         baseToken: Bytes!
         categories: [GqlPoolFilterCategory]
         chain: GqlChain!
         createTime: Int!
         decimals: Int!
-        displayTokens: [GqlPoolTokenDisplay!]!
+        displayTokens: [GqlPoolTokenDisplay!]! @deprecated(reason: "Use poolTokens instead")
         dynamicData: GqlPoolDynamicData!
         factory: Bytes
         hasErc4626: Boolean!
@@ -1136,7 +1141,7 @@ export const schema = gql`
 
     type GqlPoolFx implements GqlPoolBase {
         address: Bytes!
-        allTokens: [GqlPoolTokenExpanded!]!
+        allTokens: [GqlPoolTokenExpanded!]! @deprecated(reason: "Use poolTokens instead")
         alpha: String!
         beta: String!
         categories: [GqlPoolFilterCategory]
@@ -1144,7 +1149,7 @@ export const schema = gql`
         createTime: Int!
         decimals: Int!
         delta: String!
-        displayTokens: [GqlPoolTokenDisplay!]!
+        displayTokens: [GqlPoolTokenDisplay!]! @deprecated(reason: "Use poolTokens instead")
         dynamicData: GqlPoolDynamicData!
         epsilon: String!
         factory: Bytes
@@ -1176,7 +1181,7 @@ export const schema = gql`
 
     type GqlPoolGyro implements GqlPoolBase {
         address: Bytes!
-        allTokens: [GqlPoolTokenExpanded!]!
+        allTokens: [GqlPoolTokenExpanded!]! @deprecated(reason: "Use poolTokens instead")
         alpha: String!
         beta: String!
         c: String!
@@ -1185,7 +1190,7 @@ export const schema = gql`
         createTime: Int!
         dSq: String!
         decimals: Int!
-        displayTokens: [GqlPoolTokenDisplay!]!
+        displayTokens: [GqlPoolTokenDisplay!]! @deprecated(reason: "Use poolTokens instead")
         dynamicData: GqlPoolDynamicData!
         factory: Bytes
         hasErc4626: Boolean!
@@ -1268,12 +1273,12 @@ export const schema = gql`
 
     type GqlPoolLiquidityBootstrapping implements GqlPoolBase {
         address: Bytes!
-        allTokens: [GqlPoolTokenExpanded!]!
+        allTokens: [GqlPoolTokenExpanded!]! @deprecated(reason: "Use poolTokens instead")
         categories: [GqlPoolFilterCategory]
         chain: GqlChain!
         createTime: Int!
         decimals: Int!
-        displayTokens: [GqlPoolTokenDisplay!]!
+        displayTokens: [GqlPoolTokenDisplay!]! @deprecated(reason: "Use poolTokens instead")
         dynamicData: GqlPoolDynamicData!
         factory: Bytes
         hasErc4626: Boolean!
@@ -1304,13 +1309,13 @@ export const schema = gql`
 
     type GqlPoolMetaStable implements GqlPoolBase {
         address: Bytes!
-        allTokens: [GqlPoolTokenExpanded!]!
+        allTokens: [GqlPoolTokenExpanded!]! @deprecated(reason: "Use poolTokens instead")
         amp: BigInt!
         categories: [GqlPoolFilterCategory]
         chain: GqlChain!
         createTime: Int!
         decimals: Int!
-        displayTokens: [GqlPoolTokenDisplay!]!
+        displayTokens: [GqlPoolTokenDisplay!]! @deprecated(reason: "Use poolTokens instead")
         dynamicData: GqlPoolDynamicData!
         factory: Bytes
         hasErc4626: Boolean!
@@ -1346,7 +1351,7 @@ export const schema = gql`
         """
         Returns all pool tokens, including any nested tokens and phantom BPTs
         """
-        allTokens: [GqlPoolTokenExpanded!]!
+        allTokens: [GqlPoolTokenExpanded!]! @deprecated(reason: "Use poolTokens instead")
 
         """
         List of categories assigned by the team based on external factors
@@ -1371,7 +1376,7 @@ export const schema = gql`
         """
         Only returns main or underlying tokens, also known as leave tokens. Wont return any nested BPTs. Used for displaying the tokens that the pool consists of.
         """
-        displayTokens: [GqlPoolTokenDisplay!]!
+        displayTokens: [GqlPoolTokenDisplay!]! @deprecated(reason: "Use poolTokens instead")
 
         """
         Dynamic data such as token balances, swap fees or volume
@@ -1422,6 +1427,11 @@ export const schema = gql`
         The wallet address of the owner of the pool. Pool owners can set certain properties like swapFees or AMP.
         """
         owner: Bytes
+
+        """
+        Returns all pool tokens, including BPTs and nested pools if there are any. Only one nested level deep.
+        """
+        poolTokens: [GqlPoolTokenDetail!]!
 
         """
         The protocol version on which the pool is deployed, 1, 2 or 3
@@ -1540,14 +1550,14 @@ export const schema = gql`
 
     type GqlPoolStable implements GqlPoolBase {
         address: Bytes!
-        allTokens: [GqlPoolTokenExpanded!]!
+        allTokens: [GqlPoolTokenExpanded!]! @deprecated(reason: "Use poolTokens instead")
         amp: BigInt!
         bptPriceRate: BigDecimal!
         categories: [GqlPoolFilterCategory]
         chain: GqlChain!
         createTime: Int!
         decimals: Int!
-        displayTokens: [GqlPoolTokenDisplay!]!
+        displayTokens: [GqlPoolTokenDisplay!]! @deprecated(reason: "Use poolTokens instead")
         dynamicData: GqlPoolDynamicData!
         factory: Bytes
         hasErc4626: Boolean!
@@ -2093,12 +2103,12 @@ export const schema = gql`
 
     type GqlPoolWeighted implements GqlPoolBase {
         address: Bytes!
-        allTokens: [GqlPoolTokenExpanded!]!
+        allTokens: [GqlPoolTokenExpanded!]! @deprecated(reason: "Use poolTokens instead")
         categories: [GqlPoolFilterCategory]
         chain: GqlChain!
         createTime: Int!
         decimals: Int!
-        displayTokens: [GqlPoolTokenDisplay!]!
+        displayTokens: [GqlPoolTokenDisplay!]! @deprecated(reason: "Use poolTokens instead")
         dynamicData: GqlPoolDynamicData!
         factory: Bytes
         hasErc4626: Boolean!

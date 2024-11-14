@@ -145,9 +145,15 @@ export const prismaPoolWithExpandedNesting = Prisma.validator<Prisma.PrismaPoolA
                                                 dynamicData: true,
                                             },
                                         },
+                                        hook: {
+                                            include: { reviewData: true },
+                                        },
                                     },
                                 },
                             },
+                        },
+                        hook: {
+                            include: { reviewData: true },
                         },
                     },
                 },
@@ -178,9 +184,15 @@ export const nestedPoolWithSingleLayerNesting = Prisma.validator<Prisma.PrismaPo
                                 dynamicData: true,
                             },
                         },
+                        hook: {
+                            include: { reviewData: true },
+                        },
                     },
                 },
             },
+        },
+        hook: {
+            include: { reviewData: true },
         },
     },
 });
@@ -234,9 +246,15 @@ const prismaPoolTokenWithExpandedNesting = Prisma.validator<Prisma.PrismaPoolTok
                                         dynamicData: true,
                                     },
                                 },
+                                hook: {
+                                    include: { reviewData: true },
+                                },
                             },
                         },
                     },
+                },
+                hook: {
+                    include: { reviewData: true },
                 },
             },
         },
@@ -310,10 +328,42 @@ export const prismaPoolMinimal = Prisma.validator<Prisma.PrismaPoolArgs>()({
         tokens: {
             orderBy: { index: 'asc' },
             include: {
+                dynamicData: true,
                 token: {
                     include: { types: true },
                 },
-                dynamicData: true,
+                nestedPool: {
+                    include: {
+                        dynamicData: true,
+                        tokens: {
+                            orderBy: { index: 'asc' },
+                            include: {
+                                token: {
+                                    include: { types: true },
+                                },
+                                dynamicData: true,
+                                nestedPool: {
+                                    include: {
+                                        dynamicData: true,
+                                        tokens: {
+                                            orderBy: { index: 'asc' },
+                                            include: {
+                                                token: true,
+                                                dynamicData: true,
+                                            },
+                                        },
+                                        hook: {
+                                            include: { reviewData: true },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                        hook: {
+                            include: { reviewData: true },
+                        },
+                    },
+                },
             },
         },
         staking: {
