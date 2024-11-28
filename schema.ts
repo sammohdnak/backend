@@ -1812,7 +1812,10 @@ export interface GqlSorCallData {
 /** The swap paths for a swap */
 export interface GqlSorGetSwapPaths {
     __typename?: 'GqlSorGetSwapPaths';
-    /** Transaction data that can be posted to an RPC to execute the swap. */
+    /**
+     * Transaction data that can be posted to an RPC to execute the swap.
+     * @deprecated Use Balancer SDK to build swap callData from SOR response
+     */
     callData?: Maybe<GqlSorCallData>;
     /** The price of tokenOut in tokenIn. */
     effectivePrice: Scalars['AmountHumanReadable'];
