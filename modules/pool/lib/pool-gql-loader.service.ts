@@ -601,20 +601,10 @@ export class PoolGqlLoaderService {
                         ...userArgs,
                         allTokens: {
                             some: {
-                                OR: [
-                                    {
-                                        token: {
-                                            name: textSearch,
-                                            address: filterArgs.allTokens?.some?.token?.address,
-                                        },
-                                    },
-                                    {
-                                        token: {
-                                            symbol: textSearch,
-                                            address: filterArgs.allTokens?.some?.token?.address,
-                                        },
-                                    },
-                                ],
+                                token: {
+                                    symbol: textSearch,
+                                    address: filterArgs.allTokens?.some?.token?.address,
+                                },
                             },
                         },
                     },
@@ -697,6 +687,7 @@ export class PoolGqlLoaderService {
 
         const mappedData = {
             decimals: 18,
+            owner: pool.swapFeeManager, // Keep for backwards compatibility
             staking: this.getStakingData(pool),
             dynamicData: this.getPoolDynamicData(pool),
             investConfig: this.getPoolInvestConfig(pool), // TODO DEPRECATE
@@ -868,6 +859,7 @@ export class PoolGqlLoaderService {
 
         return {
             ...nestedPool,
+            owner: nestedPool.swapFeeManager, // Keep for backwards compatibility
             liquidityManagement: (nestedPool.liquidityManagement as LiquidityManagement) || undefined,
             totalLiquidity: `${totalLiquidity}`,
             totalShares: `${totalShares}`,
@@ -1454,6 +1446,7 @@ export class PoolGqlLoaderService {
             __typename: 'GqlPoolComposableStableNested',
             ...pool,
             ...(pool.typeData as StableData)!,
+            owner: pool.swapFeeManager, // Keep for backwards compatibility
             nestingType: this.getPoolNestingType(pool),
             tokens: pool.tokens.map((token) => this.mapPoolTokenToGql(token)),
             totalLiquidity: `${pool.dynamicData?.totalLiquidity || 0}`,
