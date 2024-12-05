@@ -643,7 +643,7 @@ export class PoolGqlLoaderService {
                     ...poolWithoutTypeData,
                     ...(typeData as StableData),
                     ...mappedData,
-                    // bptPriceRate: bpt?.dynamicData?.priceRate || '1.0',
+                    // bptPriceRate: bpt?.priceRate || '1.0',
                 };
             case 'ELEMENT':
                 return {
@@ -784,7 +784,7 @@ export class PoolGqlLoaderService {
             return {
                 ...token.token,
                 id: `${pool.id}-${token.tokenAddress}`,
-                weight: poolToken?.dynamicData?.weight,
+                weight: poolToken?.weight,
                 isNested,
                 isPhantomBpt,
                 isMainToken,
@@ -810,7 +810,6 @@ export class PoolGqlLoaderService {
                     return {
                         id: `${pool.id}-${poolToken.token.address}`,
                         ...poolToken.token,
-                        weight: poolToken?.dynamicData?.weight,
                         nestedTokens: mainTokens.map((mainToken) => ({
                             id: `${pool.id}-${poolToken.token.address}-${mainToken.tokenAddress}`,
                             ...mainToken.token,
@@ -821,7 +820,6 @@ export class PoolGqlLoaderService {
                 return {
                     id: `${pool.id}-${poolToken.token.address}`,
                     ...poolToken.token,
-                    weight: poolToken?.dynamicData?.weight,
                 };
             });
     }
@@ -837,13 +835,13 @@ export class PoolGqlLoaderService {
             id: `${poolToken.poolId}-${poolToken.token.address}`,
             ...poolToken.token,
             index: poolToken.index,
-            balance: String(parseFloat(poolToken.dynamicData?.balance || '0') * nestedPercentage),
-            balanceUSD: String((poolToken.dynamicData?.balanceUSD || 0) * nestedPercentage),
-            priceRate: poolToken.dynamicData?.priceRate || '1.0',
+            balance: String(parseFloat(poolToken.balance || '0') * nestedPercentage),
+            balanceUSD: String((poolToken.balanceUSD || 0) * nestedPercentage),
+            priceRate: poolToken.priceRate || '1.0',
             priceRateProvider: poolToken.priceRateProvider,
-            weight: poolToken?.dynamicData?.weight,
+            weight: poolToken.weight,
             hasNestedPool: hasNestedPool,
-            nestedPool: nestedPool ? this.mapNestedPool(nestedPool, poolToken.dynamicData?.balance || '0') : undefined,
+            nestedPool: nestedPool ? this.mapNestedPool(nestedPool, poolToken.balance || '0') : undefined,
             isAllowed: poolToken.token.types.some(
                 (type) => type.type === 'WHITE_LISTED' || type.type === 'PHANTOM_BPT' || type.type === 'BPT',
             ),
@@ -1031,9 +1029,9 @@ export class PoolGqlLoaderService {
 
         const allAprItems = pool.aprItems?.filter((item) => item.apr > 0 || (item.range?.max ?? 0 > 0)) || [];
         const aprItems = allAprItems.filter(
-            (item) => item.type !== 'SWAP_FEE_24H' && item.type !== 'SWAP_FEE_7D' && item.type !== 'SWAP_FEE_30D',
+            (item) => item.type !== 'SWAP_FEE' && item.type !== 'SWAP_FEE_7D' && item.type !== 'SWAP_FEE_30D',
         );
-        const swapAprItems = aprItems.filter((item) => item.type == 'SWAP_FEE');
+        const swapAprItems = aprItems.filter((item) => item.type === 'SWAP_FEE_24H');
 
         // swap apr cannot have a range, so we can already sum it up
         const aprItemsWithNoGroup = aprItems.filter((item) => !item.group);
@@ -1097,7 +1095,7 @@ export class PoolGqlLoaderService {
                         currentThirdPartyAprRangeMax += maxApr;
                         break;
                     }
-                    case 'SWAP_FEE': {
+                    case 'SWAP_FEE_24H': {
                         swapFeeApr += maxApr;
                         break;
                     }
@@ -1223,7 +1221,7 @@ export class PoolGqlLoaderService {
                         let apr = 0;
                         for (const item of items) {
                             if (
-                                item.type === 'SWAP_FEE_24H' ||
+                                item.type === 'SWAP_FEE' ||
                                 item.type === 'SWAP_FEE_7D' ||
                                 item.type === 'SWAP_FEE_30D' ||
                                 item.type === 'SURPLUS_24H' ||
@@ -1253,6 +1251,11 @@ export class PoolGqlLoaderService {
         const aprItems: GqlPoolAprItem[] = [];
 
         for (const aprItem of pool.aprItems) {
+            // Skipping SWAP_FEE as the DB state is not updated, safe to remove after deployment of the patch, because all instances of SWAP_FEE_24H will be replaced with SWAP_FEE should be removed from the DB already
+            if (aprItem.type === 'SWAP_FEE') {
+                continue;
+            }
+
             if (aprItem.apr === 0 || (aprItem.range && aprItem.range.max === 0)) {
                 continue;
             }
@@ -1302,6 +1305,16 @@ export class PoolGqlLoaderService {
                     type: type,
                     rewardTokenAddress: aprItem.rewardTokenAddress,
                     rewardTokenSymbol: aprItem.rewardTokenSymbol,
+                });
+            }
+
+            // Adding deprecated SWAP_FEE for backwards compatibility
+            if (aprItem.type === 'SWAP_FEE_24H') {
+                aprItems.push({
+                    ...aprItem,
+                    id: `${aprItem.id.replace('-24h', '')}`,
+                    title: aprItem.title.replace(' (24h)', ''),
+                    type: 'SWAP_FEE',
                 });
             }
         }
@@ -1408,8 +1421,7 @@ export class PoolGqlLoaderService {
 
         if (nestedPool && nestedPool.type === 'COMPOSABLE_STABLE') {
             const totalShares = parseFloat(nestedPool.dynamicData?.totalShares || '0');
-            const percentOfSupplyNested =
-                totalShares > 0 ? parseFloat(token.dynamicData?.balance || '0') / totalShares : 0;
+            const percentOfSupplyNested = totalShares > 0 ? parseFloat(token.balance || '0') / totalShares : 0;
 
             //50_000_000_000_000
             return {
@@ -1427,12 +1439,12 @@ export class PoolGqlLoaderService {
             id: poolToken.id,
             ...poolToken.token,
             __typename: 'GqlPoolToken',
-            priceRate: poolToken.dynamicData?.priceRate || '1.0',
+            priceRate: poolToken.priceRate || '1.0',
             priceRateProvider: poolToken.priceRateProvider,
-            balance: poolToken.dynamicData?.balance || '0',
+            balance: poolToken.balance || '0',
             index: poolToken.index,
-            weight: poolToken.dynamicData?.weight,
-            totalBalance: poolToken.dynamicData?.balance || '0',
+            weight: poolToken.weight,
+            totalBalance: poolToken.balance || '0',
         };
     }
 
@@ -1452,7 +1464,7 @@ export class PoolGqlLoaderService {
             totalLiquidity: `${pool.dynamicData?.totalLiquidity || 0}`,
             totalShares: pool.dynamicData?.totalShares || '0',
             swapFee: pool.dynamicData?.swapFee || '0',
-            bptPriceRate: bpt?.dynamicData?.priceRate || '1.0',
+            bptPriceRate: bpt?.priceRate || '1.0',
             categories: pool.categories as GqlPoolFilterCategory[],
             tags: pool.categories,
         };
