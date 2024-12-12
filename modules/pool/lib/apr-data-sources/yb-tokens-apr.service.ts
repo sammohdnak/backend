@@ -18,14 +18,21 @@ export class YbTokensAprService implements PoolAprService {
     constructor(private aprConfig: YbAprConfig, private chain: Chain) {
         this.ybTokensAprHandlers = new YbAprHandlers(this.aprConfig, chain);
         // Build a map of wrapped tokens to underlying tokens for Aave
-        this.underlyingMap = Object.fromEntries(
-            Object.values({
-                ...aprConfig.aave?.v3?.tokens,
-                ...aprConfig.aave?.lido?.tokens,
-            }).flatMap((market) =>
+        const aaveMerged = {
+            ...aprConfig.aave?.v3?.tokens,
+            ...aprConfig.aave?.lido?.tokens,
+        };
+
+        const aaveTokens = Object.fromEntries(
+            Object.values(aaveMerged).flatMap((market) =>
                 Object.values(market.wrappedTokens).map((wrapper) => [wrapper, market.underlyingAssetAddress]),
             ),
         );
+
+        this.underlyingMap = {
+            ...aaveTokens,
+            ...(aprConfig.morpho?.tokens || {}),
+        };
     }
 
     getAprServiceName(): string {
@@ -90,11 +97,11 @@ export class YbTokensAprService implements PoolAprService {
                 let userApr = token.apr * token.share;
 
                 // AAVE + LST case, we need to apply the underlying token APR on top of the AAVE market APR
-                const aaveUnderlying = this.underlyingMap[token.address];
-                if (aaveUnderlying) {
-                    const underlyingTokenApr = aprs.get(aaveUnderlying);
-                    if (underlyingTokenApr) {
-                        userApr = ((1 + token.apr) * (1 + underlyingTokenApr.apr) - 1) * token.share;
+                const underlying = this.underlyingMap[token.address];
+                if (underlying) {
+                    const underlyingApr = aprs.get(underlying);
+                    if (underlyingApr) {
+                        userApr = ((1 + token.apr) * (1 + underlyingApr.apr) - 1) * token.share;
                     }
                 }
 
