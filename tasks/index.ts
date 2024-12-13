@@ -79,7 +79,7 @@ async function run(job: string = process.argv[2], chainId: string = process.argv
         return UserBalancesController().syncUserBalancesFromV3Subgraph(chain);
     } else if (job === 'load-onchain-data-v3') {
         return PoolMutationController().loadOnchainDataForAllPoolsV3(chain);
-    } else if (job === 'add-new-cow-amm-pools') {
+    } else if (job === 'add-cow-amm-pools') {
         return CowAmmController().addPools(chain);
     } else if (job === 'sync-cow-amm-pools') {
         return CowAmmController().syncPools(chain);
@@ -88,13 +88,7 @@ async function run(job: string = process.argv[2], chainId: string = process.argv
     } else if (job === 'sync-cow-amm-snapshots') {
         return CowAmmController().syncSnapshots(chain);
     } else if (job === 'sync-all-cow-amm-snapshots') {
-        // Run in loop until we end up at todays snapshot (also sync todays)
-        let allSnapshotsSynced = false;
-        while (!allSnapshotsSynced) {
-            allSnapshotsSynced =
-                (await CowAmmController().syncSnapshots(chain)) === moment().utc().startOf('day').unix();
-        }
-        return allSnapshotsSynced;
+        return CowAmmController().syncAllSnapshots(chain);
     } else if (job === 'sync-cow-amm-swaps') {
         return CowAmmController().syncSwaps(chain);
     } else if (job === 'sync-cow-amm-join-exits') {
