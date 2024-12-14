@@ -69,6 +69,7 @@ extend type Mutation {
     tokenSyncLatestFxPrices(chain: GqlChain!): String!
     tokenDeleteTokenType(tokenAddress: String!, type: GqlTokenType!): String!
     tokenReloadAllTokenTypes: String!
+    tokenReloadErc4626Tokens(chains: [GqlChain!]!): [GqlTokenMutationResult!]!
 }
 
 """
@@ -190,6 +191,10 @@ type GqlToken {
     The ERC4626 underlying token address, if applicable.
     """
     underlyingTokenAddress: String
+    """
+    If it is an ERC4626 token, this defines whether we allow it to use the buffer for pool operations.
+    """
+    isBufferAllowed: Boolean!
     """
     The ERC4626 review data for the token
     """
