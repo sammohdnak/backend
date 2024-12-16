@@ -66,6 +66,7 @@ export type GqlChain =
     | 'OPTIMISM'
     | 'POLYGON'
     | 'SEPOLIA'
+    | 'SONIC'
     | 'ZKEVM';
 
 export interface GqlContentNewsItem {
@@ -458,6 +459,8 @@ export interface GqlPoolBase {
     dynamicData: GqlPoolDynamicData;
     /** The factory contract address from which the pool was created. */
     factory?: Maybe<Scalars['Bytes']>;
+    /** Whether at least one token in this pool is considered an ERC4626 token and the buffer is allowed. */
+    hasAnyAllowedBuffer: Scalars['Boolean'];
     /** Whether at least one token in this pool is considered an ERC4626 token. */
     hasErc4626: Scalars['Boolean'];
     /** Whether at least one token in a nested pool is considered an ERC4626 token. */
@@ -566,6 +569,7 @@ export interface GqlPoolComposableStable extends GqlPoolBase {
     displayTokens: Array<GqlPoolTokenDisplay>;
     dynamicData: GqlPoolDynamicData;
     factory?: Maybe<Scalars['Bytes']>;
+    hasAnyAllowedBuffer: Scalars['Boolean'];
     hasErc4626: Scalars['Boolean'];
     hasNestedErc4626: Scalars['Boolean'];
     hook?: Maybe<GqlHook>;
@@ -707,6 +711,7 @@ export interface GqlPoolElement extends GqlPoolBase {
     displayTokens: Array<GqlPoolTokenDisplay>;
     dynamicData: GqlPoolDynamicData;
     factory?: Maybe<Scalars['Bytes']>;
+    hasAnyAllowedBuffer: Scalars['Boolean'];
     hasErc4626: Scalars['Boolean'];
     hasNestedErc4626: Scalars['Boolean'];
     hook?: Maybe<GqlHook>;
@@ -872,6 +877,7 @@ export interface GqlPoolFx extends GqlPoolBase {
     dynamicData: GqlPoolDynamicData;
     epsilon: Scalars['String'];
     factory?: Maybe<Scalars['Bytes']>;
+    hasAnyAllowedBuffer: Scalars['Boolean'];
     hasErc4626: Scalars['Boolean'];
     hasNestedErc4626: Scalars['Boolean'];
     hook?: Maybe<GqlHook>;
@@ -928,6 +934,7 @@ export interface GqlPoolGyro extends GqlPoolBase {
     displayTokens: Array<GqlPoolTokenDisplay>;
     dynamicData: GqlPoolDynamicData;
     factory?: Maybe<Scalars['Bytes']>;
+    hasAnyAllowedBuffer: Scalars['Boolean'];
     hasErc4626: Scalars['Boolean'];
     hasNestedErc4626: Scalars['Boolean'];
     hook?: Maybe<GqlHook>;
@@ -1034,6 +1041,7 @@ export interface GqlPoolLiquidityBootstrapping extends GqlPoolBase {
     displayTokens: Array<GqlPoolTokenDisplay>;
     dynamicData: GqlPoolDynamicData;
     factory?: Maybe<Scalars['Bytes']>;
+    hasAnyAllowedBuffer: Scalars['Boolean'];
     hasErc4626: Scalars['Boolean'];
     hasNestedErc4626: Scalars['Boolean'];
     hook?: Maybe<GqlHook>;
@@ -1088,6 +1096,7 @@ export interface GqlPoolMetaStable extends GqlPoolBase {
     displayTokens: Array<GqlPoolTokenDisplay>;
     dynamicData: GqlPoolDynamicData;
     factory?: Maybe<Scalars['Bytes']>;
+    hasAnyAllowedBuffer: Scalars['Boolean'];
     hasErc4626: Scalars['Boolean'];
     hasNestedErc4626: Scalars['Boolean'];
     hook?: Maybe<GqlHook>;
@@ -1150,6 +1159,8 @@ export interface GqlPoolMinimal {
     dynamicData: GqlPoolDynamicData;
     /** The factory contract address from which the pool was created. */
     factory?: Maybe<Scalars['Bytes']>;
+    /** Whether at least one token in this pool is considered an ERC4626 token and the buffer is allowed. */
+    hasAnyAllowedBuffer: Scalars['Boolean'];
     /** Whether at least one token in this pool is considered an ERC4626 token. */
     hasErc4626: Scalars['Boolean'];
     /** Whether at least one token in a nested pool is considered an ERC4626 token. */
@@ -1261,6 +1272,7 @@ export interface GqlPoolStable extends GqlPoolBase {
     displayTokens: Array<GqlPoolTokenDisplay>;
     dynamicData: GqlPoolDynamicData;
     factory?: Maybe<Scalars['Bytes']>;
+    hasAnyAllowedBuffer: Scalars['Boolean'];
     hasErc4626: Scalars['Boolean'];
     hasNestedErc4626: Scalars['Boolean'];
     hook?: Maybe<GqlHook>;
@@ -1678,6 +1690,7 @@ export interface GqlPoolWeighted extends GqlPoolBase {
     displayTokens: Array<GqlPoolTokenDisplay>;
     dynamicData: GqlPoolDynamicData;
     factory?: Maybe<Scalars['Bytes']>;
+    hasAnyAllowedBuffer: Scalars['Boolean'];
     hasErc4626: Scalars['Boolean'];
     hasNestedErc4626: Scalars['Boolean'];
     hook?: Maybe<GqlHook>;
@@ -2119,6 +2132,8 @@ export interface GqlToken {
     discordUrl?: Maybe<Scalars['String']>;
     /** The ERC4626 review data for the token */
     erc4626ReviewData?: Maybe<Erc4626ReviewData>;
+    /** If it is an ERC4626 token, this defines whether we allow it to use the buffer for pool operations. */
+    isBufferAllowed: Scalars['Boolean'];
     /** Whether the token is considered an ERC4626 token. */
     isErc4626: Scalars['Boolean'];
     /** The logo URI of the token */
@@ -2392,6 +2407,7 @@ export interface Mutation {
     sftmxSyncWithdrawalRequests: Scalars['String'];
     tokenDeleteTokenType: Scalars['String'];
     tokenReloadAllTokenTypes: Scalars['String'];
+    tokenReloadErc4626Tokens: Array<GqlTokenMutationResult>;
     tokenReloadTokenPrices?: Maybe<Scalars['Boolean']>;
     tokenSyncLatestFxPrices: Scalars['String'];
     tokenSyncTokenDefinitions: Scalars['String'];
@@ -2434,6 +2450,10 @@ export interface MutationPoolSyncAllCowSnapshotsArgs {
 export interface MutationTokenDeleteTokenTypeArgs {
     tokenAddress: Scalars['String'];
     type: GqlTokenType;
+}
+
+export interface MutationTokenReloadErc4626TokensArgs {
+    chains: Array<GqlChain>;
 }
 
 export interface MutationTokenReloadTokenPricesArgs {
@@ -3591,6 +3611,7 @@ export type GqlPoolBaseResolvers<
     displayTokens?: Resolver<Array<ResolversTypes['GqlPoolTokenDisplay']>, ParentType, ContextType>;
     dynamicData?: Resolver<ResolversTypes['GqlPoolDynamicData'], ParentType, ContextType>;
     factory?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
+    hasAnyAllowedBuffer?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasNestedErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hook?: Resolver<Maybe<ResolversTypes['GqlHook']>, ParentType, ContextType>;
@@ -3675,6 +3696,7 @@ export type GqlPoolComposableStableResolvers<
     displayTokens?: Resolver<Array<ResolversTypes['GqlPoolTokenDisplay']>, ParentType, ContextType>;
     dynamicData?: Resolver<ResolversTypes['GqlPoolDynamicData'], ParentType, ContextType>;
     factory?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
+    hasAnyAllowedBuffer?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasNestedErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hook?: Resolver<Maybe<ResolversTypes['GqlHook']>, ParentType, ContextType>;
@@ -3792,6 +3814,7 @@ export type GqlPoolElementResolvers<
     displayTokens?: Resolver<Array<ResolversTypes['GqlPoolTokenDisplay']>, ParentType, ContextType>;
     dynamicData?: Resolver<ResolversTypes['GqlPoolDynamicData'], ParentType, ContextType>;
     factory?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
+    hasAnyAllowedBuffer?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasNestedErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hook?: Resolver<Maybe<ResolversTypes['GqlHook']>, ParentType, ContextType>;
@@ -3898,6 +3921,7 @@ export type GqlPoolFxResolvers<
     dynamicData?: Resolver<ResolversTypes['GqlPoolDynamicData'], ParentType, ContextType>;
     epsilon?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     factory?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
+    hasAnyAllowedBuffer?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasNestedErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hook?: Resolver<Maybe<ResolversTypes['GqlHook']>, ParentType, ContextType>;
@@ -3941,6 +3965,7 @@ export type GqlPoolGyroResolvers<
     displayTokens?: Resolver<Array<ResolversTypes['GqlPoolTokenDisplay']>, ParentType, ContextType>;
     dynamicData?: Resolver<ResolversTypes['GqlPoolDynamicData'], ParentType, ContextType>;
     factory?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
+    hasAnyAllowedBuffer?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasNestedErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hook?: Resolver<Maybe<ResolversTypes['GqlHook']>, ParentType, ContextType>;
@@ -4038,6 +4063,7 @@ export type GqlPoolLiquidityBootstrappingResolvers<
     displayTokens?: Resolver<Array<ResolversTypes['GqlPoolTokenDisplay']>, ParentType, ContextType>;
     dynamicData?: Resolver<ResolversTypes['GqlPoolDynamicData'], ParentType, ContextType>;
     factory?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
+    hasAnyAllowedBuffer?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasNestedErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hook?: Resolver<Maybe<ResolversTypes['GqlHook']>, ParentType, ContextType>;
@@ -4078,6 +4104,7 @@ export type GqlPoolMetaStableResolvers<
     displayTokens?: Resolver<Array<ResolversTypes['GqlPoolTokenDisplay']>, ParentType, ContextType>;
     dynamicData?: Resolver<ResolversTypes['GqlPoolDynamicData'], ParentType, ContextType>;
     factory?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
+    hasAnyAllowedBuffer?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasNestedErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hook?: Resolver<Maybe<ResolversTypes['GqlHook']>, ParentType, ContextType>;
@@ -4116,6 +4143,7 @@ export type GqlPoolMinimalResolvers<
     displayTokens?: Resolver<Array<ResolversTypes['GqlPoolTokenDisplay']>, ParentType, ContextType>;
     dynamicData?: Resolver<ResolversTypes['GqlPoolDynamicData'], ParentType, ContextType>;
     factory?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
+    hasAnyAllowedBuffer?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasNestedErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hook?: Resolver<Maybe<ResolversTypes['GqlHook']>, ParentType, ContextType>;
@@ -4195,6 +4223,7 @@ export type GqlPoolStableResolvers<
     displayTokens?: Resolver<Array<ResolversTypes['GqlPoolTokenDisplay']>, ParentType, ContextType>;
     dynamicData?: Resolver<ResolversTypes['GqlPoolDynamicData'], ParentType, ContextType>;
     factory?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
+    hasAnyAllowedBuffer?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasNestedErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hook?: Resolver<Maybe<ResolversTypes['GqlHook']>, ParentType, ContextType>;
@@ -4585,6 +4614,7 @@ export type GqlPoolWeightedResolvers<
     displayTokens?: Resolver<Array<ResolversTypes['GqlPoolTokenDisplay']>, ParentType, ContextType>;
     dynamicData?: Resolver<ResolversTypes['GqlPoolDynamicData'], ParentType, ContextType>;
     factory?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
+    hasAnyAllowedBuffer?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hasNestedErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     hook?: Resolver<Maybe<ResolversTypes['GqlHook']>, ParentType, ContextType>;
@@ -4940,6 +4970,7 @@ export type GqlTokenResolvers<
     description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     discordUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     erc4626ReviewData?: Resolver<Maybe<ResolversTypes['Erc4626ReviewData']>, ParentType, ContextType>;
+    isBufferAllowed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     isErc4626?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     logoURI?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -5215,6 +5246,12 @@ export type MutationResolvers<
         RequireFields<MutationTokenDeleteTokenTypeArgs, 'tokenAddress' | 'type'>
     >;
     tokenReloadAllTokenTypes?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    tokenReloadErc4626Tokens?: Resolver<
+        Array<ResolversTypes['GqlTokenMutationResult']>,
+        ParentType,
+        ContextType,
+        RequireFields<MutationTokenReloadErc4626TokensArgs, 'chains'>
+    >;
     tokenReloadTokenPrices?: Resolver<
         Maybe<ResolversTypes['Boolean']>,
         ParentType,

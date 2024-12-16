@@ -61,6 +61,7 @@ export const schema = gql`
         OPTIMISM
         POLYGON
         SEPOLIA
+        SONIC
         ZKEVM
     }
 
@@ -784,6 +785,11 @@ export const schema = gql`
         factory: Bytes
 
         """
+        Whether at least one token in this pool is considered an ERC4626 token and the buffer is allowed.
+        """
+        hasAnyAllowedBuffer: Boolean!
+
+        """
         Whether at least one token in this pool is considered an ERC4626 token.
         """
         hasErc4626: Boolean!
@@ -935,6 +941,7 @@ export const schema = gql`
         displayTokens: [GqlPoolTokenDisplay!]! @deprecated(reason: "Use poolTokens instead")
         dynamicData: GqlPoolDynamicData!
         factory: Bytes
+        hasAnyAllowedBuffer: Boolean!
         hasErc4626: Boolean!
         hasNestedErc4626: Boolean!
         hook: GqlHook
@@ -1099,6 +1106,7 @@ export const schema = gql`
         displayTokens: [GqlPoolTokenDisplay!]! @deprecated(reason: "Use poolTokens instead")
         dynamicData: GqlPoolDynamicData!
         factory: Bytes
+        hasAnyAllowedBuffer: Boolean!
         hasErc4626: Boolean!
         hasNestedErc4626: Boolean!
         hook: GqlHook
@@ -1317,6 +1325,7 @@ export const schema = gql`
         dynamicData: GqlPoolDynamicData!
         epsilon: String!
         factory: Bytes
+        hasAnyAllowedBuffer: Boolean!
         hasErc4626: Boolean!
         hasNestedErc4626: Boolean!
         hook: GqlHook
@@ -1376,6 +1385,7 @@ export const schema = gql`
         displayTokens: [GqlPoolTokenDisplay!]! @deprecated(reason: "Use poolTokens instead")
         dynamicData: GqlPoolDynamicData!
         factory: Bytes
+        hasAnyAllowedBuffer: Boolean!
         hasErc4626: Boolean!
         hasNestedErc4626: Boolean!
         hook: GqlHook
@@ -1483,6 +1493,7 @@ export const schema = gql`
         displayTokens: [GqlPoolTokenDisplay!]! @deprecated(reason: "Use poolTokens instead")
         dynamicData: GqlPoolDynamicData!
         factory: Bytes
+        hasAnyAllowedBuffer: Boolean!
         hasErc4626: Boolean!
         hasNestedErc4626: Boolean!
         hook: GqlHook
@@ -1539,6 +1550,7 @@ export const schema = gql`
         displayTokens: [GqlPoolTokenDisplay!]! @deprecated(reason: "Use poolTokens instead")
         dynamicData: GqlPoolDynamicData!
         factory: Bytes
+        hasAnyAllowedBuffer: Boolean!
         hasErc4626: Boolean!
         hasNestedErc4626: Boolean!
         hook: GqlHook
@@ -1627,6 +1639,11 @@ export const schema = gql`
         The factory contract address from which the pool was created.
         """
         factory: Bytes
+
+        """
+        Whether at least one token in this pool is considered an ERC4626 token and the buffer is allowed.
+        """
+        hasAnyAllowedBuffer: Boolean!
 
         """
         Whether at least one token in this pool is considered an ERC4626 token.
@@ -1815,6 +1832,7 @@ export const schema = gql`
         displayTokens: [GqlPoolTokenDisplay!]! @deprecated(reason: "Use poolTokens instead")
         dynamicData: GqlPoolDynamicData!
         factory: Bytes
+        hasAnyAllowedBuffer: Boolean!
         hasErc4626: Boolean!
         hasNestedErc4626: Boolean!
         hook: GqlHook
@@ -2407,6 +2425,7 @@ export const schema = gql`
         displayTokens: [GqlPoolTokenDisplay!]! @deprecated(reason: "Use poolTokens instead")
         dynamicData: GqlPoolDynamicData!
         factory: Bytes
+        hasAnyAllowedBuffer: Boolean!
         hasErc4626: Boolean!
         hasNestedErc4626: Boolean!
         hook: GqlHook
@@ -3138,6 +3157,11 @@ export const schema = gql`
         erc4626ReviewData: Erc4626ReviewData
 
         """
+        If it is an ERC4626 token, this defines whether we allow it to use the buffer for pool operations.
+        """
+        isBufferAllowed: Boolean!
+
+        """
         Whether the token is considered an ERC4626 token.
         """
         isErc4626: Boolean!
@@ -3582,6 +3606,7 @@ export const schema = gql`
         sftmxSyncWithdrawalRequests: String!
         tokenDeleteTokenType(tokenAddress: String!, type: GqlTokenType!): String!
         tokenReloadAllTokenTypes: String!
+        tokenReloadErc4626Tokens(chains: [GqlChain!]!): [GqlTokenMutationResult!]!
         tokenReloadTokenPrices(chains: [GqlChain!]!): Boolean
         tokenSyncLatestFxPrices(chain: GqlChain!): String!
         tokenSyncTokenDefinitions: String!

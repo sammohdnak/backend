@@ -1,6 +1,6 @@
 {
     "name": "backend",
-    "version": "1.26.15",
+    "version": "1.26.16",
     "description": "Backend service for Beethoven X and Balancer",
     "repository": "https://github.com/balancer/backend",
     "author": "Beethoven X",
@@ -62,7 +62,7 @@
         "stellate": "2.7.1",
         "ts-dotenv": "^0.8.1",
         "uuid": "^8.3.2",
-        "viem": "^2.12.1",
+        "viem": "^2.21.55",
         "yarn": "^1.22.19"
     },
     "devDependencies": {
