@@ -5,35 +5,35 @@
  * The “working supply” of the gauge - the effective total LP token amount after all deposits have been boosted.
  * "Working balance" is 40% of a user balance in a gauge - used only for BAL rewards on v2 gauges on child gauges or on mainnet
  */
-import { PrismaPoolWithTokens } from '../../../../prisma/prisma-types';
 import { PoolAprService } from '../../pool-types';
-import { TokenService } from '../../../token/token.service';
 import { secondsPerYear } from '../../../common/time';
-import { PrismaPoolAprItem, PrismaPoolAprRange, PrismaPoolAprType } from '@prisma/client';
+import { Chain, PrismaPoolAprItem, PrismaPoolAprRange, PrismaPoolAprType } from '@prisma/client';
 import { prisma } from '../../../../prisma/prisma-client';
 import { prismaBulkExecuteOperations } from '../../../../prisma/prisma-util';
-import { networkContext } from '../../../network/network-context.service';
+import { tokenService } from '../../../token/token.service';
 
 export class GaugeAprService implements PoolAprService {
     private readonly MAX_VEBAL_BOOST = 2.5;
 
-    constructor(private readonly tokenService: TokenService, private readonly primaryTokens: string[]) {}
+    constructor() {}
 
     public getAprServiceName(): string {
         return 'GaugeAprService';
     }
 
-    public async updateAprForPools(pools: { id: string }[]): Promise<void> {
+    public async updateAprForPools(pools: { id: string; chain: Chain }[]): Promise<void> {
         const itemOperations: any[] = [];
         const rangeOperations: any[] = [];
 
+        const chain = pools[0].chain;
+
         // Get the data
-        const tokenPrices = await this.tokenService.getTokenPrices();
+        const tokenPrices = await tokenService.getTokenPrices(chain);
         const stakings = await prisma.prismaPoolStaking.findMany({
             where: {
                 poolId: { in: pools.map((pool) => pool.id) },
                 type: 'GAUGE',
-                chain: networkContext.chain,
+                chain,
             },
             include: {
                 gauge: {
@@ -59,7 +59,7 @@ export class GaugeAprService implements PoolAprService {
             // Get token rewards per year with data needed for the DB
             const rewards = await Promise.allSettled(
                 gauge.rewards.map(async ({ id, tokenAddress, rewardPerSecond, isVeBalemissions }) => {
-                    const price = this.tokenService.getPriceForToken(tokenPrices, tokenAddress, networkContext.chain);
+                    const price = tokenService.getPriceForToken(tokenPrices, tokenAddress, pool.chain);
                     if (!price) {
                         return Promise.reject(`Price not found for ${tokenAddress}`);
                     }
@@ -67,7 +67,7 @@ export class GaugeAprService implements PoolAprService {
                     let definition;
                     try {
                         definition = await prisma.prismaToken.findUniqueOrThrow({
-                            where: { address_chain: { address: tokenAddress, chain: networkContext.chain } },
+                            where: { address_chain: { address: tokenAddress, chain: pool.chain } },
                         });
                     } catch (e) {
                         //we don't have the reward token added as a token, only happens for testing tokens
@@ -95,7 +95,7 @@ export class GaugeAprService implements PoolAprService {
                 .map((reward) => {
                     if (reward.status === 'rejected') {
                         console.error(
-                            `Error: Failed to get reward data for ${gauge.id} on chain ${networkContext.chainId}: ${reward.reason}`,
+                            `Error: Failed to get reward data for ${gauge.id} on chain ${pool.chain}: ${reward.reason}`,
                         );
                         return null;
                     }
@@ -104,7 +104,7 @@ export class GaugeAprService implements PoolAprService {
 
                     const itemData: PrismaPoolAprItem = {
                         id: `${reward.value.id}-${symbol}-apr`,
-                        chain: networkContext.chain,
+                        chain: pool.chain,
                         poolId: pool.id,
                         title: `${symbol} reward APR`,
                         group: null,
@@ -116,7 +116,7 @@ export class GaugeAprService implements PoolAprService {
 
                     // veBAL rewards have a range associated with the item
                     // this is deprecated
-                    if (isVeBalemissions && (networkContext.chain === 'MAINNET' || gauge.version === 2)) {
+                    if (isVeBalemissions && (pool.chain === 'MAINNET' || gauge.version === 2)) {
                         let minApr = 0;
                         if (gaugeTvl > 0) {
                             if (workingSupply > 0 && gaugeTotalShares > 0) {
@@ -130,7 +130,7 @@ export class GaugeAprService implements PoolAprService {
 
                         const rangeData = {
                             id: aprRangeId,
-                            chain: networkContext.chain,
+                            chain: pool.chain,
                             aprItemId: itemData.id,
                             min: minApr,
                             max: minApr * this.MAX_VEBAL_BOOST,
@@ -155,7 +155,7 @@ export class GaugeAprService implements PoolAprService {
                 ...items.map((item) =>
                     prisma.prismaPoolAprItem.upsert({
                         where: {
-                            id_chain: { id: item.id, chain: networkContext.chain },
+                            id_chain: { id: item.id, chain: pool.chain },
                         },
                         update: item,
                         create: item as PrismaPoolAprItem,
@@ -166,7 +166,7 @@ export class GaugeAprService implements PoolAprService {
                 ...ranges.map((range) =>
                     prisma.prismaPoolAprRange.upsert({
                         where: {
-                            id_chain: { id: range.id, chain: networkContext.chain },
+                            id_chain: { id: range.id, chain: pool.chain },
                         },
                         update: range,
                         create: range as PrismaPoolAprRange,

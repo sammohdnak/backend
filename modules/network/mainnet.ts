@@ -1,6 +1,5 @@
 import { ethers } from 'ethers';
 import { DeploymentEnv, NetworkConfig, NetworkData } from './network-config-types';
-import { tokenService } from '../token/token.service';
 import {
     BoostedPoolAprService,
     SwapFeeAprService,
@@ -28,7 +27,7 @@ export const mainnetNetworkConfig: NetworkConfig = {
         new YbTokensAprService(data.ybAprConfig, data.chain.prismaId),
         new BoostedPoolAprService(),
         new SwapFeeAprService(),
-        new GaugeAprService(tokenService, [data.bal!.address]),
+        new GaugeAprService(),
         new VeBalProtocolAprService(data.rpcUrl),
         new VeBalVotingAprService(),
     ],

@@ -1,6 +1,5 @@
 import { ethers } from 'ethers';
 import { DeploymentEnv, NetworkConfig } from './network-config-types';
-import { tokenService } from '../token/token.service';
 import { BoostedPoolAprService } from '../pool/lib/apr-data-sources/nested-pool-apr.service';
 import { SwapFeeAprService } from '../pool/lib/apr-data-sources/';
 import { GaugeAprService } from '../pool/lib/apr-data-sources/ve-bal-gauge-apr.service';
@@ -22,7 +21,7 @@ export const sepoliaNetworkConfig: NetworkConfig = {
         new YbTokensAprService(sepoliaNetworkData.ybAprConfig, sepoliaNetworkData.chain.prismaId),
         new BoostedPoolAprService(),
         new SwapFeeAprService(),
-        new GaugeAprService(tokenService, [sepoliaNetworkData.bal!.address]),
+        new GaugeAprService(),
     ],
     userStakedBalanceServices: [new UserSyncGaugeBalanceService()],
     services: {
