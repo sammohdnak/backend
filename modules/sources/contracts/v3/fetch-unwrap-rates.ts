@@ -14,6 +14,9 @@ export const fetchUnwrapRates = async (
 ): Promise<{
     [id: string]: string;
 }> => {
+    if (erc4626Tokens.length === 0) {
+        return {};
+    }
     const chain = erc4626Tokens[0].chain;
     const caller = new Multicaller3Viem(chain, MinimalErc4626Abi);
     erc4626Tokens.forEach((token) =>
@@ -27,6 +30,10 @@ export const fetchUnwrapRates = async (
             const address = erc4626Tokens[index].underlyingTokenAddress;
             if (!address) {
                 // this should never happen, but I was able to replicate locally, so I'm adding this check
+                return [key, '1'];
+            }
+            if (!underlyingTokenMap[address]) {
+                console.error(`Missing underlying token for ${address}`);
                 return [key, '1'];
             }
             return [key, formatUnits(value, underlyingTokenMap[address].decimals)];

@@ -15,7 +15,6 @@ export default <NetworkData>{
         balancer: [
             `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_FANTOM}/deployments/id/Qmbt2NyWBL8WKV5EuBDbByUEUETfhUBVpsLpptFbnwEyrK`,
         ],
-        beetsBar: 'https://',
         blocks: `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_FANTOM}/deployments/id/QmZYZcSMaGY2rrq8YFP9avicWf2GM8R2vpB2Xuap1WhipT`,
         gauge: `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_FANTOM}/deployments/id/QmSRNzwTmLu55ZxxyxYULS5T1Kar7upz1jzL5FsMzLpB2e`,
         reliquary: `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_FANTOM}/deployments/id/QmUM8aU6H3gFx6JL65GQV5baPPjczU9hUb6VRiDQ1jEp3B`,
@@ -36,7 +35,7 @@ export default <NetworkData>{
         platformId: 'sonic-mainnet',
         excludedTokenAddresses: [],
     },
-    rpcUrl: `https://lb.drpc.org/ogrpc?network=sonic&dkey=${env.DRPC_API_KEY}`,
+    rpcUrl: `https://lb.drpc.org/ogrpc?network=sonic&dkey=${env.DRPC_BEETS_API_KEY}`,
     rpcMaxBlockRange: 2000,
     protocolToken: 'beets',
     beets: {
