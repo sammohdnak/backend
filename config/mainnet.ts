@@ -24,9 +24,7 @@ export default <NetworkData>{
     subgraphs: {
         startDate: '2019-04-20',
         cowAmm: `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_BALANCER}/deployments/id/QmQ3c9CTJBZdgy3uTLB929ARZucMUCf6piZBDxSgBKnf6m`,
-        balancer: [
-            `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_BALANCER}/deployments/id/QmQ5TT2yYBZgoUxsat3bKmNe5Fr9LW9YAtDs8aeuc1BRhj`,
-        ],
+        balancer: `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_BALANCER}/deployments/id/QmQ5TT2yYBZgoUxsat3bKmNe5Fr9LW9YAtDs8aeuc1BRhj`,
         balancerV3: `https://gateway.thegraph.com/api/${env.THEGRAPH_API_KEY_BALANCER}/deployments/id/QmZpnxr5Qz2tc6EKgGuvBG3xSbXN3LbCLhqpawLWvndPH6`,
         balancerPoolsV3: `https://gateway.thegraph.com/api/${env.THEGRAPH_API_KEY_BALANCER}/deployments/id/QmVGssjwfVAP8b2buqVVKz5sdb69ryyvxED5qQPGeW8Yk2`,
         blocks: `https://gateway.thegraph.com/api/${env.THEGRAPH_API_KEY_BALANCER}/subgraphs/id/9A6bkprqEG2XsZUYJ5B2XXp6ymz9fNcn4tVPxMWDztYC`,
@@ -120,6 +118,10 @@ export default <NetworkData>{
                 '0xbeef01735c132ada46aa9aa4c54623caa92a64cb': '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
                 // Morpho Coinshift USDL - used to calculate the APR in the YB Tokens APR service
                 '0xbeefc01767ed5086f35decb6c00e6c12bc7476c1': '0x7751e2f4b8ae93ef6b79d86419d42fe3295a4559',
+                // Morpho Steakhouse USDC
+                '0x7204b7dbf9412567835633b6f00c3edc3a8d6330': '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+                // Morpho Coinshift USDL - used to calculate the APR in the YB Tokens APR service
+                '0xbeefc011e94f43b8b7b455ebab290c7ab4e216f1': '0x7751e2f4b8ae93ef6b79d86419d42fe3295a4559',
             },
         },
         aave: {
