@@ -1794,7 +1794,9 @@ export interface GqlProtocolMetricsAggregated {
     swapFee24h: Scalars['BigDecimal'];
     swapVolume24h: Scalars['BigDecimal'];
     totalLiquidity: Scalars['BigDecimal'];
+    /** @deprecated No replacement */
     totalSwapFee: Scalars['BigDecimal'];
+    /** @deprecated No replacement */
     totalSwapVolume: Scalars['BigDecimal'];
     yieldCapture24h: Scalars['BigDecimal'];
 }
@@ -1807,7 +1809,9 @@ export interface GqlProtocolMetricsChain {
     swapFee24h: Scalars['BigDecimal'];
     swapVolume24h: Scalars['BigDecimal'];
     totalLiquidity: Scalars['BigDecimal'];
+    /** @deprecated No replacement */
     totalSwapFee: Scalars['BigDecimal'];
+    /** @deprecated No replacement */
     totalSwapVolume: Scalars['BigDecimal'];
     yieldCapture24h: Scalars['BigDecimal'];
 }
