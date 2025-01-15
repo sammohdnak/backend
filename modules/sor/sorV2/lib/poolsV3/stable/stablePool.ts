@@ -1,7 +1,7 @@
 import { Address, Hex, parseEther, parseUnits } from 'viem';
 
 import { MAX_UINT256, PoolType, SwapKind, Token, TokenAmount } from '@balancer/sdk';
-import { AddKind, RemoveKind, StableState, Vault } from '@balancer-labs/balancer-maths';
+import { AddKind, RemoveKind, StableState, Vault, HookState } from '@balancer-labs/balancer-maths';
 import { Chain } from '@prisma/client';
 
 import { PrismaPoolAndHookWithDynamic } from '../../../../../../prisma/prisma-types';
@@ -13,6 +13,10 @@ import { WAD } from '../../utils/math';
 import { BasePoolV3 } from '../../poolsV2/basePool';
 import { StableBasePoolToken } from './stableBasePoolToken';
 import { Erc4626PoolToken } from '../../poolsV2/erc4626PoolToken';
+
+import { getHookState, isLiquidityManagement } from '../../utils/helpers';
+
+import { LiquidityManagement } from '../../../../../sor/types';
 
 type StablePoolToken = StableBasePoolToken | Erc4626PoolToken;
 
@@ -27,6 +31,8 @@ export class StablePool implements BasePoolV3 {
 
     public totalShares: bigint;
     public tokens: StablePoolToken[];
+    public readonly hookState: HookState | undefined;
+    public readonly liquidityManagement: LiquidityManagement;
 
     private readonly tokenMap: Map<string, StablePoolToken>;
 
@@ -76,6 +82,14 @@ export class StablePool implements BasePoolV3 {
         const totalShares = parseEther(pool.dynamicData.totalShares);
         const amp = parseUnits((pool.typeData as StableData).amp, 3);
 
+        //transform
+        const hookState = getHookState(pool);
+
+        // typeguard
+        if (!isLiquidityManagement(pool.liquidityManagement)) {
+            throw new Error('LiquidityManagement must be of type LiquidityManagement and cannot be null');
+        }
+
         return new StablePool(
             pool.id as Hex,
             pool.address,
@@ -85,6 +99,8 @@ export class StablePool implements BasePoolV3 {
             poolTokens,
             totalShares,
             pool.dynamicData.tokenPairsData as TokenPairData[],
+            pool.liquidityManagement,
+            hookState,
         );
     }
 
@@ -97,6 +113,8 @@ export class StablePool implements BasePoolV3 {
         tokens: StablePoolToken[],
         totalShares: bigint,
         tokenPairs: TokenPairData[],
+        liquidityManagement: LiquidityManagement,
+        hookState: HookState | undefined = undefined,
     ) {
         this.chain = chain;
         this.id = id;
@@ -108,13 +126,15 @@ export class StablePool implements BasePoolV3 {
         this.tokens = tokens.sort((a, b) => a.index - b.index);
         this.tokenMap = new Map(this.tokens.map((token) => [token.token.address, token]));
         this.tokenPairs = tokenPairs;
+        this.hookState = hookState;
+        this.liquidityManagement = liquidityManagement;
 
         // add BPT to tokenMap, so we can handle add/remove liquidity operations
         const bpt = new Token(tokens[0].token.chainId, this.id, 18, 'BPT', 'BPT');
         this.tokenMap.set(bpt.address, new StableBasePoolToken(bpt, totalShares, -1, WAD));
 
         this.vault = new Vault();
-        this.poolState = this.getPoolState();
+        this.poolState = this.getPoolState(hookState?.hookType);
     }
 
     public getLimitAmountSwap(tokenIn: Token, tokenOut: Token, swapKind: SwapKind): bigint {
@@ -157,6 +177,13 @@ export class StablePool implements BasePoolV3 {
         let calculatedAmount: bigint;
 
         if (tIn.token.isSameAddress(this.id)) {
+            // if liquidityManagement.disableUnbalancedLiquidity is true return 0
+            // as the pool does not allow unbalanced operations. 0 return marks the
+            // route as truly unfeasible route.
+            if (this.liquidityManagement.disableUnbalancedLiquidity) {
+                return TokenAmount.fromRawAmount(tOut.token, 0n);
+            }
+
             // remove liquidity
             const { amountsOutRaw } = this.vault.removeLiquidity(
                 {
@@ -166,9 +193,17 @@ export class StablePool implements BasePoolV3 {
                     kind: RemoveKind.SINGLE_TOKEN_EXACT_IN,
                 },
                 this.poolState,
+                this.hookState,
             );
             calculatedAmount = amountsOutRaw[tOut.index];
         } else if (tOut.token.isSameAddress(this.id)) {
+            // if liquidityManagement.disableUnbalancedLiquidity is true return 0
+            // as the pool does not allow unbalanced operations. 0 return marks the
+            // route as truly unfeasible route.
+            if (this.liquidityManagement.disableUnbalancedLiquidity) {
+                return TokenAmount.fromRawAmount(tOut.token, 0n);
+            }
+
             // add liquidity
             const { bptAmountOutRaw } = this.vault.addLiquidity(
                 {
@@ -178,6 +213,7 @@ export class StablePool implements BasePoolV3 {
                     kind: AddKind.UNBALANCED,
                 },
                 this.poolState,
+                this.hookState,
             );
             calculatedAmount = bptAmountOutRaw;
         } else {
@@ -190,6 +226,7 @@ export class StablePool implements BasePoolV3 {
                     swapKind: SwapKind.GivenIn,
                 },
                 this.poolState,
+                this.hookState,
             );
         }
         return TokenAmount.fromRawAmount(tOut.token, calculatedAmount);
@@ -201,6 +238,13 @@ export class StablePool implements BasePoolV3 {
         let calculatedAmount: bigint;
 
         if (tIn.token.isSameAddress(this.id)) {
+            // if liquidityManagement.disableUnbalancedLiquidity is true return 0
+            // as the pool does not allow unbalanced operations. 0 return marks the
+            // route as truly unfeasible route.
+            if (this.liquidityManagement.disableUnbalancedLiquidity) {
+                return TokenAmount.fromRawAmount(tOut.token, 0n);
+            }
+
             // remove liquidity
             const { bptAmountInRaw } = this.vault.removeLiquidity(
                 {
@@ -210,9 +254,17 @@ export class StablePool implements BasePoolV3 {
                     kind: RemoveKind.SINGLE_TOKEN_EXACT_OUT,
                 },
                 this.poolState,
+                this.hookState,
             );
             calculatedAmount = bptAmountInRaw;
         } else if (tOut.token.isSameAddress(this.id)) {
+            // if liquidityManagement.disableUnbalancedLiquidity is true return 0
+            // as the pool does not allow unbalanced operations. 0 return marks the
+            // route as truly unfeasible route.
+            if (this.liquidityManagement.disableUnbalancedLiquidity) {
+                return TokenAmount.fromRawAmount(tOut.token, 0n);
+            }
+
             // add liquidity
             const { amountsInRaw } = this.vault.addLiquidity(
                 {
@@ -222,6 +274,7 @@ export class StablePool implements BasePoolV3 {
                     kind: AddKind.SINGLE_TOKEN_EXACT_OUT,
                 },
                 this.poolState,
+                this.hookState,
             );
             calculatedAmount = amountsInRaw[tIn.index];
         } else {
@@ -234,6 +287,7 @@ export class StablePool implements BasePoolV3 {
                     swapKind: SwapKind.GivenOut,
                 },
                 this.poolState,
+                this.hookState,
             );
         }
         return TokenAmount.fromRawAmount(tIn.token, calculatedAmount);
@@ -254,8 +308,8 @@ export class StablePool implements BasePoolV3 {
         return 0n;
     }
 
-    public getPoolState(): StableState {
-        return {
+    public getPoolState(hookName?: string): StableState {
+        const poolState: StableState = {
             poolType: 'STABLE',
             poolAddress: this.address,
             swapFee: this.swapFee,
@@ -266,7 +320,12 @@ export class StablePool implements BasePoolV3 {
             tokens: this.tokens.map((t) => t.token.address),
             scalingFactors: this.tokens.map((t) => t.scalar),
             aggregateSwapFee: 0n,
+            supportsUnbalancedLiquidity: !this.liquidityManagement.disableUnbalancedLiquidity,
         };
+
+        poolState.hookType = hookName;
+
+        return poolState;
     }
 
     public getPoolTokens(tokenIn: Token, tokenOut: Token): { tIn: StablePoolToken; tOut: StablePoolToken } {
