@@ -1,6 +1,6 @@
 // yarn vitest balancer-sor.integration.test.ts
 
-import { ExactInQueryOutput, Swap, SwapKind, Token, Address, Path } from '@balancer/sdk';
+import { ExactInQueryOutput, Swap, SwapKind, Token, Address, Path, ExactOutQueryOutput } from '@balancer/sdk';
 
 import { PathWithAmount } from './sorV2/lib/path';
 import { sorGetPathsWithPools } from './sorV2/lib/static';
@@ -88,8 +88,8 @@ describe('Balancer SOR Integration Tests', () => {
             });
 
             // get SOR paths
-            const tIn = new Token(parseFloat(chainToIdMap['SEPOLIA']), BAL.address as Address, 18);
-            const tOut = new Token(parseFloat(chainToIdMap['SEPOLIA']), WETH.address as Address, 18);
+            const tIn = new Token(parseFloat(chainToIdMap['SEPOLIA']), BAL.address as Address, BAL.token.decimals);
+            const tOut = new Token(parseFloat(chainToIdMap['SEPOLIA']), WETH.address as Address, WETH.token.decimals);
             const amountIn = BigInt(0.1e18);
             paths = (await sorGetPathsWithPools(
                 tIn,
