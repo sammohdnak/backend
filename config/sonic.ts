@@ -12,7 +12,7 @@ export default <NetworkData>{
     },
     subgraphs: {
         startDate: '2024-12-12',
-        balancer: `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_FANTOM}/deployments/id/QmZtPVQPhdi9jAF1JHZYji6cQUHmWE1XYQJagB6ngioJdu`,
+        balancer: `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_FANTOM}/deployments/id/QmW3NWk8gTu3d1uyfmb3FBK3WjXCbkukWk4bmx8Ad1ccEy`,
         balancerV3: `https://gateway.thegraph.com/api/${env.THEGRAPH_API_KEY_FANTOM}/deployments/id/QmR1ZDqDUyXih88ytCdaK3hV4ynrJJWst8UjeTg82PGwAf`,
         balancerPoolsV3: `https://gateway.thegraph.com/api/${env.THEGRAPH_API_KEY_FANTOM}/deployments/id/QmYWPJm4DKCu9qg3uFoTMGzQGfhKZHE55kKjYCwHJv9TYL`,
         blocks: `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_FANTOM}/deployments/id/QmZYZcSMaGY2rrq8YFP9avicWf2GM8R2vpB2Xuap1WhipT`,
@@ -74,6 +74,16 @@ export default <NetworkData>{
     ybAprConfig: {
         sts: {
             token: '0xe5da20f15420ad15de0fa650600afc998bbe3955',
+        },
+        beefy: {
+            sourceUrl: 'https://api.beefy.finance/apy/',
+            tokens: {
+                'silov2-usdc': {
+                    address: '0x7870ddfd5aca4e977b2287e9a212bcbe8fc4135a',
+                    vaultId: 'silov2-sonic-usdce-ws',
+                    isIbYield: true,
+                },
+            },
         },
     },
     datastudio: {
