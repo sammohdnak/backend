@@ -157,6 +157,43 @@ export class TokenPriceService {
         range: GqlTokenChartDataRange,
         chain: Chain,
     ): Promise<PrismaTokenPrice[]> {
+        if (range === 'ALL') {
+            const rawRecords = await prisma.$queryRaw<
+                {
+                    tokenAddress: string;
+                    chain: Chain;
+                    daily_timestamp: number;
+                    price: number;
+                }[]
+            >`SELECT
+                "tokenAddress",
+                chain,
+                FLOOR("timestamp" / 86400) * 86400 AS daily_timestamp,
+                ROUND(AVG(price)::NUMERIC, 2) AS price
+            FROM "PrismaTokenPrice"
+            WHERE "tokenAddress" = ANY(${tokenAddresses})
+            AND "chain" = ${chain}::"Chain"
+            GROUP BY
+                "tokenAddress",
+                chain,
+                FLOOR("timestamp" / 86400) * 86400
+            ORDER BY
+                daily_timestamp DESC`;
+
+            const records = rawRecords.map((record) => ({
+                ...record,
+                timestamp: record.daily_timestamp,
+                updatedAt: new Date(record.daily_timestamp * 1000),
+                updatedBy: '',
+                low: record.price, // not returned by the graphql query
+                high: record.price, // not returned by the graphql query
+                open: record.price, // not returned by the graphql query
+                close: record.price, // not returned by the graphql query
+            }));
+
+            return records;
+        }
+
         const startTimestamp = this.getStartTimestampFromRange(range);
 
         return prisma.prismaTokenPrice.findMany({
