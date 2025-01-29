@@ -3327,6 +3327,7 @@ export const schema = gql`
     }
 
     enum GqlTokenChartDataRange {
+        ALL
         NINETY_DAY
         ONE_HUNDRED_EIGHTY_DAY
         ONE_YEAR

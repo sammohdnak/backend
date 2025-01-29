@@ -2232,7 +2232,13 @@ export interface GqlTokenCandlestickChartDataItem {
     timestamp: Scalars['Int'];
 }
 
-export type GqlTokenChartDataRange = 'NINETY_DAY' | 'ONE_HUNDRED_EIGHTY_DAY' | 'ONE_YEAR' | 'SEVEN_DAY' | 'THIRTY_DAY';
+export type GqlTokenChartDataRange =
+    | 'ALL'
+    | 'NINETY_DAY'
+    | 'ONE_HUNDRED_EIGHTY_DAY'
+    | 'ONE_YEAR'
+    | 'SEVEN_DAY'
+    | 'THIRTY_DAY';
 
 export interface GqlTokenData {
     __typename?: 'GqlTokenData';
