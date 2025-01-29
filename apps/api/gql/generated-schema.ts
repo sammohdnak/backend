@@ -2452,7 +2452,6 @@ export interface Mutation {
     __typename?: 'Mutation';
     beetsPoolLoadReliquarySnapshotsForAllFarms: Scalars['String'];
     beetsSyncFbeetsRatio: Scalars['String'];
-    cacheAverageBlockTime: Scalars['String'];
     poolLoadOnChainDataForAllPools: Array<GqlPoolMutationResult>;
     poolLoadSnapshotsForPools: Scalars['String'];
     poolReloadAllPoolAprs: Scalars['String'];
@@ -2558,9 +2557,13 @@ export interface Query {
     __typename?: 'Query';
     beetsGetFbeetsRatio: Scalars['String'];
     beetsPoolGetReliquaryFarmSnapshots: Array<GqlReliquaryFarmSnapshot>;
+    /** @deprecated Field no longer supported */
     blocksGetAverageBlockTime: Scalars['Float'];
+    /** @deprecated Field no longer supported */
     blocksGetBlocksPerDay: Scalars['Float'];
+    /** @deprecated Field no longer supported */
     blocksGetBlocksPerSecond: Scalars['Float'];
+    /** @deprecated Field no longer supported */
     blocksGetBlocksPerYear: Scalars['Float'];
     contentGetNewsItems: Array<GqlContentNewsItem>;
     latestSyncedBlocks: GqlLatestSyncedBlocks;
@@ -5317,7 +5320,6 @@ export type MutationResolvers<
 > = ResolversObject<{
     beetsPoolLoadReliquarySnapshotsForAllFarms?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     beetsSyncFbeetsRatio?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    cacheAverageBlockTime?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     poolLoadOnChainDataForAllPools?: Resolver<
         Array<ResolversTypes['GqlPoolMutationResult']>,
         ParentType,
