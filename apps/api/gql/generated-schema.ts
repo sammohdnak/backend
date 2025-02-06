@@ -39,6 +39,20 @@ export interface Erc4626ReviewData {
     warnings: Array<Scalars['String']>;
 }
 
+/** ExitFee hook specific params. Percentage format is 0.01 -> 0.01%. */
+export interface ExitFeeHookParams {
+    __typename?: 'ExitFeeHookParams';
+    exitFeePercentage?: Maybe<Scalars['String']>;
+}
+
+/** FeeTaking hook specific params. Percentage format is 0.01 -> 0.01% */
+export interface FeeTakingHookParams {
+    __typename?: 'FeeTakingHookParams';
+    addLiquidityFeePercentage?: Maybe<Scalars['String']>;
+    removeLiquidityFeePercentage?: Maybe<Scalars['String']>;
+    swapFeePercentage?: Maybe<Scalars['String']>;
+}
+
 export interface GqlBalancePoolAprItem {
     __typename?: 'GqlBalancePoolAprItem';
     apr: GqlPoolAprValue;
@@ -138,24 +152,36 @@ export interface GqlHistoricalTokenPriceEntry {
 export interface GqlHook {
     __typename?: 'GqlHook';
     address: Scalars['String'];
-    /** Data points changing over time */
+    config?: Maybe<HookConfig>;
+    /** @deprecated Field no longer supported */
     dynamicData?: Maybe<GqlHookData>;
-    /** True when hook can change the amounts send to the vault. Necessary to deduct the fees. */
+    /** @deprecated Field no longer supported */
     enableHookAdjustedAmounts: Scalars['Boolean'];
+    name: Scalars['String'];
+    /** Hook type specific params */
+    params?: Maybe<HookParams>;
     /** The review for this hook if applicable. */
     reviewData?: Maybe<GqlHookReviewData>;
+    /** @deprecated Field no longer supported */
     shouldCallAfterAddLiquidity: Scalars['Boolean'];
+    /** @deprecated Field no longer supported */
     shouldCallAfterInitialize: Scalars['Boolean'];
+    /** @deprecated Field no longer supported */
     shouldCallAfterRemoveLiquidity: Scalars['Boolean'];
+    /** @deprecated Field no longer supported */
     shouldCallAfterSwap: Scalars['Boolean'];
+    /** @deprecated Field no longer supported */
     shouldCallBeforeAddLiquidity: Scalars['Boolean'];
+    /** @deprecated Field no longer supported */
     shouldCallBeforeInitialize: Scalars['Boolean'];
+    /** @deprecated Field no longer supported */
     shouldCallBeforeRemoveLiquidity: Scalars['Boolean'];
+    /** @deprecated Field no longer supported */
     shouldCallBeforeSwap: Scalars['Boolean'];
+    /** @deprecated Field no longer supported */
     shouldCallComputeDynamicSwapFee: Scalars['Boolean'];
 }
 
-/** Collection of hook specific data. Percentage format is 0.01 -> 0.01%. */
 export interface GqlHookData {
     __typename?: 'GqlHookData';
     addLiquidityFeePercentage?: Maybe<Scalars['String']>;
@@ -2435,6 +2461,23 @@ export interface GqlVotingPool {
     type: GqlPoolType;
 }
 
+export interface HookConfig {
+    __typename?: 'HookConfig';
+    /** True when hook can change the amounts send to the vault. Necessary to deduct the fees. */
+    enableHookAdjustedAmounts: Scalars['Boolean'];
+    shouldCallAfterAddLiquidity: Scalars['Boolean'];
+    shouldCallAfterInitialize: Scalars['Boolean'];
+    shouldCallAfterRemoveLiquidity: Scalars['Boolean'];
+    shouldCallAfterSwap: Scalars['Boolean'];
+    shouldCallBeforeAddLiquidity: Scalars['Boolean'];
+    shouldCallBeforeInitialize: Scalars['Boolean'];
+    shouldCallBeforeRemoveLiquidity: Scalars['Boolean'];
+    shouldCallBeforeSwap: Scalars['Boolean'];
+    shouldCallComputeDynamicSwapFee: Scalars['Boolean'];
+}
+
+export type HookParams = ExitFeeHookParams | FeeTakingHookParams | StableSurgeHookParams;
+
 /** Liquidity management settings for v3 pools. */
 export interface LiquidityManagement {
     __typename?: 'LiquidityManagement';
@@ -2902,6 +2945,13 @@ export interface QueryVeBalGetUserBalancesArgs {
     chains?: InputMaybe<Array<GqlChain>>;
 }
 
+/** StableSurge hook specific params. Percentage format is 0.01 -> 0.01%. */
+export interface StableSurgeHookParams {
+    __typename?: 'StableSurgeHookParams';
+    maxSurgeFeePercentage?: Maybe<Scalars['String']>;
+    surgeThresholdPercentage?: Maybe<Scalars['String']>;
+}
+
 export interface Token {
     __typename?: 'Token';
     address: Scalars['String'];
@@ -2998,6 +3048,8 @@ export type ResolversTypes = ResolversObject<{
     Bytes: ResolverTypeWrapper<Scalars['Bytes']>;
     Date: ResolverTypeWrapper<Scalars['Date']>;
     Erc4626ReviewData: ResolverTypeWrapper<Erc4626ReviewData>;
+    ExitFeeHookParams: ResolverTypeWrapper<ExitFeeHookParams>;
+    FeeTakingHookParams: ResolverTypeWrapper<FeeTakingHookParams>;
     Float: ResolverTypeWrapper<Scalars['Float']>;
     GqlBalancePoolAprItem: ResolverTypeWrapper<
         Omit<GqlBalancePoolAprItem, 'apr'> & { apr: ResolversTypes['GqlPoolAprValue'] }
@@ -3013,7 +3065,7 @@ export type ResolversTypes = ResolversObject<{
     GqlGraphTraversalConfigInput: GqlGraphTraversalConfigInput;
     GqlHistoricalTokenPrice: ResolverTypeWrapper<GqlHistoricalTokenPrice>;
     GqlHistoricalTokenPriceEntry: ResolverTypeWrapper<GqlHistoricalTokenPriceEntry>;
-    GqlHook: ResolverTypeWrapper<GqlHook>;
+    GqlHook: ResolverTypeWrapper<Omit<GqlHook, 'params'> & { params?: Maybe<ResolversTypes['HookParams']> }>;
     GqlHookData: ResolverTypeWrapper<GqlHookData>;
     GqlHookReviewData: ResolverTypeWrapper<GqlHookReviewData>;
     GqlLatestSyncedBlocks: ResolverTypeWrapper<GqlLatestSyncedBlocks>;
@@ -3185,6 +3237,11 @@ export type ResolversTypes = ResolversObject<{
     GqlVotingGauge: ResolverTypeWrapper<GqlVotingGauge>;
     GqlVotingGaugeToken: ResolverTypeWrapper<GqlVotingGaugeToken>;
     GqlVotingPool: ResolverTypeWrapper<GqlVotingPool>;
+    HookConfig: ResolverTypeWrapper<HookConfig>;
+    HookParams:
+        | ResolversTypes['ExitFeeHookParams']
+        | ResolversTypes['FeeTakingHookParams']
+        | ResolversTypes['StableSurgeHookParams'];
     ID: ResolverTypeWrapper<Scalars['ID']>;
     Int: ResolverTypeWrapper<Scalars['Int']>;
     JSON: ResolverTypeWrapper<Scalars['JSON']>;
@@ -3192,6 +3249,7 @@ export type ResolversTypes = ResolversObject<{
     Mutation: ResolverTypeWrapper<{}>;
     PoolForBatchSwap: ResolverTypeWrapper<PoolForBatchSwap>;
     Query: ResolverTypeWrapper<{}>;
+    StableSurgeHookParams: ResolverTypeWrapper<StableSurgeHookParams>;
     String: ResolverTypeWrapper<Scalars['String']>;
     Token: ResolverTypeWrapper<Token>;
     TokenForBatchSwapPool: ResolverTypeWrapper<TokenForBatchSwapPool>;
@@ -3206,6 +3264,8 @@ export type ResolversParentTypes = ResolversObject<{
     Bytes: Scalars['Bytes'];
     Date: Scalars['Date'];
     Erc4626ReviewData: Erc4626ReviewData;
+    ExitFeeHookParams: ExitFeeHookParams;
+    FeeTakingHookParams: FeeTakingHookParams;
     Float: Scalars['Float'];
     GqlBalancePoolAprItem: Omit<GqlBalancePoolAprItem, 'apr'> & { apr: ResolversParentTypes['GqlPoolAprValue'] };
     GqlBalancePoolAprSubItem: Omit<GqlBalancePoolAprSubItem, 'apr'> & { apr: ResolversParentTypes['GqlPoolAprValue'] };
@@ -3215,7 +3275,7 @@ export type ResolversParentTypes = ResolversObject<{
     GqlGraphTraversalConfigInput: GqlGraphTraversalConfigInput;
     GqlHistoricalTokenPrice: GqlHistoricalTokenPrice;
     GqlHistoricalTokenPriceEntry: GqlHistoricalTokenPriceEntry;
-    GqlHook: GqlHook;
+    GqlHook: Omit<GqlHook, 'params'> & { params?: Maybe<ResolversParentTypes['HookParams']> };
     GqlHookData: GqlHookData;
     GqlHookReviewData: GqlHookReviewData;
     GqlLatestSyncedBlocks: GqlLatestSyncedBlocks;
@@ -3362,6 +3422,11 @@ export type ResolversParentTypes = ResolversObject<{
     GqlVotingGauge: GqlVotingGauge;
     GqlVotingGaugeToken: GqlVotingGaugeToken;
     GqlVotingPool: GqlVotingPool;
+    HookConfig: HookConfig;
+    HookParams:
+        | ResolversParentTypes['ExitFeeHookParams']
+        | ResolversParentTypes['FeeTakingHookParams']
+        | ResolversParentTypes['StableSurgeHookParams'];
     ID: Scalars['ID'];
     Int: Scalars['Int'];
     JSON: Scalars['JSON'];
@@ -3369,6 +3434,7 @@ export type ResolversParentTypes = ResolversObject<{
     Mutation: {};
     PoolForBatchSwap: PoolForBatchSwap;
     Query: {};
+    StableSurgeHookParams: StableSurgeHookParams;
     String: Scalars['String'];
     Token: Token;
     TokenForBatchSwapPool: TokenForBatchSwapPool;
@@ -3402,6 +3468,24 @@ export type Erc4626ReviewDataResolvers<
     reviewFile?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     summary?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     warnings?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ExitFeeHookParamsResolvers<
+    ContextType = ResolverContext,
+    ParentType extends ResolversParentTypes['ExitFeeHookParams'] = ResolversParentTypes['ExitFeeHookParams'],
+> = ResolversObject<{
+    exitFeePercentage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type FeeTakingHookParamsResolvers<
+    ContextType = ResolverContext,
+    ParentType extends ResolversParentTypes['FeeTakingHookParams'] = ResolversParentTypes['FeeTakingHookParams'],
+> = ResolversObject<{
+    addLiquidityFeePercentage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    removeLiquidityFeePercentage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    swapFeePercentage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3481,8 +3565,11 @@ export type GqlHookResolvers<
     ParentType extends ResolversParentTypes['GqlHook'] = ResolversParentTypes['GqlHook'],
 > = ResolversObject<{
     address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    config?: Resolver<Maybe<ResolversTypes['HookConfig']>, ParentType, ContextType>;
     dynamicData?: Resolver<Maybe<ResolversTypes['GqlHookData']>, ParentType, ContextType>;
     enableHookAdjustedAmounts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    params?: Resolver<Maybe<ResolversTypes['HookParams']>, ParentType, ContextType>;
     reviewData?: Resolver<Maybe<ResolversTypes['GqlHookReviewData']>, ParentType, ContextType>;
     shouldCallAfterAddLiquidity?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     shouldCallAfterInitialize?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
@@ -5299,6 +5386,34 @@ export type GqlVotingPoolResolvers<
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type HookConfigResolvers<
+    ContextType = ResolverContext,
+    ParentType extends ResolversParentTypes['HookConfig'] = ResolversParentTypes['HookConfig'],
+> = ResolversObject<{
+    enableHookAdjustedAmounts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    shouldCallAfterAddLiquidity?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    shouldCallAfterInitialize?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    shouldCallAfterRemoveLiquidity?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    shouldCallAfterSwap?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    shouldCallBeforeAddLiquidity?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    shouldCallBeforeInitialize?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    shouldCallBeforeRemoveLiquidity?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    shouldCallBeforeSwap?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    shouldCallComputeDynamicSwapFee?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type HookParamsResolvers<
+    ContextType = ResolverContext,
+    ParentType extends ResolversParentTypes['HookParams'] = ResolversParentTypes['HookParams'],
+> = ResolversObject<{
+    __resolveType: TypeResolveFn<
+        'ExitFeeHookParams' | 'FeeTakingHookParams' | 'StableSurgeHookParams',
+        ParentType,
+        ContextType
+    >;
+}>;
+
 export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
     name: 'JSON';
 }
@@ -5693,6 +5808,15 @@ export type QueryResolvers<
     veBalGetVotingList?: Resolver<Array<ResolversTypes['GqlVotingPool']>, ParentType, ContextType>;
 }>;
 
+export type StableSurgeHookParamsResolvers<
+    ContextType = ResolverContext,
+    ParentType extends ResolversParentTypes['StableSurgeHookParams'] = ResolversParentTypes['StableSurgeHookParams'],
+> = ResolversObject<{
+    maxSurgeFeePercentage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    surgeThresholdPercentage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type TokenResolvers<
     ContextType = ResolverContext,
     ParentType extends ResolversParentTypes['Token'] = ResolversParentTypes['Token'],
@@ -5720,6 +5844,8 @@ export type Resolvers<ContextType = ResolverContext> = ResolversObject<{
     Bytes?: GraphQLScalarType;
     Date?: GraphQLScalarType;
     Erc4626ReviewData?: Erc4626ReviewDataResolvers<ContextType>;
+    ExitFeeHookParams?: ExitFeeHookParamsResolvers<ContextType>;
+    FeeTakingHookParams?: FeeTakingHookParamsResolvers<ContextType>;
     GqlBalancePoolAprItem?: GqlBalancePoolAprItemResolvers<ContextType>;
     GqlBalancePoolAprSubItem?: GqlBalancePoolAprSubItemResolvers<ContextType>;
     GqlBigNumber?: GraphQLScalarType;
@@ -5831,11 +5957,14 @@ export type Resolvers<ContextType = ResolverContext> = ResolversObject<{
     GqlVotingGauge?: GqlVotingGaugeResolvers<ContextType>;
     GqlVotingGaugeToken?: GqlVotingGaugeTokenResolvers<ContextType>;
     GqlVotingPool?: GqlVotingPoolResolvers<ContextType>;
+    HookConfig?: HookConfigResolvers<ContextType>;
+    HookParams?: HookParamsResolvers<ContextType>;
     JSON?: GraphQLScalarType;
     LiquidityManagement?: LiquidityManagementResolvers<ContextType>;
     Mutation?: MutationResolvers<ContextType>;
     PoolForBatchSwap?: PoolForBatchSwapResolvers<ContextType>;
     Query?: QueryResolvers<ContextType>;
+    StableSurgeHookParams?: StableSurgeHookParamsResolvers<ContextType>;
     Token?: TokenResolvers<ContextType>;
     TokenForBatchSwapPool?: TokenForBatchSwapPoolResolvers<ContextType>;
 }>;
