@@ -15,7 +15,6 @@ export default <NetworkData>{
         balancer: `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_FANTOM}/deployments/id/QmW3NWk8gTu3d1uyfmb3FBK3WjXCbkukWk4bmx8Ad1ccEy`,
         balancerV3: `https://gateway.thegraph.com/api/${env.THEGRAPH_API_KEY_FANTOM}/deployments/id/QmSgCPJD4YNcwoEw9LoXtcGS6jiMTYmqz1h4Yor12kTjUG`,
         balancerPoolsV3: `https://gateway.thegraph.com/api/${env.THEGRAPH_API_KEY_FANTOM}/deployments/id/QmddFGnsFRhucWWk7ozsqw72mtDcS84UoqB5a2s6Rb7q2o`,
-        blocks: `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_FANTOM}/deployments/id/QmZYZcSMaGY2rrq8YFP9avicWf2GM8R2vpB2Xuap1WhipT`,
         gauge: `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_FANTOM}/deployments/id/QmSRNzwTmLu55ZxxyxYULS5T1Kar7upz1jzL5FsMzLpB2e`,
         reliquary: `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_FANTOM}/deployments/id/QmUM8aU6H3gFx6JL65GQV5baPPjczU9hUb6VRiDQ1jEp3B`,
         sts: `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_FANTOM}/deployments/id/Qmf7YfRPHCaSf6jeNbu8HUAWQ9Wba5ovk4HEPNaA8NTbvW`,
@@ -89,7 +88,30 @@ export default <NetworkData>{
             markets: [
                 '0x87178fe8698c7eda8aa207083c3d66aea569ab98', //solvbtc market 13
                 '0x52fc9e0a68b6a4c9b57b9d1d99fb71449a99dcd8', // solvbtc.bbn market 13
+                '0xb6adbb29f2d8ae731c7c72036a7fd5a7e970b198', // wS market 25
+                '0x219656f33c58488d09d518badf50aa8cdcaca2aa', // wETH market 26
             ],
+        },
+        avalon: {
+            solv: {
+                subgraphUrl: `https://api.studio.thegraph.com/query/102993/avalon-defi-lending-v3/version/latest`,
+                tokens: {
+                    SOLVBTC: {
+                        underlyingAssetAddress: '0x541fd749419ca806a8bc7da8ac23d346f2df8b77',
+                        aTokenAddress: '0x6c56ddccb3726faa089a5e9e29b712525cf916d7',
+                        wrappedTokens: {
+                            waSOLVBTC: '0xd31e89ffb929b38ba60d1c7dbeb68c7712eaab0a',
+                        },
+                    },
+                    SOLVBTCBBN: {
+                        underlyingAssetAddress: '0xcc0966d8418d412c599a6421b760a847eb169a8c',
+                        aTokenAddress: '0xe3a97c4cc6725b96fb133c636d2e88cc3d6cfdbe',
+                        wrappedTokens: {
+                            waSOLVBTCBBN: '0xa28d4dbcc90c849e3249d642f356d85296a12954',
+                        },
+                    },
+                },
+            },
         },
     },
     datastudio: {

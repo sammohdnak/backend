@@ -1,5 +1,6 @@
 export * from './default-apr-handler';
 export * from './aave-apr-handler';
+export * from './avalon-apr-handler';
 export * from './euler-apr-handler';
 export * from './gearbox-apr-handler';
 export * from './idle-apr-handler';
@@ -18,7 +19,6 @@ export * from './dforce-apr-handler';
 export * from './defillama-apr-handler';
 export * from './teth';
 export * from './morpho-apr-handler';
-export * from './morpho-token-apr-handler';
 export * from './usdl-apr-handler';
 export * from './susds-apr-handler';
 // These need a refactor, because they depend on the network context

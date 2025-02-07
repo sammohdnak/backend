@@ -16,7 +16,6 @@ export default <NetworkData>{
         balancerV3: `https://gateway.thegraph.com/api/${env.THEGRAPH_API_KEY_BALANCER}/deployments/id/QmS6suakkYyKgEtDmMjwpbUzzHNmju7Rh5hSteZbCtTfgV`,
         balancerPoolsV3: `https://gateway.thegraph.com/api/${env.THEGRAPH_API_KEY_BALANCER}/deployments/id/QmNpXtC2WRG8AGTFzwQT7QwrWJNmSuhnRu3tNAYP6KRDZG`,
         cowAmm: `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_BALANCER}/deployments/id/QmUDGSJXdMzG4ezDzf1LvXVb2igwY6rnaNFLC62ZJZ3Pbv`,
-        blocks: `https://gateway.thegraph.com/api/${env.THEGRAPH_API_KEY_BALANCER}/subgraphs/id/JBnWrv9pvBvSi2pUZzba3VweGBTde6s44QvsDABP47Gt`,
         gauge: `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_BALANCER}/deployments/id/QmT3h6pogdPkxfWsBxKNtpq7kR9fqKaQ9jGxe7fZx7MUVE`,
         aura: 'https://data.aura.finance/graphql',
     },
@@ -89,6 +88,7 @@ export default <NetworkData>{
                         wrappedTokens: {
                             stataArbUSDCn: '0xbde67e089886ec0e615d6f054bc6f746189a3d56',
                             stataArbUSDCn2: '0x7cfadfd5645b50be87d546f42699d863648251ad',
+                            waArbUSDCn: '0x7f6501d3b98ee91f9b9535e4b0ac710fb0f9e0bc',
                         },
                     },
                     USDT: {
