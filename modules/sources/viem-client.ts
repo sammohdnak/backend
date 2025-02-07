@@ -10,6 +10,8 @@ import {
     polygon,
     polygonZkEvm,
     sepolia,
+    pulsechain,
+    pulsechainV4,
     fraxtal,
     mode,
 } from 'viem/chains';
@@ -27,6 +29,8 @@ export interface IViemClient {
 const chain2ViemChain = {
     [Chain.MAINNET]: mainnet,
     [Chain.SEPOLIA]: sepolia,
+    [Chain.PULSECHAIN]: pulsechain,
+    [Chain.PULSECHAINV4]: pulsechainV4,
     [Chain.ARBITRUM]: arbitrum,
     [Chain.AVALANCHE]: avalanche,
     [Chain.BASE]: base,

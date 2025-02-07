@@ -8,6 +8,10 @@ import mainnetConfig from './mainnet';
 import optimismConfig from './optimism';
 import polygonConfig from './polygon';
 import sepoliaConfig from './sepolia';
+import pulsechainConfig from './pulsechain';
+import pulsechainV4Config from './pulsechainV4';
+
+
 import zkevmConfig from './zkevm';
 import fraxtalConfig from './fraxtal';
 import modeConfig from './mode';
@@ -24,6 +28,8 @@ export default {
     [Chain.OPTIMISM]: optimismConfig,
     [Chain.POLYGON]: polygonConfig,
     [Chain.SEPOLIA]: sepoliaConfig,
+    [Chain.PULSECHAIN]: pulsechainConfig,
+    [Chain.PULSECHAINV4]: pulsechainV4Config,
     [Chain.ZKEVM]: zkevmConfig,
     [Chain.FRAXTAL]: fraxtalConfig,
     [Chain.MODE]: modeConfig,

@@ -1,5 +1,8 @@
 -- AlterEnum
 ALTER TYPE "Chain" ADD VALUE 'SEPOLIA';
+ALTER TYPE "Chain" ADD VALUE 'PULSECHAIN';
+ALTER TYPE "Chain" ADD VALUE 'PULSECHAINV4';
+
 
 -- AlterTable
 ALTER TABLE "PrismaPoolDynamicData" ADD COLUMN     "protocolSwapFee" TEXT NOT NULL DEFAULT '0';

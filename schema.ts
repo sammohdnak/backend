@@ -55,6 +55,8 @@ export type GqlChain =
     | 'OPTIMISM'
     | 'POLYGON'
     | 'SEPOLIA'
+    | 'PULSECHAIN'
+    | 'PULSECHAINV4'
     | 'ZKEVM';
 
 export interface GqlContentNewsItem {
@@ -2673,14 +2675,14 @@ export type ResolversTypes = ResolversObject<{
     GqlPoolAprTotal: ResolverTypeWrapper<GqlPoolAprTotal>;
     GqlPoolAprValue: ResolversTypes['GqlPoolAprRange'] | ResolversTypes['GqlPoolAprTotal'];
     GqlPoolBase:
-        | ResolversTypes['GqlPoolComposableStable']
-        | ResolversTypes['GqlPoolElement']
-        | ResolversTypes['GqlPoolFx']
-        | ResolversTypes['GqlPoolGyro']
-        | ResolversTypes['GqlPoolLiquidityBootstrapping']
-        | ResolversTypes['GqlPoolMetaStable']
-        | ResolversTypes['GqlPoolStable']
-        | ResolversTypes['GqlPoolWeighted'];
+    | ResolversTypes['GqlPoolComposableStable']
+    | ResolversTypes['GqlPoolElement']
+    | ResolversTypes['GqlPoolFx']
+    | ResolversTypes['GqlPoolGyro']
+    | ResolversTypes['GqlPoolLiquidityBootstrapping']
+    | ResolversTypes['GqlPoolMetaStable']
+    | ResolversTypes['GqlPoolStable']
+    | ResolversTypes['GqlPoolWeighted'];
     GqlPoolBatchSwap: ResolverTypeWrapper<GqlPoolBatchSwap>;
     GqlPoolBatchSwapPool: ResolverTypeWrapper<GqlPoolBatchSwapPool>;
     GqlPoolBatchSwapSwap: ResolverTypeWrapper<GqlPoolBatchSwapSwap>;
@@ -2695,9 +2697,9 @@ export type ResolversTypes = ResolversObject<{
     GqlPoolDynamicData: ResolverTypeWrapper<GqlPoolDynamicData>;
     GqlPoolElement: ResolverTypeWrapper<GqlPoolElement>;
     GqlPoolEvent:
-        | ResolversTypes['GqlPoolAddRemoveEventV3']
-        | ResolversTypes['GqlPoolSwapEventCowAmm']
-        | ResolversTypes['GqlPoolSwapEventV3'];
+    | ResolversTypes['GqlPoolAddRemoveEventV3']
+    | ResolversTypes['GqlPoolSwapEventCowAmm']
+    | ResolversTypes['GqlPoolSwapEventV3'];
     GqlPoolEventAmount: ResolverTypeWrapper<GqlPoolEventAmount>;
     GqlPoolEventType: GqlPoolEventType;
     GqlPoolEventsDataRange: GqlPoolEventsDataRange;
@@ -2707,8 +2709,8 @@ export type ResolversTypes = ResolversObject<{
         Omit<GqlPoolFeaturedPoolGroup, 'items'> & { items: Array<ResolversTypes['GqlPoolFeaturedPoolGroupItem']> }
     >;
     GqlPoolFeaturedPoolGroupItem:
-        | ResolversTypes['GqlFeaturePoolGroupItemExternalLink']
-        | ResolversTypes['GqlPoolMinimal'];
+    | ResolversTypes['GqlFeaturePoolGroupItemExternalLink']
+    | ResolversTypes['GqlPoolMinimal'];
     GqlPoolFilter: GqlPoolFilter;
     GqlPoolFilterCategory: GqlPoolFilterCategory;
     GqlPoolFx: ResolverTypeWrapper<Omit<GqlPoolFx, 'tokens'> & { tokens: Array<ResolversTypes['GqlPoolTokenUnion']> }>;
@@ -2762,14 +2764,14 @@ export type ResolversTypes = ResolversObject<{
     GqlPoolTokenUnion: ResolversTypes['GqlPoolToken'] | ResolversTypes['GqlPoolTokenComposableStable'];
     GqlPoolType: GqlPoolType;
     GqlPoolUnion:
-        | ResolversTypes['GqlPoolComposableStable']
-        | ResolversTypes['GqlPoolElement']
-        | ResolversTypes['GqlPoolFx']
-        | ResolversTypes['GqlPoolGyro']
-        | ResolversTypes['GqlPoolLiquidityBootstrapping']
-        | ResolversTypes['GqlPoolMetaStable']
-        | ResolversTypes['GqlPoolStable']
-        | ResolversTypes['GqlPoolWeighted'];
+    | ResolversTypes['GqlPoolComposableStable']
+    | ResolversTypes['GqlPoolElement']
+    | ResolversTypes['GqlPoolFx']
+    | ResolversTypes['GqlPoolGyro']
+    | ResolversTypes['GqlPoolLiquidityBootstrapping']
+    | ResolversTypes['GqlPoolMetaStable']
+    | ResolversTypes['GqlPoolStable']
+    | ResolversTypes['GqlPoolWeighted'];
     GqlPoolUserBalance: ResolverTypeWrapper<GqlPoolUserBalance>;
     GqlPoolUserSwapVolume: ResolverTypeWrapper<GqlPoolUserSwapVolume>;
     GqlPoolWeighted: ResolverTypeWrapper<
@@ -2862,14 +2864,14 @@ export type ResolversParentTypes = ResolversObject<{
     GqlPoolAprTotal: GqlPoolAprTotal;
     GqlPoolAprValue: ResolversParentTypes['GqlPoolAprRange'] | ResolversParentTypes['GqlPoolAprTotal'];
     GqlPoolBase:
-        | ResolversParentTypes['GqlPoolComposableStable']
-        | ResolversParentTypes['GqlPoolElement']
-        | ResolversParentTypes['GqlPoolFx']
-        | ResolversParentTypes['GqlPoolGyro']
-        | ResolversParentTypes['GqlPoolLiquidityBootstrapping']
-        | ResolversParentTypes['GqlPoolMetaStable']
-        | ResolversParentTypes['GqlPoolStable']
-        | ResolversParentTypes['GqlPoolWeighted'];
+    | ResolversParentTypes['GqlPoolComposableStable']
+    | ResolversParentTypes['GqlPoolElement']
+    | ResolversParentTypes['GqlPoolFx']
+    | ResolversParentTypes['GqlPoolGyro']
+    | ResolversParentTypes['GqlPoolLiquidityBootstrapping']
+    | ResolversParentTypes['GqlPoolMetaStable']
+    | ResolversParentTypes['GqlPoolStable']
+    | ResolversParentTypes['GqlPoolWeighted'];
     GqlPoolBatchSwap: GqlPoolBatchSwap;
     GqlPoolBatchSwapPool: GqlPoolBatchSwapPool;
     GqlPoolBatchSwapSwap: GqlPoolBatchSwapSwap;
@@ -2882,9 +2884,9 @@ export type ResolversParentTypes = ResolversObject<{
     GqlPoolDynamicData: GqlPoolDynamicData;
     GqlPoolElement: GqlPoolElement;
     GqlPoolEvent:
-        | ResolversParentTypes['GqlPoolAddRemoveEventV3']
-        | ResolversParentTypes['GqlPoolSwapEventCowAmm']
-        | ResolversParentTypes['GqlPoolSwapEventV3'];
+    | ResolversParentTypes['GqlPoolAddRemoveEventV3']
+    | ResolversParentTypes['GqlPoolSwapEventCowAmm']
+    | ResolversParentTypes['GqlPoolSwapEventV3'];
     GqlPoolEventAmount: GqlPoolEventAmount;
     GqlPoolEventsFilter: GqlPoolEventsFilter;
     GqlPoolFeaturedPool: GqlPoolFeaturedPool;
@@ -2892,8 +2894,8 @@ export type ResolversParentTypes = ResolversObject<{
         items: Array<ResolversParentTypes['GqlPoolFeaturedPoolGroupItem']>;
     };
     GqlPoolFeaturedPoolGroupItem:
-        | ResolversParentTypes['GqlFeaturePoolGroupItemExternalLink']
-        | ResolversParentTypes['GqlPoolMinimal'];
+    | ResolversParentTypes['GqlFeaturePoolGroupItemExternalLink']
+    | ResolversParentTypes['GqlPoolMinimal'];
     GqlPoolFilter: GqlPoolFilter;
     GqlPoolFx: Omit<GqlPoolFx, 'tokens'> & { tokens: Array<ResolversParentTypes['GqlPoolTokenUnion']> };
     GqlPoolGyro: Omit<GqlPoolGyro, 'tokens'> & { tokens: Array<ResolversParentTypes['GqlPoolTokenUnion']> };
@@ -2936,14 +2938,14 @@ export type ResolversParentTypes = ResolversObject<{
     GqlPoolTokenExpanded: GqlPoolTokenExpanded;
     GqlPoolTokenUnion: ResolversParentTypes['GqlPoolToken'] | ResolversParentTypes['GqlPoolTokenComposableStable'];
     GqlPoolUnion:
-        | ResolversParentTypes['GqlPoolComposableStable']
-        | ResolversParentTypes['GqlPoolElement']
-        | ResolversParentTypes['GqlPoolFx']
-        | ResolversParentTypes['GqlPoolGyro']
-        | ResolversParentTypes['GqlPoolLiquidityBootstrapping']
-        | ResolversParentTypes['GqlPoolMetaStable']
-        | ResolversParentTypes['GqlPoolStable']
-        | ResolversParentTypes['GqlPoolWeighted'];
+    | ResolversParentTypes['GqlPoolComposableStable']
+    | ResolversParentTypes['GqlPoolElement']
+    | ResolversParentTypes['GqlPoolFx']
+    | ResolversParentTypes['GqlPoolGyro']
+    | ResolversParentTypes['GqlPoolLiquidityBootstrapping']
+    | ResolversParentTypes['GqlPoolMetaStable']
+    | ResolversParentTypes['GqlPoolStable']
+    | ResolversParentTypes['GqlPoolWeighted'];
     GqlPoolUserBalance: GqlPoolUserBalance;
     GqlPoolUserSwapVolume: GqlPoolUserSwapVolume;
     GqlPoolWeighted: Omit<GqlPoolWeighted, 'tokens'> & { tokens: Array<ResolversParentTypes['GqlPoolTokenUnion']> };

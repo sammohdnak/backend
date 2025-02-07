@@ -12,6 +12,8 @@ enum GqlChain {
     POLYGON
     ZKEVM
     SEPOLIA
+    PULSECHAIN
+    PULSECHAINV4
     FRAXTAL
     MODE
 }

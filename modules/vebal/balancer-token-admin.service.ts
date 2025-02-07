@@ -5,9 +5,7 @@ import { networkContext } from '../network/network-context.service';
 
 export async function getInflationRate(): Promise<BigNumber> {
     if (networkContext.isMainnet) {
-        const tokenAdmin = new Contract(networkContext.data.balancer.v2.tokenAdmin!, abi, networkContext.provider);
-        const inflationRate = await tokenAdmin.getInflationRate();
-        return inflationRate;
+        return BigNumber.from(0);
     } else {
         return BigNumber.from(0);
     }

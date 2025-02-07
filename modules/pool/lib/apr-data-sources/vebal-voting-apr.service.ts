@@ -8,7 +8,7 @@ const VEBAL = '0x5c6ee304399dbdb9c8ef030ab642b10820db8f56';
 
 const vebalPool = '0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014';
 const id = `${vebalPool}-voting-apr`;
-const chain = 'MAINNET';
+const chain = 'PULSECHAIN';
 
 type HiddenHandResponse = {
     error: boolean;
@@ -70,7 +70,7 @@ export const getHiddenHandAPR = async (timestamp: number) => {
         veBalPrice = await prisma.prismaTokenPrice.findFirst({
             where: {
                 tokenAddress: VEBAL,
-                chain: Chain.MAINNET,
+                chain: Chain.PULSECHAIN,
                 timestamp,
             },
         });
@@ -80,7 +80,7 @@ export const getHiddenHandAPR = async (timestamp: number) => {
         veBalPrice = await prisma.prismaTokenCurrentPrice.findFirst({
             where: {
                 tokenAddress: VEBAL,
-                chain: Chain.MAINNET,
+                chain: Chain.PULSECHAIN,
             },
         });
     }
@@ -95,7 +95,7 @@ export const getHiddenHandAPR = async (timestamp: number) => {
 };
 
 export class VeBalVotingAprService implements PoolAprService {
-    constructor() {}
+    constructor() { }
 
     public getAprServiceName(): string {
         return 'VeBalVotingAprService';

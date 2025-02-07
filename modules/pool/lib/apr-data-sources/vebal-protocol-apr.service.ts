@@ -2,7 +2,7 @@ import { PoolAprService } from '../../pool-types';
 import { PrismaPoolWithTokens } from '../../../../prisma/prisma-types';
 import { prisma } from '../../../../prisma/prisma-client';
 import { multicallViem } from '../../../web3/multicaller-viem';
-import { mainnet } from 'viem/chains';
+import { pulsechain } from 'viem/chains';
 import { createPublicClient, formatUnits, http, parseAbi } from 'viem';
 
 const feeDistributorAbi = parseAbi([
@@ -20,7 +20,7 @@ const vebalPoolAddress = '0x5c6ee304399dbdb9c8ef030ab642b10820db8f56';
 const vebalAddress = '0xc128a9954e6c874ea3d62ce62b468ba073093f25';
 const usdcAddress = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48';
 const id = `${vebalPool}-protocol-apr`;
-const chain = 'MAINNET';
+const chain = 'PULSECHAIN';
 
 const getPreviousWeek = (fromJSTimestamp: number): number => {
     const weeksToGoBack = 1;
@@ -42,7 +42,7 @@ const fetchRevenue = async (timestamp: number, rpcUrl: string) => {
     const previousWeek = getPreviousWeek(timestamp);
 
     const viemClient = createPublicClient({
-        chain: mainnet,
+        chain: pulsechain,
         transport: http(rpcUrl),
     });
 
@@ -81,7 +81,7 @@ const fetchRevenue = async (timestamp: number, rpcUrl: string) => {
 };
 
 export class VeBalProtocolAprService implements PoolAprService {
-    constructor(private rpcUrl: string) {}
+    constructor(private rpcUrl: string) { }
 
     public getAprServiceName(): string {
         return 'ProtocolAprService';
@@ -92,17 +92,17 @@ export class VeBalProtocolAprService implements PoolAprService {
 
         // Prices
         const balPrice = await prisma.prismaTokenCurrentPrice.findFirst({
-            where: { tokenAddress: balAddress, chain: 'MAINNET' },
+            where: { tokenAddress: balAddress, chain: 'PULSECHAIN' },
             select: { price: true },
         });
 
         const usdcPrice = await prisma.prismaTokenCurrentPrice.findFirst({
-            where: { tokenAddress: usdcAddress, chain: 'MAINNET' },
+            where: { tokenAddress: usdcAddress, chain: 'PULSECHAIN' },
             select: { price: true },
         });
 
         const bptPrice = await prisma.prismaTokenCurrentPrice.findFirst({
-            where: { tokenAddress: vebalPoolAddress, chain: 'MAINNET' },
+            where: { tokenAddress: vebalPoolAddress, chain: 'PULSECHAIN' },
             select: { price: true },
         });
 
@@ -123,7 +123,7 @@ export class VeBalProtocolAprService implements PoolAprService {
         const apr = await this.getApr();
 
         await prisma.prismaPoolAprItem.upsert({
-            where: { id_chain: { id, chain: 'MAINNET' } },
+            where: { id_chain: { id, chain: 'PULSECHAIN' } },
             create: {
                 id,
                 chain,

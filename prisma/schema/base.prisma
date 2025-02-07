@@ -21,6 +21,8 @@ enum Chain {
     OPTIMISM
     POLYGON
     SEPOLIA
+    PULSECHAIN
+    PULSECHAINV4
     ZKEVM
     FRAXTAL
     MODE

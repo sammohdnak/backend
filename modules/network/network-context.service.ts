@@ -6,7 +6,7 @@ import { BaseProvider } from '@ethersproject/providers';
 import { getRequestScopeContextValue } from '../context/request-scoped-context';
 
 export class NetworkContextService {
-    constructor(private readonly defaultChainId: string) {}
+    constructor(private readonly defaultChainId: string) { }
 
     public isValidChainId(chainId: string) {
         return !!AllNetworkConfigs[chainId];
@@ -43,7 +43,7 @@ export class NetworkContextService {
     }
 
     public get isMainnet() {
-        return this.data.chain.id === 1;
+        return this.data.chain.id === 369;
     }
 
     public get isBalancerChain(): boolean {

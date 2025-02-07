@@ -12,7 +12,7 @@ import { GaugeSubgraphService } from '../../subgraphs/gauge-subgraph/gauge-subgr
 import { veBalLocksSubgraphService } from '../../subgraphs/veBal-locks-subgraph/veBal-locks-subgraph.service';
 import { BigNumber } from 'ethers';
 import VeBalABI from '../../vebal/abi/vebal.json';
-import mainnet from '../../../config/mainnet';
+import pulsechain from '../../../config/pulsechain'
 
 export class UserSyncVebalLockBalanceService implements UserStakedBalanceService {
     get chain() {
@@ -22,7 +22,7 @@ export class UserSyncVebalLockBalanceService implements UserStakedBalanceService
     private readonly veBalPoolId = '0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014';
 
     public async initStakedBalances(stakingTypes: PrismaPoolStakingType[]): Promise<void> {
-        if (!stakingTypes.includes('VEBAL') && this.chain !== 'MAINNET') {
+        if (!stakingTypes.includes('VEBAL') && this.chain !== 'PULSECHAIN') {
             return;
         }
 
@@ -80,16 +80,16 @@ export class UserSyncVebalLockBalanceService implements UserStakedBalanceService
         for (const veBalHolder in response) {
             operations.push(
                 prisma.prismaUserStakedBalance.upsert({
-                    where: { id_chain: { id: `veBal-${veBalHolder.toLowerCase()}`, chain: 'MAINNET' } },
+                    where: { id_chain: { id: `veBal-${veBalHolder.toLowerCase()}`, chain: 'PULSECHAIN' } },
                     create: {
                         id: `veBal-${veBalHolder.toLowerCase()}`,
-                        chain: 'MAINNET',
+                        chain: 'PULSECHAIN',
                         balance: formatFixed(response[veBalHolder].locked[0], 18),
                         balanceNum: parseFloat(formatFixed(response[veBalHolder].locked[0], 18)),
                         userAddress: veBalHolder.toLowerCase(),
                         poolId: this.veBalPoolId,
-                        tokenAddress: mainnet.veBal!.bptAddress,
-                        stakingId: mainnet.veBal!.address,
+                        tokenAddress: pulsechain.veBal!.bptAddress,
+                        stakingId: pulsechain.veBal!.address,
                     },
                     update: {
                         balance: formatFixed(response[veBalHolder].locked[0], 18),
@@ -109,5 +109,5 @@ export class UserSyncVebalLockBalanceService implements UserStakedBalanceService
         await prismaBulkExecuteOperations(operations, true, undefined);
     }
 
-    public async syncUserBalance({ userAddress, poolId, poolAddress, staking }: UserSyncUserBalanceInput) {}
+    public async syncUserBalance({ userAddress, poolId, poolAddress, staking }: UserSyncUserBalanceInput) { }
 }

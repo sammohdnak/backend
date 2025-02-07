@@ -4,8 +4,8 @@ import { sleep } from '../../modules/common/promise';
 import { scheduleJobs } from './job-queue';
 import { createAlerts } from './create-alerts';
 // import { createMonitors } from './create-monitors';
-const SEPOLIA_ID = '11155111';
-let chainIds = [SEPOLIA_ID]
+const PULSECHAINV4_ID = '943';
+let chainIds = [PULSECHAINV4_ID]
 
 // Object.values(config).map((c) => String(c.chain.id));
 
@@ -15,7 +15,7 @@ export async function startSchedulerServer() {
 
         if (env.DEPLOYMENT_ENV === 'main') {
             // use all chains, remove sepolia
-            chainIds = chainIds.filter((chainId) => chainId !== SEPOLIA_ID);
+            chainIds = chainIds.filter((chainId) => chainId !== PULSECHAINV4_ID);
         }
 
         for (const chainId of chainIds) {

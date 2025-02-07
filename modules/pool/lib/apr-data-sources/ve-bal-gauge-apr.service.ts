@@ -120,7 +120,7 @@ export class GaugeAprService implements PoolAprService {
 
                     // veBAL rewards have a range associated with the item
                     // this is deprecated
-                    if (isVeBalemissions && (networkContext.chain === 'MAINNET' || gauge.version === 2)) {
+                    if (isVeBalemissions && (networkContext.chain === 'MAINNET' || networkContext.chain === 'PULSECHAIN' || networkContext.chain === 'PULSECHAINV4' || gauge.version === 2)) {
                         let minApr = 0;
                         if (workingSupplyTvl > 0) {
                             minApr = rewardPerYear / workingSupplyTvl;

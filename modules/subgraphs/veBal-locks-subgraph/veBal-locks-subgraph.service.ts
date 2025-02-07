@@ -1,6 +1,7 @@
 import { GraphQLClient } from 'graphql-request';
-import mainnetConfig from '../../../config/mainnet';
-import sepoliaConfig from '../../../config/sepolia';
+
+import pulseChainConfig from '../../../config/pulsechain';
+import pulseChainV4Config from '../../../config/pulsechainV4';
 
 import _ from 'lodash';
 import { VotingEscrowLock_OrderBy, OrderDirection, getSdk } from './generated/veBal-locks-subgraph-types';
@@ -10,7 +11,7 @@ import { env } from '../../../apps/env';
 
 const isMainnetChain = env.IS_MAINNET_CHAIN == 'true'
 
-const config = isMainnetChain ? mainnetConfig : sepoliaConfig
+const config = isMainnetChain ? pulseChainConfig : pulseChainV4Config
 export class VeBalLocksSubgraphService {
     constructor() { }
 

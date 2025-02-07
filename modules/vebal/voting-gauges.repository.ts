@@ -1,7 +1,6 @@
 import { Chain } from '@prisma/client';
 import { keyBy } from 'lodash';
 
-import mainnet from '../../config/mainnet';
 import gaugeControllerAbi from './abi/gaugeController.json';
 import rootGaugeAbi from './abi/rootGauge.json';
 import { PrismaClient } from '@prisma/client';
@@ -10,7 +9,10 @@ import { v1RootGaugeRecipients } from './special-pools/streamer-v1-gauges';
 import { GaugeSubgraphService } from '../subgraphs/gauge-subgraph/gauge-subgraph.service';
 import { formatEther } from 'viem';
 import { getViemClient, IViemClient } from '../sources/viem-client';
-import sepolia from '../../config/sepolia';
+import pulsechain from '../../config/pulsechain';
+
+import pulsechainV4 from '../../config/pulsechainV4';
+
 import { env } from '../../apps/env';
 
 // const { gaugeControllerAddress, gaugeControllerHelperAddress } = mainnet;
@@ -18,7 +20,7 @@ import { env } from '../../apps/env';
 //TODO - change this to an env later
 const isMainnetChain = env.IS_MAINNET_CHAIN == 'true'
 
-const { gaugeControllerAddress, gaugeControllerHelperAddress } = (isMainnetChain ? mainnet : sepolia);
+const { gaugeControllerAddress, gaugeControllerHelperAddress } = (isMainnetChain ? pulsechain : pulsechainV4);
 
 
 export type VotingGauge = {
@@ -47,7 +49,7 @@ type SubGraphGauge = {
 export class VotingGaugesRepository {
     constructor(
         private prisma: PrismaClient = prismaClient,
-        private viemClient: IViemClient = getViemClient(isMainnetChain ? 'MAINNET' : 'SEPOLIA'),
+        private viemClient: IViemClient = getViemClient(isMainnetChain ? 'PULSECHAIN' : 'PULSECHAINV4'),
     ) { }
 
     async getVotingGaugeAddresses() {
@@ -199,7 +201,7 @@ export class VotingGaugesRepository {
 
     async fetchVotingGaugesFromSubgraph(onchainAddresses: string[]) {
         // This service only works with the mainnet subgraph, will return no voting gauges for other chains
-        const gaugeSubgraphService = new GaugeSubgraphService(isMainnetChain ? mainnet.subgraphs.gauge! : sepolia.subgraphs.gauge!);
+        const gaugeSubgraphService = new GaugeSubgraphService(isMainnetChain ? pulsechain.subgraphs.gauge! : pulsechainV4.subgraphs.gauge!);
         const rootGauges = await gaugeSubgraphService.getRootGaugesForIds(onchainAddresses);
 
         const l2RootGauges: SubGraphGauge[] = rootGauges.map((gauge) => {
@@ -216,7 +218,7 @@ export class VotingGaugesRepository {
         const mainnetLiquidityGauges: SubGraphGauge[] = liquidityGauges.map((gauge) => {
             return {
                 gaugeAddress: gauge.id,
-                chain: isMainnetChain ? Chain.MAINNET : Chain.SEPOLIA,
+                chain: isMainnetChain ? Chain.PULSECHAIN : Chain.PULSECHAINV4,
                 recipient: undefined,
                 addedTimestamp: gauge.gauge?.addedTimestamp,
             } as SubGraphGauge;
@@ -311,7 +313,7 @@ export class VotingGaugesRepository {
         if (v1RootGaugeRecipients[votingGauge.gaugeAddress]) {
             return v1RootGaugeRecipients[votingGauge.gaugeAddress].toLowerCase();
         }
-        if (chain === (isMainnetChain ? 'MAINNET' : 'SEPOLIA')) {
+        if (chain === (isMainnetChain ? 'PULSECHAIN' : 'PULSECHAINV4')) {
             return votingGauge.gaugeAddress;
         } else {
             return votingGauge.recipient?.toLowerCase();
@@ -336,9 +338,10 @@ export class VotingGaugesRepository {
 
     toPrismaNetwork(chainOrSubgraphNetwork: string): Chain {
         const network = chainOrSubgraphNetwork.toUpperCase();
-        if (network === 'ETHEREUM') return isMainnetChain ? Chain.MAINNET : Chain.SEPOLIA;
+        if (network === 'ETHEREUM') return isMainnetChain ? Chain.PULSECHAIN : Chain.PULSECHAINV4;
+        if (network === 'PULSECHAIN') return isMainnetChain ? Chain.PULSECHAIN : Chain.PULSECHAINV4;
         if (network === 'POLYGONZKEVM') return Chain.ZKEVM;
-        if (network === 'VEBAL') return isMainnetChain ? Chain.MAINNET : Chain.SEPOLIA;
+        if (network === 'VEBAL') return isMainnetChain ? Chain.PULSECHAIN : Chain.PULSECHAINV4;
         if (!Object.keys(Chain).includes(network)) throw Error(`Network ${network} is not supported`);
         return network as Chain;
     }

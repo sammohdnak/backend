@@ -11,6 +11,10 @@ import { baseNetworkConfig } from './base';
 import { fraxtalNetworkConfig } from './fraxtal';
 import { Chain } from '@prisma/client';
 import { sepoliaNetworkConfig } from './sepolia';
+import { pulsechainV4NetworkConfig } from './pulsechainV4';
+
+import { pulsechainNetworkConfig } from './pulsechain';
+
 import { modeNetworkConfig } from './mode';
 
 export const AllNetworkConfigs: { [chainId: string]: NetworkConfig } = {
@@ -23,7 +27,9 @@ export const AllNetworkConfigs: { [chainId: string]: NetworkConfig } = {
     // '1101': zkevmNetworkConfig,
     // '43114': avalancheNetworkConfig,
     // '8453': baseNetworkConfig,
-    '11155111': sepoliaNetworkConfig,
+    // '11155111': sepoliaNetworkConfig,
+    '943': pulsechainV4NetworkConfig,
+    // '369': pulsechainNetworkConfig,
     // '252': fraxtalNetworkConfig,
     // '34443': modeNetworkConfig,
 };
@@ -39,6 +45,8 @@ export const AllNetworkConfigsKeyedOnChain: { [chain in Chain]: NetworkConfig } 
     AVALANCHE: avalancheNetworkConfig,
     BASE: baseNetworkConfig,
     SEPOLIA: sepoliaNetworkConfig,
+    PULSECHAIN: pulsechainNetworkConfig,
+    PULSECHAINV4: pulsechainV4NetworkConfig,
     FRAXTAL: fraxtalNetworkConfig,
     MODE: modeNetworkConfig,
 };

@@ -10,11 +10,13 @@ import VeDelegationAbi from './abi/VotingEscrowDelegationProxy.json';
 import { getContractAt } from '../web3/contract';
 import { AmountHumanReadable } from '../common/global-types';
 import { GqlVeBalBalance, GqlVeBalUserData } from '../../schema';
-import mainnet from '../../config/mainnet';
 import VeBalABI from './abi/vebal.json';
 import { Chain } from '@prisma/client';
 import { env } from '../../apps/env';
-import sepolia from '../../config/sepolia';
+import pulsechain from '../../config/pulsechain';
+import pulsechainV4 from '../../config/pulsechainV4';
+
+
 
 const isMainnetChain = env.IS_MAINNET_CHAIN == 'true'
 
@@ -38,7 +40,7 @@ export class VeBalService {
         });
 
         const veBalPrice = await prisma.prismaTokenCurrentPrice.findFirstOrThrow({
-            where: { chain: isMainnetChain ? 'MAINNET' : 'SEPOLIA', tokenAddress: isMainnetChain ? mainnet.veBal!.bptAddress : sepolia.veBal?.bptAddress! },
+            where: { chain: isMainnetChain ? 'PULSECHAIN' : 'PULSECHAINV4', tokenAddress: isMainnetChain ? pulsechain.veBal!.bptAddress : pulsechainV4.veBal?.bptAddress! },
         });
 
         return balances.map((balance) => ({
@@ -78,7 +80,7 @@ export class VeBalService {
 
         if (locked !== '0.0') {
             veBalPrice = await prisma.prismaTokenCurrentPrice.findFirstOrThrow({
-                where: { chain: chain, tokenAddress: isMainnetChain ? mainnet.veBal!.bptAddress : sepolia.veBal!.bptAddress! },
+                where: { chain: chain, tokenAddress: isMainnetChain ? pulsechain.veBal!.bptAddress : pulsechainV4.veBal!.bptAddress! },
             });
         }
 
@@ -110,7 +112,7 @@ export class VeBalService {
 
         let operations: any[] = [];
         // for mainnet, we get the vebal balance form the vebal contract
-        if (isMainnetChain ? networkContext.isMainnet : networkContext.chain == 'SEPOLIA') {
+        if (isMainnetChain ? networkContext.isMainnet : networkContext.chain == 'PULSECHAINV4') {
             const multicall = new Multicaller(networkContext.data.multicall, networkContext.provider, VeBalABI);
 
             let response = {} as {

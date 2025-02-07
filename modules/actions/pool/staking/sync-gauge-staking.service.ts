@@ -260,7 +260,7 @@ const getOnchainRewardTokensData = async (
             balMulticaller.call(`${gauge.id}.rate`, gauge.id, 'inflation_rate', [], true);
             balMulticaller.call(`${gauge.id}.workingSupply`, gauge.id, 'working_supply', [], true);
             //TODO - Change to MAINNET Later
-        } else if (networkContext.chain === Chain.SEPOLIA) {
+        } else if (networkContext.chain === Chain.SEPOLIA || networkContext.chain === Chain.PULSECHAIN || networkContext.chain === Chain.PULSECHAINV4) {
             balMulticaller.call(
                 `${gauge.id}.weight`,
                 networkContext.data.gaugeControllerAddress!,
