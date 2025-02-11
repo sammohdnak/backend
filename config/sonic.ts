@@ -88,7 +88,7 @@ export default <NetworkData>{
             markets: [
                 '0x87178fe8698c7eda8aa207083c3d66aea569ab98', //solvbtc market 13
                 '0x52fc9e0a68b6a4c9b57b9d1d99fb71449a99dcd8', // solvbtc.bbn market 13
-                '0xb6adbb29f2d8ae731c7c72036a7fd5a7e970b198', // wS market 25
+                '0x016C306e103FbF48EC24810D078C65aD13c5f11B', // wS market 25
                 '0x219656f33c58488d09d518badf50aa8cdcaca2aa', // wETH market 26
             ],
         },
@@ -111,6 +111,14 @@ export default <NetworkData>{
                         },
                     },
                 },
+            },
+        },
+        defaultHandlers: {
+            wOS: {
+                tokenAddress: '0x9f0df7799f6fdad409300080cff680f5a23df4b1',
+                sourceUrl: 'https://api.originprotocol.com/api/v2/os/apr/trailing/7?146',
+                path: 'apr',
+                isIbYield: true,
             },
         },
     },

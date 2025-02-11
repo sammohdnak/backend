@@ -14,7 +14,7 @@ export default <NetworkData>{
         startDate: '2021-08-23',
         balancer: `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_BALANCER}/deployments/id/QmPbjY6L1NhPjpBv7wDTfG9EPx5FpCuBqeg1XxByzBTLcs`,
         balancerV3: `https://gateway.thegraph.com/api/${env.THEGRAPH_API_KEY_BALANCER}/deployments/id/QmS6suakkYyKgEtDmMjwpbUzzHNmju7Rh5hSteZbCtTfgV`,
-        balancerPoolsV3: `https://gateway.thegraph.com/api/${env.THEGRAPH_API_KEY_BALANCER}/deployments/id/QmNpXtC2WRG8AGTFzwQT7QwrWJNmSuhnRu3tNAYP6KRDZG`,
+        balancerPoolsV3: `https://gateway.thegraph.com/api/${env.THEGRAPH_API_KEY_BALANCER}/deployments/id/QmVJkf86zu7f24p3RXA22mqNyB1qcLjSJdtYEQaSffNiB2`,
         cowAmm: `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_BALANCER}/deployments/id/QmUDGSJXdMzG4ezDzf1LvXVb2igwY6rnaNFLC62ZJZ3Pbv`,
         gauge: `https://gateway-arbitrum.network.thegraph.com/api/${env.THEGRAPH_API_KEY_BALANCER}/deployments/id/QmT3h6pogdPkxfWsBxKNtpq7kR9fqKaQ9jGxe7fZx7MUVE`,
         aura: 'https://data.aura.finance/graphql',
@@ -128,6 +128,20 @@ export default <NetworkData>{
                         aTokenAddress: '0xebe517846d0f36eced99c735cbf6131e1feb775d',
                         wrappedTokens: {
                             stataArbGHO: '0xd9fba68d89178e3538e708939332c79efc540179',
+                        },
+                    },
+                    EZETH: {
+                        underlyingAssetAddress: '0x2416092f143378750bb29b79ed961ab195cceea5',
+                        aTokenAddress: '0xea1132120ddcdda2f119e99fa7a27a0d036f7ac9',
+                        wrappedTokens: {
+                            stataArbEZETH: '0x4ff50c17df0d1b788d021acd85039810a1aa68a1',
+                        },
+                    },
+                    WSTETH: {
+                        underlyingAssetAddress: '0x5979d7b546e38e414f7e9822514be443a4800529',
+                        aTokenAddress: '0x513c7e3a9c69ca3e22550ef58ac1c0088e918fff',
+                        wrappedTokens: {
+                            stataArbWSTETH: '0xe98fc055c99decd8da0c111b090885d5d15c774e',
                         },
                     },
                 },
